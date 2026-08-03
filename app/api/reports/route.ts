@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
-import { getSeedSite } from "@/lib/seed";
-import type { AccessibilityReport } from "@/lib/types";
+import { REPORT_ISSUES, createReport, listReports } from "@/lib/reports";
 
-/**
- * Stub del Commit 0: almacen en memoria del proceso. Se pierde en cada reinicio
- * y no se comparte entre instancias; A6 lo reemplaza por Supabase manteniendo
- * la memoria como fallback.
- */
-const reports: AccessibilityReport[] = [];
+/** GET /api/reports?site=<id> — tambien devuelve los motivos validos. */
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const { reports, source } = await listReports(
+    searchParams.get("site") ?? undefined,
+  );
 
-export async function GET() {
-  return NextResponse.json({ reports, source: "memoria" });
+  return NextResponse.json({ reports, source, issues: REPORT_ISSUES });
 }
 
 export async function POST(request: Request) {
@@ -21,30 +19,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON invalido." }, { status: 400 });
   }
 
-  const { site_id, issue, detail } = (body ?? {}) as Record<string, unknown>;
+  const result = await createReport(
+    (body ?? {}) as { site_id: unknown; issue: unknown; detail?: unknown },
+  );
 
-  if (typeof site_id !== "string" || typeof issue !== "string" || !issue.trim()) {
-    return NextResponse.json(
-      { error: "Faltan los campos site_id e issue." },
-      { status: 400 },
-    );
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
-  const site = getSeedSite(site_id);
-  if (!site) {
-    return NextResponse.json({ error: "Sitio desconocido." }, { status: 404 });
-  }
-
-  const report: AccessibilityReport = {
-    id: crypto.randomUUID(),
-    site_id,
-    site_name: site.name,
-    issue: issue.trim(),
-    detail: typeof detail === "string" ? detail.trim() : "",
-    created_at: new Date().toISOString(),
-  };
-
-  reports.unshift(report);
-
-  return NextResponse.json({ report, source: "memoria" }, { status: 201 });
+  return NextResponse.json(
+    { report: result.report, source: result.source },
+    { status: 201 },
+  );
 }
