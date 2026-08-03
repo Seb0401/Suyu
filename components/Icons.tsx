@@ -47,6 +47,16 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/** Libro abierto: el hub de la guia, que agrupa secciones distintas. */
+export function BookOpenIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 6.5C10.5 5 8.5 4.5 4 4.5v13c4.5 0 6.5.5 8 2 1.5-1.5 3.5-2 8-2v-13c-4.5 0-6.5.5-8 2Z" />
+      <path d="M12 6.5v13" />
+    </svg>
+  );
+}
+
 export function CloudIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

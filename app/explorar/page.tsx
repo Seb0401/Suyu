@@ -47,9 +47,13 @@ function ExplorarContent() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-4xl">
-      <h1 className="text-2xl font-extrabold text-ink">Explora Arequipa</h1>
+      {/* "Lugares" y no "Explora Arequipa": esta pantalla es SOLO los sitios
+          turisticos. Hoteles, restaurantes y transporte viven en /servicios, y
+          con el titulo generico las dos parecian la misma cosa. */}
+      <h1 className="text-2xl font-extrabold text-ink">Lugares</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Filtra por lo que necesitas para moverte con tranquilidad.
+        Los atractivos de Arequipa, filtrados por lo que necesitas para moverte
+        con tranquilidad.
       </p>
 
       <div className="mt-4 flex items-center gap-2 rounded-full border border-sand-200 bg-sand-50 px-4 py-2.5">

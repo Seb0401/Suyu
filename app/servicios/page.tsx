@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import ServiceCard, { type ServiceWithDistance } from "@/components/ServiceCard";
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
@@ -70,7 +71,10 @@ export default function ServiciosPage() {
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
       <h1 className="text-2xl font-extrabold text-ink">Servicios</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Dónde dormir, comer, moverte y qué hacer en Arequipa.
+        Dónde dormir, comer, moverte y qué hacer.{" "}
+        <Link href="/explorar" className="font-semibold text-clay-600">
+          Los lugares turísticos están en Lugares.
+        </Link>
       </p>
 
       <label className="mt-4 flex items-center gap-2.5 text-sm font-semibold text-ink">
