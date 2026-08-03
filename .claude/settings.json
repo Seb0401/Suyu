@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/ --max-time 5)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/pasaporte --max-time 5)",
+      "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" http://localhost:3000/api/passport --max-time 5)",
+      "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" http://localhost:3000/api/sites --max-time 5)",
+      "Bash(curl -s -o /dev/null -w \"home: %{http_code}\\\\n\" http://localhost:3000/ --max-time 15)",
+      "Bash(curl -s -o /dev/null -w \"sitio: %{http_code}\\\\n\" \"http://localhost:3000/sitio/monasterio-de-santa-catalina\" --max-time 15)",
+      "Bash(curl -s -o /dev/null -w \"perfil: %{http_code}\\\\n\" http://localhost:3000/perfil --max-time 15)",
+      "Bash(curl -s -w \"\\\\nstatus:%{http_code}\\\\n\" -X POST http://localhost:3000/api/passport/checkin --max-time 10)",
+      "Bash(curl -s -w \"\\\\nstatus:%{http_code}\\\\n\" -X POST http://localhost:3000/api/passport/checkin -H \"Authorization: Bearer fake.token.here\" --max-time 10)",
+      "Bash(powershell -Command 'Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '\\\\''*next dev*'\\\\'' -or $_.CommandLine -like '\\\\''*next-server*'\\\\'' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }')",
+      "Bash(curl -s -o /dev/null -w \"port3000:%{http_code}\\\\n\" http://localhost:3000/ --max-time 3)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(gh pr *)",
+      "Bash(gh auth *)",
+      "Bash(cp \"C:\\\\Users\\\\danie\\\\Desktop\\\\resurces\\\\ChatGPT Image 3 ago 2026, 03_43_37 p.m.png\" \"material_proyecto/pasaporte-medallas-ref.png\")",
+      "Bash(cp \"C:\\\\Users\\\\danie\\\\Desktop\\\\resurces\\\\1-Apr-05-2024-06-52-06-2006-PM.jpg\" \"material_proyecto/pasaporte-tapa-ref.jpg\")",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(git merge *)",
+      "Bash(rm -rf node_modules .next)",
+      "Bash(npm ci *)",
+      "Bash(git merge-tree *)",
+      "Bash(git branch *)",
+      "Bash(git reset *)",
+      "Bash(supabase --version)",
+      "Bash(npx supabase *)",
+      "Bash(claude --version)",
+      "Bash(npm root *)"
+    ]
+  }
+}

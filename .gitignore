@@ -30,3 +30,7 @@ Thumbs.db
 *.pem
 .vscode/
 .idea/
+
+# Claude Code — settings.local.json es personal (puede registrar comandos con
+# secretos pegados en el chat, ej. tokens de acceso); settings.json compartido sí se versiona.
+.claude/settings.local.json
