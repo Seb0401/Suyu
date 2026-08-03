@@ -1,12 +1,11 @@
-import PlaceholderScreen from "@/components/PlaceholderScreen";
+import ChatWidget from "@/components/ChatWidget";
 
 export const metadata = { title: "Copiloto — Suyu" };
 
 export default function ChatPage() {
   return (
-    <PlaceholderScreen
-      title="Copiloto de viaje"
-      note="El chat con Claude y su motor de reglas sin conexión llega en B9."
-    />
+    <div className="mx-auto max-w-md px-6 py-6 md:max-w-2xl">
+      <ChatWidget />
+    </div>
   );
 }

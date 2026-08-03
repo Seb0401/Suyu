@@ -173,6 +173,26 @@ export function CrowdDensityIcon({
   );
 }
 
+export function SendIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M20 4 3 10.5l7 2.5 2.5 7z" />
+      <path d="m10 13.5 4-4" />
+    </svg>
+  );
+}
+
+export function OfflineIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M3 3l18 18" />
+      <path d="M8.5 15.5a5 5 0 0 1 7 0" />
+      <path d="M5 12a10 10 0 0 1 3.5-2.3M19 12a10 10 0 0 0-8.4-2.8" />
+      <path d="M12 19h.01" />
+    </svg>
+  );
+}
+
 export function ExternalLinkIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>
