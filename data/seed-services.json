@@ -12,7 +12,11 @@
     "registry_id": null,
     "url": "https://chicha.com.pe/",
     "price_range": "$$$",
-    "notes": "Calle Santa Catalina 210, a media cuadra del monasterio. Casona colonial. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente."
+    "notes": "Calle Santa Catalina 210, a media cuadra del monasterio. Casona colonial. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente.",
+    "details": {
+      "cuisine": "arequipena contemporanea",
+      "signature_dish": "rocoto relleno"
+    }
   },
   {
     "id": "zig-zag-restaurant",
@@ -27,7 +31,11 @@
     "registry_id": null,
     "url": "https://www.zigzagrestaurant.com/",
     "price_range": "$$$",
-    "notes": "Calle Zela 210, dos cuadras de la Plaza de Armas. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente."
+    "notes": "Calle Zela 210, dos cuadras de la Plaza de Armas. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente.",
+    "details": {
+      "cuisine": "andina y europea",
+      "signature_dish": "carnes en piedra volcanica"
+    }
   },
   {
     "id": "la-nueva-palomino",
@@ -42,7 +50,11 @@
     "registry_id": null,
     "url": null,
     "price_range": "$$",
-    "notes": "Pasaje Leon Garcia 103, Yanahuara. Picanteria tradicional arequipena. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente."
+    "notes": "Pasaje Leon Garcia 103, Yanahuara. Picanteria tradicional arequipena. Ubicacion aproximada y registro formal por verificar; accesibilidad sin confirmar en fuente independiente.",
+    "details": {
+      "cuisine": "picanteria arequipena",
+      "signature_dish": "adobo y chupe de camarones"
+    }
   },
   {
     "id": "centro-artesanal-fundo-el-fierro",
@@ -72,7 +84,10 @@
     "registry_id": null,
     "url": "https://pablotour.com/",
     "price_range": "$$",
-    "notes": "Operador local de trekking y tours al Colca. Ubicacion aproximada y registro formal por verificar. El detalle del directorio de agencias vive en /agencias (A13), aqui solo aparece como servicio cercano."
+    "notes": "Operador local de trekking y tours al Colca. Ubicacion aproximada y registro formal por verificar. El detalle del directorio de agencias vive en /agencias (A13), aqui solo aparece como servicio cercano.",
+    "details": {
+      "phone": "+51 941 414 048"
+    }
   },
   {
     "id": "giardino-tours",
@@ -147,7 +162,11 @@
     "registry_id": null,
     "url": "https://www.casa-andina.com/",
     "price_range": "$$$",
-    "notes": "Portal de Flores, sobre la Plaza de Armas. Ubicacion aproximada; accesibilidad de habitaciones y registro formal por verificar."
+    "notes": "Portal de Flores, sobre la Plaza de Armas. Ubicacion aproximada; accesibilidad de habitaciones y registro formal por verificar.",
+    "details": {
+      "stars": 4,
+      "phone": "+51 54 606060"
+    }
   },
   {
     "id": "atradisur-ortopedia",
@@ -223,5 +242,303 @@
     "url": null,
     "price_range": "$$",
     "notes": "Recorrido guiado a las canteras de sillar de Anasca y Culebrillas, la piedra volcanica con la que esta construida media Arequipa. Sale del centro. El terreno de las canteras es irregular y con desnivel: no es apto para silla de ruedas. Registro formal del operador por verificar."
+  },
+  {
+    "id": "casa-andina-premium-arequipa",
+    "name": "Casa Andina Premium Arequipa",
+    "provider": "Casa Andina",
+    "category": "hospedaje",
+    "near_site_id": "monasterio-de-santa-catalina",
+    "lat": -16.39472,
+    "lng": -71.53861,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": "https://www.casa-andina.com/",
+    "price_range": "$$$",
+    "notes": "Calle Ugarte 403, a tres cuadras de la Plaza y a espaldas de Santa Catalina. Ocupa una casona colonial. Ubicacion aproximada; las estrellas son la categoria declarada por la cadena, no una calificacion nuestra. Accesibilidad de habitaciones sin confirmar.",
+    "details": {
+      "stars": 5
+    }
+  },
+  {
+    "id": "katari-hotel-plaza-de-armas",
+    "name": "Katari Hotel at Plaza de Armas",
+    "provider": "Katari Hotel",
+    "category": "hospedaje",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.39889,
+    "lng": -71.53667,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$$",
+    "notes": "Sobre la Plaza de Armas, en uno de los portales. El numero exacto de portal no lo pudimos confirmar, asi que la ubicacion es aproximada. A unos 30 minutos del aeropuerto. Accesibilidad y registro por verificar.",
+    "details": {
+      "stars": 4
+    }
+  },
+  {
+    "id": "libertador-arequipa",
+    "name": "Hotel Libertador Arequipa",
+    "provider": "Libertador Hotels",
+    "category": "hospedaje",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.39222,
+    "lng": -71.53361,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$$",
+    "notes": "Plaza Bolivar s/n, Selva Alegre. Esta a unos 15 minutos a pie de la Plaza de Armas, no en el centro mismo: cuentalo si vas a moverte caminando. Ubicacion aproximada; accesibilidad sin confirmar.",
+    "details": {
+      "stars": 5
+    }
+  },
+  {
+    "id": "hatunpa",
+    "name": "Hatunpa",
+    "provider": "Hatunpa",
+    "category": "restaurante",
+    "near_site_id": "monasterio-de-santa-catalina",
+    "lat": -16.39583,
+    "lng": -71.53778,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$",
+    "notes": "Papas andinas con rellenos arequipenos, servidas con cascara. Opcion barata y rapida cerca de Santa Catalina. OJO: las fuentes que consultamos dan direcciones distintas (Ugarte 208 y Santa Catalina 208). Confirma antes de ir; la ubicacion del mapa es aproximada.",
+    "details": {
+      "cuisine": "andina",
+      "signature_dish": "papas nativas rellenas",
+      "phone": "+51 54 206620"
+    }
+  },
+  {
+    "id": "crepisimo",
+    "name": "Crepisimo",
+    "provider": "Crepisimo",
+    "category": "restaurante",
+    "near_site_id": "monasterio-de-santa-catalina",
+    "lat": -16.39611,
+    "lng": -71.53722,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$",
+    "notes": "Calle Santa Catalina 208, en la casona de la Alianza Francesa. Crepes con rellenos locales como aji de gallina o rocoto. Tiene terraza y juegos de mesa. Ubicacion aproximada; accesibilidad sin confirmar.",
+    "details": {
+      "cuisine": "crepes con toque arequipeno",
+      "signature_dish": "crepe de rocoto relleno"
+    }
+  },
+  {
+    "id": "picanteria-tradicion-arequipena",
+    "name": "Picanteria Tradicion Arequipena",
+    "provider": "Tradicion Arequipena",
+    "category": "restaurante",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.41028,
+    "lng": -71.52889,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$",
+    "notes": "Avenida Dolores 111, en el distrito de Jose Luis Bustamante y Rivero. NO esta en el centro: son unos 20 minutos en taxi desde la Plaza. Picanteria grande, de las que abren fuerte al mediodia. Ubicacion aproximada.",
+    "details": {
+      "cuisine": "picanteria arequipena",
+      "signature_dish": "los siete potajes del jueves",
+      "phone": "+51 54 426467"
+    }
+  },
+  {
+    "id": "terminal-terrestre-arequipa",
+    "name": "Terminal Terrestre de Arequipa",
+    "provider": "Terminal Terrestre",
+    "category": "transporte",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.43111,
+    "lng": -71.54417,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$",
+    "notes": "Cruce de la avenida Arturo Ibanez con Jacobo Hunter, al sur del centro historico. Es el punto de salida hacia el resto del pais y hacia el Colca y Cotahuasi. Ubicacion aproximada; accesibilidad del terminal sin confirmar.",
+    "details": {
+      "destinations": [
+        "Lima",
+        "Cusco",
+        "Puno",
+        "Colca (Chivay)",
+        "Cotahuasi"
+      ],
+      "schedule": "Operacion continua; cada empresa tiene su propio horario."
+    }
+  },
+  {
+    "id": "cruz-del-sur-arequipa",
+    "name": "Cruz del Sur",
+    "provider": "Cruz del Sur",
+    "category": "transporte",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.42472,
+    "lng": -71.53694,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": "https://www.cruzdelsur.com.pe/",
+    "price_range": "$$",
+    "notes": "Avenida Andres Avelino Caceres s/n, con counter tambien en el Terminal Terrestre. Es la empresa de bus interprovincial mas conocida del pais. Ubicacion aproximada; accesibilidad de la unidad y del terminal sin confirmar.",
+    "details": {
+      "destinations": [
+        "Lima",
+        "Cusco",
+        "Puno",
+        "Nazca"
+      ],
+      "schedule": "Atencion de 05:30 a 23:30",
+      "phone": "+51 54 369100"
+    }
+  },
+  {
+    "id": "oltursa-arequipa",
+    "name": "Oltursa",
+    "provider": "Oltursa",
+    "category": "transporte",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.43083,
+    "lng": -71.54389,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": "https://www.oltursa.pe/",
+    "price_range": "$$",
+    "notes": "Counters 12, 13 y 14 del Terrapuerto de Arequipa. Bus interprovincial hacia la costa. Ubicacion aproximada; accesibilidad sin confirmar.",
+    "details": {
+      "destinations": [
+        "Lima",
+        "Nazca",
+        "Ica"
+      ],
+      "schedule": "Segun ruta; consultar en el counter."
+    }
+  },
+  {
+    "id": "4m-express-colca",
+    "name": "4M Express (Arequipa - Chivay)",
+    "provider": "4M Express",
+    "category": "transporte",
+    "near_site_id": "mirador-de-la-cruz-del-condor",
+    "lat": -16.39889,
+    "lng": -71.537,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": "https://4m-express.com/",
+    "price_range": "$$",
+    "notes": "Bus turistico entre Arequipa y Chivay, la puerta de entrada al Colca. Recoge en hoteles del centro, asi que el punto del mapa es referencial. La vuelta sale de la Plaza de Armas de Chivay, frente a la Municipalidad. Es la alternativa al tour de agencia si quieres ir por tu cuenta.",
+    "details": {
+      "destinations": [
+        "Chivay (Colca)",
+        "Puno",
+        "Cusco"
+      ],
+      "schedule": "Recojo en hoteles de Arequipa entre 07:30 y 08:00. Retorno desde Chivay 06:10, llega a Arequipa entre 17:00 y 18:00."
+    }
+  },
+  {
+    "id": "aeropuerto-rodriguez-ballon",
+    "name": "Aeropuerto Alfredo Rodriguez Ballon",
+    "provider": "Aeropuerto Internacional de Arequipa",
+    "category": "transporte",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.34111,
+    "lng": -71.5675,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$",
+    "notes": "Avenida Arturo Ibanez s/n, Cerro Colorado, a unos 8 km al noroeste del centro: entre 15 y 30 minutos en auto segun trafico. Opera con tres asociaciones de taxi autorizadas dentro del aeropuerto. Accesibilidad de la terminal sin confirmar en fuente independiente.",
+    "details": {
+      "destinations": [
+        "Lima",
+        "Cusco",
+        "Juliaca"
+      ],
+      "reference_fare": "Taxi al centro alrededor de 14 soles segun fuentes de 2025; confirma la tarifa antes de subir."
+    }
+  },
+  {
+    "id": "canotaje-rio-chili",
+    "name": "Canotaje en el rio Chili",
+    "provider": "Operadores de aventura de Arequipa",
+    "category": "actividad",
+    "near_site_id": "mirador-de-yanahuara",
+    "lat": -16.37417,
+    "lng": -71.54528,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$",
+    "notes": "Descenso por el rio Chili a la altura del valle de Chilina, a unos 20 minutos del centro. El tramo tipico son 6 km con rapidos de clase II a IV segun el caudal. Ubicacion aproximada del punto de embarque. NO verificamos el registro de ningun operador: elige uno formal y revisa que entregue chaleco, casco y traje de rio.",
+    "details": {
+      "activity": "canotaje",
+      "difficulty": "moderado",
+      "duration_hours": 4,
+      "best_months": "De diciembre a abril hay mas caudal y los rapidos son mas fuertes; el resto del ano es mas tranquilo.",
+      "requirements": "Saber nadar. No apto para personas con movilidad reducida ni con problemas cardiacos o de espalda."
+    }
+  },
+  {
+    "id": "ascenso-al-misti",
+    "name": "Ascenso al volcan Misti",
+    "provider": "Operadores de montana de Arequipa",
+    "category": "actividad",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.29444,
+    "lng": -71.40917,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$$",
+    "notes": "El volcan que se ve desde toda la ciudad, 5822 m s. n. m. El ascenso estandar toma dos dias con campamento. No es tecnico, pero la altura lo vuelve exigente de verdad. Ubicacion del punto de cumbre, no del punto de partida. Verifica que el operador sea formal y que el guia tenga carne vigente.",
+    "details": {
+      "activity": "trekking de altura",
+      "difficulty": "exigente",
+      "duration_hours": 30,
+      "best_months": "De mayo a septiembre, temporada seca.",
+      "requirements": "Minimo dos dias de aclimatacion en Arequipa antes de subir. Buena condicion fisica. No apto para movilidad reducida."
+    }
+  },
+  {
+    "id": "escalada-chachani",
+    "name": "Ascenso al Chachani",
+    "provider": "Operadores de montana de Arequipa",
+    "category": "actividad",
+    "near_site_id": "plaza-de-armas-de-arequipa",
+    "lat": -16.19139,
+    "lng": -71.53,
+    "wheelchair_accessible": false,
+    "formalized": false,
+    "registry_id": null,
+    "url": null,
+    "price_range": "$$$",
+    "notes": "Uno de los seismiles mas accesibles del mundo: 6057 m s. n. m. y se sube sin tecnica de escalada, aunque la altura pesa. Se llega en vehiculo hasta cerca de los 5000 m. Ubicacion del punto de cumbre. Registro del operador por verificar.",
+    "details": {
+      "activity": "alta montana",
+      "difficulty": "exigente",
+      "duration_hours": 20,
+      "best_months": "De mayo a septiembre, temporada seca.",
+      "requirements": "Aclimatacion previa obligatoria. No apto para movilidad reducida ni para quien nunca haya estado sobre 4000 m."
+    }
   }
 ]

@@ -46,6 +46,47 @@ export type ServiceCategory =
   | "salud"
   | "actividad";
 
+export type ActivityDifficulty = "facil" | "moderado" | "exigente";
+
+/**
+ * Campos que solo aplican a algunas categorias. Todos opcionales: una entrada
+ * llena unicamente lo que le corresponde.
+ *
+ * Es una bolsa de opcionales en vez de una union discriminada a proposito. La
+ * union obligaria a la UI a hacer narrowing por categoria en cada punto donde
+ * quiere mostrar un telefono, y el 90% de los campos que la UI toca son
+ * comunes. Si algun dia un campo se vuelve obligatorio por categoria, ahi si
+ * vale la pena separar.
+ */
+export interface ServiceDetails {
+  /** Telefono de contacto. Aplica a cualquier categoria. */
+  phone?: string;
+
+  /** hospedaje: estrellas DECLARADAS por el establecimiento. Ver §6.7. */
+  stars?: number;
+
+  /** restaurante: tipo de cocina ("picanteria arequipena", "fusion"). */
+  cuisine?: string;
+  /** restaurante: plato por el que vale la pena ir. */
+  signature_dish?: string;
+
+  /** transporte: a donde llega. */
+  destinations?: string[];
+  /** transporte: horario o frecuencia, en texto libre. */
+  schedule?: string;
+  /** transporte: precio de referencia con su fecha, nunca un precio "actual". */
+  reference_fare?: string;
+
+  /** actividad: que se hace ("canotaje", "escalada", "trekking"). */
+  activity?: string;
+  difficulty?: ActivityDifficulty;
+  duration_hours?: number;
+  /** actividad: temporada recomendada. */
+  best_months?: string;
+  /** actividad: requisitos reales (edad minima, saber nadar, aclimatacion). */
+  requirements?: string;
+}
+
 export interface TouristService {
   id: string;
   name: string;
@@ -61,6 +102,7 @@ export interface TouristService {
   url: string | null;
   price_range: "$" | "$$" | "$$$" | null;
   notes: string;
+  details?: ServiceDetails;
 }
 
 export interface AccessibilityReport {
