@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import BottomNav from "@/components/BottomNav";
+import OnboardingGate from "@/components/OnboardingGate";
 import PwaProvider from "@/components/PwaProvider";
 import SiteHeader from "@/components/SiteHeader";
 import { THEME_INIT_SCRIPT } from "@/components/ThemeToggle";
@@ -46,6 +47,7 @@ export default function RootLayout({
           Saltar al contenido
         </a>
         <PwaProvider />
+        <OnboardingGate />
         <SiteHeader />
         {/* pb-28 deja aire para que la barra inferior no tape el final de la
             pagina en movil; en escritorio la barra no existe. */}
