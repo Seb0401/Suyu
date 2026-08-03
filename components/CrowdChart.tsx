@@ -1,0 +1,154 @@
+"use client";
+
+import { useState } from "react";
+
+/**
+ * Aforo por hora de un sitio.
+ *
+ * La ALTURA DE BARRA es la codificacion primaria; el color solo refuerza
+ * (§2.3, §6.3). No es una preferencia de estilo: el validador de paletas marca
+ * el ambar --crowd-medio en 2.09:1 contra la superficie de tarjeta, por debajo
+ * del minimo de 3:1. Ese aviso se salda con altura + etiqueta de texto + la
+ * vista de tabla, que por eso no es opcional.
+ *
+ * Solo se etiqueta directamente la hora tranquila: poner el numero sobre las 24
+ * barras convierte el grafico en una tabla mal maquetada.
+ */
+
+const CLOSED_STUB_PX = 3;
+
+function levelOf(occupancy: number): { label: string; color: string } {
+  if (occupancy === 0) return { label: "Cerrado", color: "var(--crowd-sin-datos)" };
+  if (occupancy >= 70) return { label: "Muy congestionado", color: "var(--crowd-alto)" };
+  if (occupancy >= 40) return { label: "Algo concurrido", color: "var(--crowd-medio)" };
+  return { label: "Poca gente", color: "var(--crowd-bajo)" };
+}
+
+function hhmm(hour: number) {
+  return `${String(hour).padStart(2, "0")}:00`;
+}
+
+export default function CrowdChart({
+  profile,
+  currentHour,
+  quietHour,
+  className = "",
+}: {
+  profile: number[];
+  currentHour?: number;
+  quietHour?: number | null;
+  className?: string;
+}) {
+  const [showTable, setShowTable] = useState(false);
+
+  return (
+    <section className={className}>
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="font-extrabold text-ink">Gente por hora</h3>
+        <button
+          type="button"
+          onClick={() => setShowTable((v) => !v)}
+          aria-expanded={showTable}
+          className="rounded-full border border-sand-200 px-3 py-1 text-xs font-bold text-ink-soft"
+        >
+          {showTable ? "Ver gráfico" : "Ver tabla"}
+        </button>
+      </div>
+
+      {showTable ? (
+        <table className="mt-3 w-full text-left text-sm">
+          <caption className="sr-only">Ocupación estimada por hora</caption>
+          <thead>
+            <tr className="text-xs uppercase tracking-wide text-ink-muted">
+              <th scope="col" className="py-1">Hora</th>
+              <th scope="col" className="py-1">Ocupación</th>
+              <th scope="col" className="py-1">Nivel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {profile.map((occ, h) => (
+              <tr key={h} className="border-t border-sand-200">
+                <td className="py-1 font-semibold text-ink">{hhmm(h)}</td>
+                <td className="py-1 text-ink-soft">{occ}%</td>
+                <td className="py-1 text-ink-soft">{levelOf(occ).label}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <>
+          <div className="relative mt-4 h-40">
+            {/* Grilla recesiva: referencia sin competir con las barras. */}
+            {[0, 25, 50, 75, 100].map((tick) => (
+              <span
+                key={tick}
+                aria-hidden
+                className="absolute inset-x-0 border-t"
+                style={{ bottom: `${tick}%`, borderColor: "var(--viz-grid)" }}
+              />
+            ))}
+
+            <ol className="absolute inset-0 flex items-end gap-[2px]">
+              {profile.map((occ, h) => {
+                const { label, color } = levelOf(occ);
+                const isNow = currentHour === h;
+                const isQuiet = quietHour === h;
+
+                return (
+                  <li key={h} className="group relative flex h-full flex-1 items-end">
+                    <span
+                      tabIndex={0}
+                      role="img"
+                      aria-label={`${hhmm(h)}: ${occ}% de ocupación, ${label}`}
+                      className="w-full rounded-t-[4px] transition-opacity focus-visible:opacity-80"
+                      style={{
+                        height: occ === 0 ? `${CLOSED_STUB_PX}px` : `${occ}%`,
+                        background: color,
+                        /* Marcar "ahora" con un anillo, no con otro color: el
+                           color ya esta ocupado indicando el nivel de aforo. */
+                        outline: isNow ? "2px solid var(--color-ink)" : undefined,
+                        outlineOffset: isNow ? "1px" : undefined,
+                      }}
+                    />
+
+                    <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 hidden -translate-x-1/2 whitespace-nowrap rounded-lg bg-[var(--color-scrim)] px-2 py-1 text-[11px] font-semibold text-cream group-hover:block group-focus-within:block">
+                      {hhmm(h)} · {occ}% · {label}
+                    </span>
+
+                    {isQuiet ? (
+                      <span className="pointer-events-none absolute -top-1 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-forest-700 px-1.5 py-0.5 text-[10px] font-bold text-cream">
+                        {hhmm(h)}
+                      </span>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+
+          <div className="mt-2 flex justify-between text-[10px] text-[var(--viz-ink-muted)]">
+            <span>00:00</span>
+            <span>06:00</span>
+            <span>12:00</span>
+            <span>18:00</span>
+            <span>23:00</span>
+          </div>
+
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+            {[
+              { label: "Poca gente", color: "var(--crowd-bajo)" },
+              { label: "Algo concurrido", color: "var(--crowd-medio)" },
+              { label: "Muy congestionado", color: "var(--crowd-alto)" },
+              { label: "Cerrado", color: "var(--crowd-sin-datos)" },
+            ].map(({ label, color }) => (
+              <li key={label} className="flex items-center gap-1.5 text-xs text-ink-soft">
+                <span aria-hidden className="h-2.5 w-2.5 rounded-sm" style={{ background: color }} />
+                {label}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </section>
+  );
+}
