@@ -1,6 +1,7 @@
 import { haversineMeters, walkingMinutes } from "@/lib/geo";
 import { getSeedServices } from "@/lib/seed";
 import { getSites } from "@/lib/sites";
+import { supabase, trySupabase } from "@/lib/supabase";
 import type { ServiceCategory, TouristService } from "@/lib/types";
 
 /**
@@ -34,9 +35,12 @@ export function registryLabel(service: TouristService): string {
   return "Registro por verificar";
 }
 
-/** Costura para A8, igual que en lib/sites.ts. */
 async function fetchServicesFromDb(): Promise<TouristService[] | null> {
-  return null;
+  return trySupabase(async () => {
+    const { data, error } = await supabase.from("services").select("*");
+    if (error || !data) return null;
+    return data as TouristService[];
+  });
 }
 
 export async function getServices(options: {

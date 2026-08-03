@@ -1,4 +1,5 @@
 import { getSite } from "@/lib/sites";
+import { supabase, trySupabase } from "@/lib/supabase";
 import type { AccessibilityReport } from "@/lib/types";
 
 /**
@@ -59,16 +60,35 @@ export function validateReport(input: NewReport): ReportValidation {
   };
 }
 
-/** Costura para A8. Devuelve true si el reporte quedo persistido en Supabase. */
+/** true si el reporte quedo persistido; false cae al almacen en memoria. */
 async function insertReportInDb(
   report: AccessibilityReport,
 ): Promise<boolean> {
-  void report;
-  return false;
+  const stored = await trySupabase(async () => {
+    const { error } = await supabase.from("accessibility_reports").insert({
+      id: report.id,
+      site_id: report.site_id,
+      site_name: report.site_name,
+      issue: report.issue,
+      detail: report.detail,
+      created_at: report.created_at,
+    });
+    return error ? null : true;
+  });
+  return stored === true;
 }
 
 async function listReportsFromDb(): Promise<AccessibilityReport[] | null> {
-  return null;
+  return trySupabase(async () => {
+    const { data, error } = await supabase
+      .from("accessibility_reports")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(200);
+
+    if (error || !data) return null;
+    return data as AccessibilityReport[];
+  });
 }
 
 export async function listReports(
