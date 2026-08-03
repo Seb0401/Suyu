@@ -132,6 +132,31 @@ body {
   border-radius: 4px;
 }
 
+/* Link "Saltar al contenido" (§7.7): fuera de pantalla hasta que recibe foco
+   con Tab, no oculto con display:none — eso lo sacaria del orden de tabulacion
+   y dejaria de cumplir su funcion. */
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3.5rem;
+  z-index: 60;
+  border-radius: 9999px;
+  background: var(--color-forest-700);
+  color: var(--color-cream);
+  padding: 0.6rem 1.2rem;
+  font-weight: 700;
+  transition: top 0.15s ease-in-out;
+}
+.skip-link:focus-visible {
+  top: 0.5rem;
+}
+
+/* main recibe foco programatico al saltar, pero no debe dibujar un contorno
+   propio: el destino del salto ya es evidente. */
+main:focus {
+  outline: none;
+}
+
 /* Banda textil andina — SVG data-uri, sin archivos de imagen (§7.3). */
 .andean-band {
   height: 16px;

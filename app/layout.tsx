@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import BottomNav from "@/components/BottomNav";
+import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
 /*
@@ -21,7 +23,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="bg-sand-100 font-sans text-ink antialiased">{children}</body>
+      <body className="bg-sand-100 font-sans text-ink antialiased">
+        <a href="#contenido" className="skip-link">
+          Saltar al contenido
+        </a>
+        <SiteHeader />
+        {/* pb-28 deja aire para que la barra inferior no tape el final de la
+            pagina en movil; en escritorio la barra no existe. */}
+        <main id="contenido" tabIndex={-1} className="pb-28 md:pb-12">
+          {children}
+        </main>
+        <BottomNav />
+      </body>
     </html>
   );
 }
