@@ -127,6 +127,17 @@ export interface ChatMessage {
 /** Ficha tecnica curada de un sitio (§6.8). */
 export interface SiteDetail {
   site_id: string;
+  /**
+   * Que es el lugar, en una frase. Va ANTES que la historia: el turista que
+   * llega a la ficha muchas veces no sabe todavia de que se trata, y arrancar
+   * con "fundado en 1579 por dona Maria de Guzman" responde una pregunta que
+   * todavia no se hizo.
+   */
+  what_is: string;
+  /** Por que vale la pena ir. Es el argumento, no la descripcion. */
+  why_visit: string;
+  /** Lo concreto que hay que ver o hacer estando ahi. */
+  highlights: string[];
   history: string;
   curiosity: string;
   best_time: string;
