@@ -10,16 +10,40 @@ import type { ChatMessage, TouristService } from "@/lib/types";
 type Turn = ChatMessage & { notice?: string; mascot?: MascotState };
 
 /**
- * Elige la pose de la mascota segun lo que pregunto el usuario. Es presentacion
- * pura: no toca la logica de la respuesta, que sigue saliendo de /api/chat o
- * del motor de reglas (§6.6).
+ * Elige la pose de la mascota segun LO QUE RESPONDIO el copiloto, no segun lo
+ * que se le pregunto. Es lo correcto: si alguien pregunta por un itinerario y
+ * la respuesta es "no puedo armarlo a esa hora", la cara tiene que acompañar la
+ * respuesta, no la expectativa.
+ *
+ * Presentacion pura: no toca de donde sale la respuesta (§6.6).
  */
-function pickMascotState(text: string): MascotState {
-  const t = text.toLowerCase();
-  if (/\b(hola|buenas|buenos dias|hey|que tal)\b/.test(t)) return "wave";
-  if (/\b(gracias|genial|perfecto|excelente)\b/.test(t)) return "cheer";
-  if (/(ruta|mapa|llegar|camino|ir de|hasta)/.test(t)) return "map";
-  if (/(busca|buscar|donde|lleno|gente|aforo|congestion)/.test(t)) return "search";
+const INTENT_STATE: Record<string, MascotState> = {
+  saludo: "wave",
+  agradecimiento: "cheer",
+  itinerario: "map",
+  aforo: "search",
+  accesibilidad: "smile",
+  servicios: "look",
+  desconocido: "confused",
+};
+
+export function pickMascotState(reply: string, intent?: string): MascotState {
+  const r = reply.toLowerCase();
+
+  /* Una respuesta que admite que no sabe manda sobre la intencion: es el turno
+     donde la cara mas comunica. */
+  if (/(no pude|no puedo|no tengo|no encontr|sin dato|sin confirmar|no entend)/.test(r)) {
+    return "confused";
+  }
+
+  if (intent && INTENT_STATE[intent]) return INTENT_STATE[intent];
+
+  /* Sin intent (respuestas de Claude) se deduce del texto de la respuesta. */
+  if (/(plan de|itinerario|parada|min\b.*—|recorrido)/.test(r)) return "map";
+  if (/(poca gente|congestionad|aforo|baja a|menos gente|cerrado)/.test(r)) return "search";
+  if (/(rampa|silla de ruedas|accesible|baño|descanso)/.test(r)) return "smile";
+  if (/(restaurante|servicio|guia|agencia|hospedaje)/.test(r)) return "look";
+  if (/^(hola|buenas)/.test(r)) return "wave";
   return "chat";
 }
 
@@ -70,8 +94,6 @@ export default function ChatWidget() {
     setDraft("");
     setSending(true);
 
-    const mascot = pickMascotState(message);
-
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -92,7 +114,7 @@ export default function ChatWidget() {
           // El aviso no es opcional: si la respuesta no vino de Claude, la UI
           // esta obligada a decirlo (§2.1).
           notice: data.source === "offline" ? (data.notice ?? OFFLINE_NOTICE) : undefined,
-          mascot,
+          mascot: pickMascotState(data.reply ?? "", data.intent),
         },
       ]);
     } catch {
@@ -101,7 +123,12 @@ export default function ChatWidget() {
       const local = answerOffline(message, sites, services, new Date().getHours());
       setTurns((prev) => [
         ...prev,
-        { role: "assistant", content: local.reply, notice: local.notice, mascot },
+        {
+          role: "assistant",
+          content: local.reply,
+          notice: local.notice,
+          mascot: pickMascotState(local.reply, local.intent),
+        },
       ]);
     } finally {
       setSending(false);

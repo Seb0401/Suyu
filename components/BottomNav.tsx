@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Mascot from "@/components/Mascot";
 import { NAV_ITEMS } from "@/components/nav-items";
+import { useT } from "@/components/i18n/LocaleProvider";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -12,13 +13,14 @@ function isActive(pathname: string, href: string) {
 /** Barra inferior fija con el FAB de la mascota al centro. Solo en movil (§7.3). */
 export default function BottomNav() {
   const pathname = usePathname();
+  const t = useT();
   const chatActive = pathname.startsWith("/chat");
 
   const [left, right] = [NAV_ITEMS.slice(0, 2), NAV_ITEMS.slice(2)];
 
   return (
     <nav
-      aria-label="Navegación principal"
+      aria-label={t("nav.principal")}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-sand-200 bg-sand-50 md:hidden"
     >
       <ul className="mx-auto flex max-w-md items-end justify-between px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
@@ -30,7 +32,7 @@ export default function BottomNav() {
           <Link
             href="/chat"
             aria-current={chatActive ? "page" : undefined}
-            aria-label="Copiloto de viaje"
+            aria-label={t("nav.copilotoViaje")}
             className={`flex h-16 w-16 items-center justify-center rounded-full border-4 border-sand-50 shadow-lg transition-colors ${
               chatActive ? "bg-clay-600" : "bg-clay-100"
             }`}
@@ -54,7 +56,9 @@ function NavTab({
   item: (typeof NAV_ITEMS)[number];
   active: boolean;
 }) {
-  const { href, label, Icon } = item;
+  const t = useT();
+  const { href, labelKey, Icon } = item;
+  const label = t(labelKey);
 
   return (
     <li className="flex-1">

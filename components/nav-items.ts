@@ -1,16 +1,19 @@
 import type { ComponentType } from "react";
 import {
   BookIcon,
+  BriefcaseIcon,
   CompassIcon,
   HomeIcon,
   RouteIcon,
   UserIcon,
   type IconProps,
 } from "@/components/Icons";
+import type { TranslationKey } from "@/components/i18n/dictionary";
 
 export type NavItem = {
   href: string;
-  label: string;
+  /** Clave del diccionario, no el texto: la barra tambien se traduce. */
+  labelKey: TranslationKey;
   Icon: ComponentType<IconProps>;
 };
 
@@ -21,10 +24,10 @@ export type NavItem = {
  * que prometa una funcion inexistente.
  */
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/", label: "Inicio", Icon: HomeIcon },
-  { href: "/ruta", label: "Rutas", Icon: RouteIcon },
-  { href: "/explorar", label: "Explorar", Icon: CompassIcon },
-  { href: "/perfil", label: "Perfil", Icon: UserIcon },
+  { href: "/", labelKey: "nav.inicio", Icon: HomeIcon },
+  { href: "/ruta", labelKey: "nav.rutas", Icon: RouteIcon },
+  { href: "/explorar", labelKey: "nav.explorar", Icon: CompassIcon },
+  { href: "/perfil", labelKey: "nav.perfil", Icon: UserIcon },
 ];
 
 /**
@@ -33,5 +36,6 @@ export const NAV_ITEMS: NavItem[] = [
  * entradas dejan objetivos tactiles por debajo del minimo comodo en 390 px.
  */
 export const SECONDARY_NAV: NavItem[] = [
-  { href: "/historias", label: "Historias", Icon: BookIcon },
+  { href: "/historias", labelKey: "nav.historias", Icon: BookIcon },
+  { href: "/agencias", labelKey: "nav.agencias", Icon: BriefcaseIcon },
 ];

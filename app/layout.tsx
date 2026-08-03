@@ -2,8 +2,11 @@ import type { Metadata, Viewport } from "next";
 import BottomNav from "@/components/BottomNav";
 import OnboardingGate from "@/components/OnboardingGate";
 import PwaProvider from "@/components/PwaProvider";
+import SkipLink from "@/components/SkipLink";
 import SiteHeader from "@/components/SiteHeader";
 import { THEME_INIT_SCRIPT } from "@/components/ThemeToggle";
+import LocaleProvider from "@/components/i18n/LocaleProvider";
+import { LOCALE_INIT_SCRIPT } from "@/components/i18n/locales";
 import "./globals.css";
 
 /*
@@ -41,20 +44,21 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: LOCALE_INIT_SCRIPT }} />
       </head>
       <body className="bg-sand-100 font-sans text-ink antialiased">
-        <a href="#contenido" className="skip-link">
-          Saltar al contenido
-        </a>
-        <PwaProvider />
-        <OnboardingGate />
-        <SiteHeader />
-        {/* pb-28 deja aire para que la barra inferior no tape el final de la
-            pagina en movil; en escritorio la barra no existe. */}
-        <main id="contenido" tabIndex={-1} className="pb-28 md:pb-12">
-          {children}
-        </main>
-        <BottomNav />
+        <LocaleProvider>
+          <SkipLink />
+          <PwaProvider />
+          <OnboardingGate />
+          <SiteHeader />
+          {/* pb-28 deja aire para que la barra inferior no tape el final de la
+              pagina en movil; en escritorio la barra no existe. */}
+          <main id="contenido" tabIndex={-1} className="pb-28 md:pb-12">
+            {children}
+          </main>
+          <BottomNav />
+        </LocaleProvider>
       </body>
     </html>
   );

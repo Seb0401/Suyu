@@ -62,7 +62,7 @@ export default function ItinerarioPage() {
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
       <h1 className="text-2xl font-extrabold text-ink">Itinerario del día</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Dinos cuánto tiempo tienes y armamos un plan que evita las horas
+        Dinos cuánto tiempo tienes y preparamos un plan que evita las horas
         saturadas.
       </p>
 
