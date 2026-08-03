@@ -1,0 +1,38 @@
+[
+  {
+    "id": "santa-catalina-silla-de-ruedas",
+    "site_id": "monasterio-de-santa-catalina",
+    "author_name": "Equipo Suyu",
+    "title": "Lo que el monasterio no te dice antes de entrar",
+    "body": "Fuimos a Santa Catalina con la idea de recorrerlo completo y salimos con una leccion. El empedrado es precioso en las fotos y brutal para las ruedas: piedra irregular, sin un solo tramo liso de punta a punta. El monasterio presta una silla de ruedas si la pides, pero es una sola y las instalaciones no estan pensadas para usarla sola. Si vas con alguien con movilidad reducida, llama antes y pregunta por el recorrido corto. Y si vas igual, ve acompanado: no es un sitio para hacerlo por tu cuenta.",
+    "tag": "accesibilidad",
+    "created_at": "2026-07-20"
+  },
+  {
+    "id": "yanahuara-atardecer",
+    "site_id": "mirador-de-yanahuara",
+    "author_name": "Equipo Suyu",
+    "title": "El mirador se lee, no solo se mira",
+    "body": "Casi todo el mundo llega a Yanahuara, saca la foto del Misti entre los arcos y se va en diez minutos. Vale la pena quedarse un rato mas y leer lo que esta tallado en cada arco: son frases de arequipenos que marcaron la ciudad, desde un presidente del Peru hasta un poeta. Dato practico: la mejor luz es entre las 17:00 y las 18:30, que es tambien cuando hay mas gente. Si necesitas espacio para maniobrar una silla, anda antes de las 16:00; la explanada esta vacia y el pavimento es parejo.",
+    "tag": "consejo",
+    "created_at": "2026-07-22"
+  },
+  {
+    "id": "condor-hora-exacta",
+    "site_id": "mirador-de-la-cruz-del-condor",
+    "author_name": "Equipo Suyu",
+    "title": "La hora importa mas que el clima",
+    "body": "Salimos de Arequipa a las 3 de la manana para llegar al Colca antes de las 8. Parece exagerado hasta que entiendes por que: los condores no vuelan cuando quieren, vuelan cuando el aire caliente empieza a subir del canon. Entre las 8:00 y las 10:00 se ven casi todos los dias. A las 11:00 el mirador seguia lleno de gente esperando algo que ya habia pasado. Abrigate: a 3270 metros y a esa hora hace frio de verdad, aunque el sol pegue.",
+    "tag": "experiencia",
+    "created_at": "2026-07-25"
+  },
+  {
+    "id": "juanita-ventana-de-exhibicion",
+    "site_id": "museo-santuarios-andinos",
+    "author_name": "Equipo Suyu",
+    "title": "Juanita no siempre esta",
+    "body": "Es el error mas comun del museo: llegar entre enero y abril esperando ver a la Dama de Ampato. En esos meses entra en fase de conservacion y no esta a la vista; se exhibe de mayo a diciembre. El resto de la coleccion sigue ahi y la visita guiada vale igual, pero conviene saberlo antes de armar el dia alrededor de eso. Sobre accesibilidad: hay un escalon en la entrada y rampa movil bajo solicitud, prestan sillas de ruedas, pero el bano no cumple con espacio de giro ni barras de apoyo.",
+    "tag": "consejo",
+    "created_at": "2026-07-28"
+  }
+]
