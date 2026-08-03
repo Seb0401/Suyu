@@ -7,6 +7,7 @@ import AccessibilityChecklist from "@/components/AccessibilityChecklist";
 import CrowdBadge from "@/components/CrowdBadge";
 import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
+import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
 import SiteThumbnail from "@/components/SiteThumbnail";
 import VerificationChip from "@/components/VerificationChip";
@@ -31,6 +32,7 @@ export default function SitioPage() {
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<CrowdResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -153,7 +155,22 @@ export default function SitioPage() {
         <h2 className="font-extrabold text-ink">Accesibilidad</h2>
         <AccessibilityChecklist site={site} className="mt-3" />
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">{site.notes}</p>
+
+        <button
+          type="button"
+          onClick={() => setReportOpen(true)}
+          className="mt-4 w-full rounded-full border-2 border-clay-600 px-4 py-2.5 text-sm font-bold text-clay-700"
+        >
+          Reportar un problema aquí
+        </button>
       </section>
+
+      <ReportDialog
+        siteId={site.id}
+        siteName={site.name}
+        open={reportOpen}
+        onClose={() => setReportOpen(false)}
+      />
 
       <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
         <CrowdChart
