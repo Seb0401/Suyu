@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import BottomNav from "@/components/BottomNav";
+import PwaProvider from "@/components/PwaProvider";
 import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -14,6 +15,16 @@ export const metadata: Metadata = {
   title: "Suyu — compañero de viaje accesible en Arequipa",
   description:
     "Rutas accesibles, aforo por hora y copiloto de viaje para los atractivos de Arequipa.",
+  manifest: "/manifest.json",
+  appleWebApp: { capable: true, title: "Suyu", statusBarStyle: "default" },
+  icons: {
+    icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icon-192.png", sizes: "192x192" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#15664a",
 };
 
 export default function RootLayout({
@@ -27,6 +38,7 @@ export default function RootLayout({
         <a href="#contenido" className="skip-link">
           Saltar al contenido
         </a>
+        <PwaProvider />
         <SiteHeader />
         {/* pb-28 deja aire para que la barra inferior no tape el final de la
             pagina en movil; en escritorio la barra no existe. */}
