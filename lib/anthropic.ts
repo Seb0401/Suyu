@@ -83,10 +83,19 @@ function summarizeService(service: TouristService): string {
   return `- ${service.name} (${service.category}, ${registro})`;
 }
 
+/** Idiomas en que el copiloto puede responder. Espejo de components/i18n. */
+const LANGUAGE_RULE: Record<string, string> = {
+  es: "Responde en espanol.",
+  en: "Reply in English, even though this prompt is written in Spanish.",
+  fr: "Reponds en francais, meme si ce prompt est ecrit en espagnol.",
+  pt: "Responda em portugues, embora este prompt esteja escrito em espanhol.",
+};
+
 export function buildSystemPrompt(
   sites: SiteWithCrowd[],
   services: TouristService[],
   hour: number,
+  locale = "es",
 ): string {
   return [
     "Eres Suyu, un companero de viaje para turistas en Arequipa, Peru.",
@@ -101,8 +110,9 @@ export function buildSystemPrompt(
     services.map(summarizeService).join("\n"),
     "",
     "REGLAS:",
-    "1. Responde en espanol, en 3 a 5 frases. Es un chat en un celular, no un informe.",
-    "1b. ESTILO: espanol neutro y llano, con la ortografia y los acentos correctos. Sin jerga, sin modismos regionales ('chevere', 'anda a', 'de una') y sin diminutivos. Frases cortas y directas. Quien lee puede no ser hispanohablante nativo y puede estar usando un lector de pantalla.",
+    `1. IDIOMA: ${LANGUAGE_RULE[locale] ?? LANGUAGE_RULE.es} Responde en 3 a 5 frases. Es un chat en un celular, no un informe.`,
+    "1b. ESTILO: lenguaje neutro y llano, con la ortografia y los acentos correctos del idioma en que respondas. Sin jerga, sin modismos regionales ('chevere', 'anda a', 'de una') y sin diminutivos. Frases cortas y directas. Quien lee puede no ser hablante nativo y puede estar usando un lector de pantalla.",
+    "1c. Los NOMBRES de los lugares (Monasterio de Santa Catalina, Mirador de Yanahuara, Plaza de Armas) se dejan SIEMPRE en espanol, aunque respondas en otro idioma: son los nombres con los que el turista va a preguntar en la calle y por los que estan senalizados.",
     "2. Usa SOLO los sitios y servicios de arriba. Si te preguntan por otro lugar, dilo con honestidad en vez de inventarlo.",
     "3. Si un sitio esta muy congestionado, ofrece la alternativa Y la hora en que baja la gente. Las dos cosas.",
     "4. Si un sitio no tiene un rasgo de accesibilidad confirmado, di 'sin confirmar'. Nunca lo des por hecho.",
