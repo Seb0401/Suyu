@@ -1,0 +1,73 @@
+[
+  {
+    "id": "aniversario-arequipa",
+    "name": "Aniversario de Arequipa",
+    "start_month": 8,
+    "start_day": 6,
+    "end_month": 8,
+    "end_day": 18,
+    "peak_label": "15 de agosto",
+    "summary": "La semana grande de la ciudad. Desfile de carros alegóricos, verbenas, fuegos artificiales, peleas de toros y el Corso de la Amistad. El 15 es también la fiesta de la Virgen de la Asunción, patrona de Arequipa.",
+    "impact": "La ciudad se llena: hoteles y buses se agotan con semanas de anticipación y los precios suben. El centro tiene calles cerradas y desvíos casi todos los días.",
+    "accessibility_note": "El Corso y las verbenas concentran muchísima gente en el centro histórico. Si te mueves en silla de ruedas, evita la Plaza de Armas en las horas de desfile: no hay espacio para maniobrar y las veredas de sillar quedan bloqueadas.",
+    "fixed_date": true,
+    "source": "Calendario festivo oficial de Arequipa."
+  },
+  {
+    "id": "virgen-de-chapi",
+    "name": "Festividad de la Virgen de Chapi",
+    "start_month": 5,
+    "start_day": 1,
+    "end_month": 5,
+    "end_day": 15,
+    "peak_label": "1 de mayo",
+    "summary": "La fiesta religiosa más importante de Arequipa, Patrimonio Cultural de la Nación desde 2012. Miles de peregrinos caminan hasta el santuario, a 45 km al sur de la ciudad.",
+    "impact": "La carretera al sur se satura de peregrinos a pie. Si tienes vuelo o bus esos días, calcula tiempo extra.",
+    "accessibility_note": "La peregrinación es una caminata larga por carretera, sin infraestructura adaptada. El santuario se puede visitar en vehículo fuera de las fechas centrales, que es la opción sensata con movilidad reducida.",
+    "fixed_date": true,
+    "source": "Declaratoria de Patrimonio Cultural de la Nación y calendario festivo regional."
+  },
+  {
+    "id": "semana-santa",
+    "name": "Semana Santa",
+    "start_month": null,
+    "start_day": null,
+    "end_month": null,
+    "end_day": null,
+    "peak_label": "Fecha móvil (marzo o abril)",
+    "summary": "Ocho días de procesiones que recuerdan la Pasión, con recorridos por el centro histórico y las iglesias coloniales.",
+    "impact": "Feriado largo nacional: sube la demanda de hoteles y transporte en todo el país. La entrada al Monasterio de Santa Catalina sube un 25% en feriados largos.",
+    "accessibility_note": "Las procesiones ocupan las calles del centro por horas. Consulta el recorrido del día antes de planificar una ruta accesible por esa zona.",
+    "fixed_date": false,
+    "source": "Calendario litúrgico; la fecha cambia cada año."
+  },
+  {
+    "id": "temporada-lluvias",
+    "name": "Temporada de lluvias",
+    "start_month": 1,
+    "start_day": 1,
+    "end_month": 3,
+    "end_day": 31,
+    "peak_label": "Enero a marzo",
+    "summary": "La única época húmeda del año en una de las ciudades más secas del mundo habitado. Llueve sobre todo por la tarde y rara vez todo el día.",
+    "impact": "Los caminos de tierra del Colca se complican y algunos tramos de trekking se cierran. En cambio, el canotaje en el río Chili tiene más caudal y rápidos más fuertes.",
+    "accessibility_note": "El sillar mojado resbala. Las rampas y los empedrados del centro histórico se vuelven más difíciles; si usas silla de ruedas, considera visitar fuera de estos meses.",
+    "fixed_date": true,
+    "source": "Patrón climático de Arequipa."
+  },
+  {
+    "id": "juanita-conservacion",
+    "name": "Juanita fuera de exhibición",
+    "start_month": 1,
+    "start_day": 1,
+    "end_month": 4,
+    "end_day": 30,
+    "peak_label": "Enero a abril",
+    "summary": "La Dama de Ampato entra en fase de conservación y no está a la vista. El resto de la colección del Museo Santuarios Andinos sigue abierta.",
+    "impact": "Es el error más común de quien arma el viaje alrededor de ver a Juanita. Se exhibe de mayo a diciembre.",
+    "accessibility_note": "",
+    "fixed_date": true,
+    "source": "Calendario de conservación del Museo Santuarios Andinos.",
+    "related_site_id": "museo-santuarios-andinos"
+  }
+]
