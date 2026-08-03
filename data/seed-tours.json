@@ -1,0 +1,200 @@
+[
+  {
+    "id": "colca-full-day-referencia",
+    "agency_id": null,
+    "agency_name": "Precio de referencia del mercado",
+    "name": "Colca en un dia",
+    "destination": "Canon del Colca",
+    "duration_label": "1 dia (sale de madrugada)",
+    "duration_hours": 16,
+    "price_from": 27,
+    "currency": "USD",
+    "price_checked_at": "2026-08-03",
+    "price_source": "Rango publicado por operadores de Arequipa para 2026: entre 20 y 40 dolares, con salidas desde 27. No es una cotizacion nuestra.",
+    "includes": [
+      "Recojo en hoteles del centro historico",
+      "Transporte turistico",
+      "Guia bilingue",
+      "Desayuno continental y almuerzo buffet"
+    ],
+    "extras": [
+      {
+        "label": "Boleto Turistico del Colca (extranjeros)",
+        "amount": 70,
+        "currency": "PEN",
+        "source": "Tarifa 2026 publicada por operadores y por la autoridad del valle.",
+        "unavoidable": true
+      },
+      {
+        "label": "Banos termales de La Calera (opcional)",
+        "amount": 20,
+        "currency": "PEN",
+        "source": "Costo tipico reportado por operadores; confirmar en el lugar.",
+        "unavoidable": false
+      }
+    ],
+    "accessibility_note": "Salida entre las 3 y las 4 de la manana, unas 16 horas de jornada y paradas en miradores con terreno irregular. La Cruz del Condor tiene un peldano en la entrada y circulacion parcial en silla de ruedas. Es viable con movilidad reducida solo coordinando antes con el operador.",
+    "wheelchair_viable": null
+  },
+  {
+    "id": "colca-2d1n-referencia",
+    "agency_id": null,
+    "agency_name": "Precio de referencia del mercado",
+    "name": "Colca 2 dias 1 noche",
+    "destination": "Canon del Colca",
+    "duration_label": "2 dias / 1 noche en Chivay",
+    "duration_hours": 34,
+    "price_from": 55,
+    "currency": "USD",
+    "price_checked_at": "2026-08-03",
+    "price_source": "Precio 'desde' publicado por operadores de Arequipa para 2026, con alojamiento incluido. No es una cotizacion nuestra.",
+    "includes": [
+      "Recojo en hoteles del centro historico",
+      "Transporte turistico ida y vuelta",
+      "Guia bilingue",
+      "Una noche de alojamiento en Chivay",
+      "Desayuno y almuerzo"
+    ],
+    "extras": [
+      {
+        "label": "Boleto Turistico del Colca (extranjeros)",
+        "amount": 70,
+        "currency": "PEN",
+        "source": "Tarifa 2026 publicada por operadores y por la autoridad del valle.",
+        "unavoidable": true
+      },
+      {
+        "label": "Banos termales de La Calera (opcional)",
+        "amount": 20,
+        "currency": "PEN",
+        "source": "Costo tipico reportado por operadores; confirmar en el lugar.",
+        "unavoidable": false
+      }
+    ],
+    "accessibility_note": "Reparte el viaje en dos dias, asi que no hay madrugada de 3 a. m. ni 16 horas seguidas de bus. Para movilidad reducida o para quien no ha aclimatado a la altura, es la opcion sensata frente al full day. Coordina el alojamiento en Chivay con el operador: no todos tienen habitacion en primer piso.",
+    "wheelchair_viable": null
+  },
+  {
+    "id": "colca-2d1n-pablo-tour",
+    "agency_id": "pablo-tour",
+    "agency_name": "Pablo Tour",
+    "name": "Colca 2 dias con trekking",
+    "destination": "Canon del Colca",
+    "duration_label": "2 dias / 1 noche, con caminata",
+    "duration_hours": 34,
+    "price_from": null,
+    "currency": "USD",
+    "price_checked_at": null,
+    "price_source": "La agencia no publica precio cerrado en su sitio: cotiza segun grupo y temporada. Escribeles para el precio.",
+    "includes": [
+      "Transporte y guia",
+      "Alojamiento en el valle",
+      "Tramos de caminata dentro del canon"
+    ],
+    "extras": [
+      {
+        "label": "Boleto Turistico del Colca (extranjeros)",
+        "amount": 70,
+        "currency": "PEN",
+        "source": "Tarifa 2026 publicada por operadores y por la autoridad del valle.",
+        "unavoidable": true
+      }
+    ],
+    "accessibility_note": "Incluye tramos de caminata dentro del canon, con desnivel fuerte. NO es viable con movilidad reducida. Si buscas el Colca sin caminata, mira las opciones de solo miradores.",
+    "wheelchair_viable": false
+  },
+  {
+    "id": "city-tour-arequipa-referencia",
+    "agency_id": null,
+    "agency_name": "Precio de referencia del mercado",
+    "name": "City tour de Arequipa",
+    "destination": "Ciudad de Arequipa",
+    "duration_label": "4 horas, normalmente por la tarde",
+    "duration_hours": 4,
+    "price_from": 25,
+    "currency": "USD",
+    "price_checked_at": "2026-08-03",
+    "price_source": "Precio publicado por operadores de Arequipa para 2026 en la modalidad de 4 horas.",
+    "includes": [
+      "Recojo en hotel",
+      "Transporte turistico",
+      "Guia bilingue",
+      "Miradores de Yanahuara y Carmen Alto"
+    ],
+    "extras": [
+      {
+        "label": "Mirador de Carmen Alto",
+        "amount": 5,
+        "currency": "PEN",
+        "source": "Tarifa publicada por operadores para 2026.",
+        "unavoidable": true
+      },
+      {
+        "label": "Mansion del Fundador (opcional)",
+        "amount": 15,
+        "currency": "PEN",
+        "source": "Tarifa publicada por operadores para 2026.",
+        "unavoidable": false
+      },
+      {
+        "label": "Molino de Sabandia (opcional)",
+        "amount": 10,
+        "currency": "PEN",
+        "source": "Tarifa publicada por operadores para 2026.",
+        "unavoidable": false
+      }
+    ],
+    "accessibility_note": "El Mirador de Yanahuara tiene pavimento uniforme, bano accesible y rampa bajo solicitud, asi que la parada principal es manejable. Carmen Alto y la campina tienen terreno irregular. Pregunta si el vehiculo permite subir en silla.",
+    "wheelchair_viable": null
+  },
+  {
+    "id": "ruta-del-sillar-referencia",
+    "agency_id": "chacu-travel",
+    "agency_name": "Chacu Travel",
+    "name": "Ruta del Sillar",
+    "destination": "Ciudad de Arequipa",
+    "duration_label": "Medio dia",
+    "duration_hours": 4,
+    "price_from": null,
+    "currency": "PEN",
+    "price_checked_at": null,
+    "price_source": "No encontramos precio publicado. Consultar directamente con la agencia.",
+    "includes": ["Transporte", "Guia", "Canteras de Anasca y Culebrillas"],
+    "extras": [
+      {
+        "label": "Ingreso a la Ruta del Sillar",
+        "amount": 5,
+        "currency": "PEN",
+        "source": "Tarifa publicada por operadores para 2026.",
+        "unavoidable": true
+      }
+    ],
+    "accessibility_note": "El terreno de las canteras es irregular y con desnivel. NO es apto para silla de ruedas.",
+    "wheelchair_viable": false
+  },
+  {
+    "id": "santa-catalina-guiado-referencia",
+    "agency_id": null,
+    "agency_name": "Precio de referencia del mercado",
+    "name": "Monasterio de Santa Catalina con guia",
+    "destination": "Ciudad de Arequipa",
+    "duration_label": "2 a 3 horas",
+    "duration_hours": 3,
+    "price_from": 27,
+    "currency": "USD",
+    "price_checked_at": "2026-08-03",
+    "price_source": "Precio 'desde' publicado por operadores de Arequipa para 2026, con recojo en hotel y guia bilingue.",
+    "includes": ["Recojo en hotel", "Guia bilingue", "Transporte"],
+    "extras": [
+      {
+        "label": "Entrada general al monasterio",
+        "amount": 50,
+        "currency": "PEN",
+        "source": "Tarifa 2026 del monasterio. Estudiantes con carne y peruanos mayores de 60 pagan 25. En feriados largos sube un 25%.",
+        "unavoidable": true
+      }
+    ],
+    "accessibility_note": "El monasterio no tiene rampas ni ascensores y el suelo es empedrado irregular en casi todo el recorrido. Presta una sola silla de ruedas bajo solicitud. Coordina antes por telefono si vas con movilidad reducida.",
+    "wheelchair_viable": false
+  }
+]

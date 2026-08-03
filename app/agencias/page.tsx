@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import TourComparison from "@/components/TourComparison";
 import { ArrowRightIcon, BriefcaseIcon, PinIcon } from "@/components/Icons";
 import type { PartnerAgency } from "@/lib/types";
 
@@ -42,13 +43,24 @@ export default function AgenciasPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
-      <h1 className="text-2xl font-extrabold text-ink">Agencias aliadas</h1>
+      <h1 className="text-2xl font-extrabold text-ink">Tours y agencias</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Operadores que ya trabajan en Arequipa. Compara tu itinerario de Suyu
-        con un tour ya armado.
+        Compara planes turísticos y mira quién los opera.
       </p>
 
-      <div aria-live="polite" className="mt-5">
+      {/* La comparacion va PRIMERO. El turista llega preguntando "cuanto me
+          cuesta el Colca", no "que agencias existen"; el directorio es la
+          respuesta a la segunda pregunta. */}
+      <div className="mt-5">
+        <TourComparison />
+      </div>
+
+      <h2 className="mt-8 text-lg font-extrabold text-ink">Quién los opera</h2>
+      <p className="mt-1 text-sm text-ink-soft">
+        Operadores que ya trabajan en Arequipa.
+      </p>
+
+      <div aria-live="polite" className="mt-4">
         {error ? (
           <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
             {error}

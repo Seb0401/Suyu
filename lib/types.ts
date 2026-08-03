@@ -156,6 +156,51 @@ export interface Story {
   created_at: string;
 }
 
+export type Currency = "PEN" | "USD";
+
+/** Un costo que el precio publicado NO cubre. */
+export interface ExtraCost {
+  label: string;
+  amount: number;
+  currency: Currency;
+  /** De donde salio el monto. Nunca un numero sin procedencia. */
+  source: string;
+  /** true si practicamente nadie puede evitarlo (una entrada obligatoria). */
+  unavoidable: boolean;
+}
+
+/**
+ * Plan turistico comparable (§6.11).
+ *
+ * El objetivo NO es rankear agencias por precio: es que el turista vea que el
+ * precio publicado casi nunca es lo que termina pagando. En el Colca el boleto
+ * turistico son S/ 70 que ninguna agencia incluye, y eso pesa mas que la
+ * diferencia entre operadores.
+ */
+export interface TourPlan {
+  id: string;
+  /** Agencia que lo vende. null = precio de referencia del mercado. */
+  agency_id: string | null;
+  agency_name: string;
+  name: string;
+  /** Clave para agrupar planes comparables entre si. */
+  destination: string;
+  duration_label: string;
+  duration_hours: number;
+  /** Precio "desde" publicado. null si no se pudo confirmar. */
+  price_from: number | null;
+  currency: Currency;
+  /** Fecha de consulta. Un precio sin fecha envejece mal y se lee como garantia. */
+  price_checked_at: string | null;
+  price_source: string;
+  includes: string[];
+  /** Lo que el precio NO cubre, con monto. Es la parte util de la comparacion. */
+  extras: ExtraCost[];
+  /** El angulo de Suyu: se puede hacer con movilidad reducida? */
+  accessibility_note: string;
+  wheelchair_viable: boolean | null;
+}
+
 /** Agencia de turismo real ya operando en Arequipa, no un afiliado (§6.10). */
 export interface PartnerAgency {
   id: string;
