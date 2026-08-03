@@ -172,7 +172,9 @@ suyu/
 │   └── REPLICA-DESDE-CERO.md    # guia para reconstruir la app entera desde cero
 ├── img_ref_turiston.png         # mockup de referencia de UI (necesario para fidelidad visual)
 ├── material_proyecto/
-│   └── WaikyIA.png              # hoja de referencia de la mascota, 12 poses (necesario)
+│   ├── WaikyIA.png              # hoja de referencia de la mascota, 12 poses (necesario)
+│   ├── pasaporte-medallas-ref.png # ref. de medallas Bronce/Cobre/Plata/Oro (§6.11)
+│   └── pasaporte-tapa-ref.jpg     # ref. de portada estilo pasaporte diplomatico (§6.11)
 ├── data/
 │   ├── seed-sites.json          # 6 sitios piloto
 │   ├── seed-services.json       # servicios turisticos (9 categorias, ver §6.7)
@@ -582,7 +584,11 @@ real, se resuelve por `(user_id, tier)` en una tabla nueva
 nivel, no por estampa individual.
 
 **Identidad visual** (pedido explícito: que la colección de estampas "sume
-como arte" a la app, no solo funcione):
+como arte" a la app, no solo funcione). Referencia del equipo:
+`material_proyecto/pasaporte-medallas-ref.png` (hoja de medallas Bronce/
+Cobre/Plata/Oro que definió los 4 niveles) y
+`material_proyecto/pasaporte-tapa-ref.jpg` (mockup de portada tipo pasaporte
+diplomático que definió el rojo-granate + dorado de la tapa):
 
 - `components/PassportStamp.tsx` — la medalla de cada sitio: un escudo SVG
   (path a mano, no una librería de iconos) con relleno degradado del metal
