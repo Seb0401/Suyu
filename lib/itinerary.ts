@@ -1,5 +1,6 @@
 import { crowdLevelAt, isClosedAt, formatHour } from "@/lib/crowdProfile";
 import { haversineMeters, isWalkable, walkingMinutes } from "@/lib/geo";
+import { getSiteDetail } from "@/lib/siteDetails";
 import type { SiteWithCrowd } from "@/lib/types";
 
 /**
@@ -21,7 +22,14 @@ const VISIT_MINUTES: Record<string, number> = {
 
 const DEFAULT_VISIT_MINUTES = 45;
 
+/**
+ * La ficha tecnica del sitio manda sobre la categoria: es un dato curado para
+ * ese sitio en concreto, no un promedio de su tipo. La categoria queda como
+ * fallback para sitios sin ficha.
+ */
 export function visitMinutesFor(site: SiteWithCrowd): number {
+  const curated = getSiteDetail(site.id)?.recommended_visit_minutes;
+  if (typeof curated === "number" && curated > 0) return curated;
   return VISIT_MINUTES[site.category] ?? DEFAULT_VISIT_MINUTES;
 }
 

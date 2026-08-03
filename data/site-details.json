@@ -1,0 +1,44 @@
+[
+  {
+    "site_id": "monasterio-de-santa-catalina",
+    "history": "Fundado el 10 de septiembre de 1579 por dona Maria de Guzman, una viuda arequipena acaudalada que destino su fortuna a levantar un recinto de clausura. La motivacion no fue solo religiosa: muchas hijas de la nobleza colonial no podian casarse por falta de dote, y el convento era la alternativa honorable. Estuvo cerrado al publico hasta 1970.",
+    "curiosity": "No es un edificio, es una ciudadela: casi 20 000 m2 de calles, plazas y celdas rodeados por un muro de cuatro metros. Adentro vivieron mujeres de origen europeo, mestizo e hijas de curacas indigenas.",
+    "best_time": "Apenas abre, a las 9:00, o despues de las 16:00. Al mediodia llegan los grupos de tour y los patios se llenan.",
+    "recommended_visit_minutes": 120
+  },
+  {
+    "site_id": "mirador-de-yanahuara",
+    "history": "El mirador se levanto en el siglo XIX sobre la plaza de Yanahuara, uno de los barrios mas antiguos de Arequipa. Sus nueve arcos de sillar fueron tallados por maestros canteros locales.",
+    "curiosity": "Cada arco lleva grabada una frase de un arequipeno ilustre: estan Jose Luis Bustamante y Rivero, que llego a presidente del Peru, y el poeta Francisco Mostajo. Es un mirador que se lee, no solo se mira.",
+    "best_time": "Al atardecer, entre las 17:00 y las 18:30, cuando el Misti se ve recortado contra la luz. Es tambien la hora de mas gente: si vas en silla de ruedas, ve antes de las 16:00.",
+    "recommended_visit_minutes": 30
+  },
+  {
+    "site_id": "plaza-de-armas-de-arequipa",
+    "history": "Es el centro de la ciudad desde su fundacion en 1540. Los portales de sillar que la rodean por tres lados y la Catedral que la cierra al norte le dan una simetria poco comun entre las plazas coloniales del Peru.",
+    "curiosity": "En lo alto de la fuente central hay una figura de bronce de un soldado tocando una trompeta, al que los arequipenos llaman el Tuturutu. Da la vuelta completa a la plaza con la mirada segun desde donde lo veas.",
+    "best_time": "Nunca cierra. Entre las 7:00 y las 9:00 esta casi vacia y con buena luz para fotos; a partir de las 18:00 se llena y se pone animada.",
+    "recommended_visit_minutes": 25
+  },
+  {
+    "site_id": "basilica-catedral-de-arequipa",
+    "history": "Se empezo a construir en 1540 y se termino en 1656, integramente en sillar. Un incendio la arraso el 1 de diciembre de 1844 y se reconstruyo en tiempo record bajo la direccion del arquitecto Lucas Poblete. El terremoto del 23 de junio de 2001 derribo la torre izquierda por completo; se reinauguro en agosto de 2002.",
+    "curiosity": "Guarda un organo belga de 12 metros de alto y 1206 tubos, el segundo mas grande de Sudamerica.",
+    "best_time": "Media manana, entre las 10:00 y las 11:00, cuando la luz entra por el lado este de la nave.",
+    "recommended_visit_minutes": 40
+  },
+  {
+    "site_id": "museo-santuarios-andinos",
+    "history": "Abrio en 1997 en la Casa del Fundador, una construccion colonial del siglo XVIII. Nacio para conservar y exhibir los hallazgos del proyecto arqueologico de santuarios de altura del sur andino.",
+    "curiosity": "Su pieza central es Juanita, la Dama de Ampato: una nina de 12 a 14 anos sacrificada hacia 1450 y hallada congelada en 1995 por Johan Reinhard. Se conserva a 19 grados bajo cero dentro de una urna de vidrio. Se exhibe de mayo a diciembre; de enero a abril entra en fase de conservacion y no esta a la vista.",
+    "best_time": "Al abrir, a las 9:00. La visita es guiada y en grupo, asi que llegar temprano significa un grupo mas chico.",
+    "recommended_visit_minutes": 90
+  },
+  {
+    "site_id": "mirador-de-la-cruz-del-condor",
+    "history": "Es un balcon natural sobre uno de los tramos mas verticales del Canon del Colca, a 3270 m s. n. m. El desnivel visible hasta el rio Colca ronda los 1200 metros.",
+    "curiosity": "Es uno de los mejores lugares de Sudamerica para ver al condor andino en libertad. Un adulto puede abrir tres metros de ala y aprovecha las corrientes termicas que suben del canon para volar sin batirlas.",
+    "best_time": "Entre las 8:00 y las 10:00 de la manana, cuando el aire se calienta y los condores empiezan a remontar. Mas tarde el avistamiento se vuelve cuestion de suerte.",
+    "recommended_visit_minutes": 60
+  }
+]
