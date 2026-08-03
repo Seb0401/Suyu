@@ -122,18 +122,22 @@ export function buildItinerary(
       continue;
     }
 
+    // Se llega DESPUES del traslado pero ANTES de la visita. Sumar tambien la
+    // visita daria la hora de salida, no la de llegada.
+    const arriveHour = (startHour + Math.floor((elapsed + (travel ?? 0)) / 60)) % 24;
+
     elapsed += cost;
     hour = (startHour + Math.floor(elapsed / 60)) % 24;
 
     stops.push({
       site: next,
-      arrive_hour: hour,
-      arrive_label: formatHour(hour),
+      arrive_hour: arriveHour,
+      arrive_label: formatHour(arriveHour),
       visit_minutes: visit,
       travel_from_previous_min: travel,
       travel_from_previous_m: meters,
       walkable: meters === null ? true : isWalkable(meters),
-      crowd_at_arrival: crowdLevelAt(next.crowd_profile, hour),
+      crowd_at_arrival: crowdLevelAt(next.crowd_profile, arriveHour),
     });
 
     current = next;

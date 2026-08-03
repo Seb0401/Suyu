@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { askClaude, buildSystemPrompt } from "@/lib/anthropic";
 import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
+import { answerOffline } from "@/lib/offlineAssistant";
 import { getServices } from "@/lib/services";
 import { getSites } from "@/lib/sites";
 import type { ChatMessage } from "@/lib/types";
@@ -70,16 +71,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ reply: result.reply, source: "claude" });
   }
 
-  // A10 conecta aqui lib/offlineAssistant.ts. Hasta entonces se declara el
-  // fallo en vez de devolver texto que parezca del modelo.
-  return NextResponse.json(
-    {
-      error: "copiloto_no_disponible",
-      reason: result.reason,
-      source: "offline",
-      notice:
-        "Modo sin conexion — el copiloto con IA no esta disponible ahora mismo.",
-    },
-    { status: 503 },
-  );
+  // Sin Claude respondemos igual, pero por reglas y diciendolo. Devolvemos 200
+  // porque la respuesta es valida: no es un error que la UI deba tratar como
+  // caida, es otro modo de funcionamiento (§2.1).
+  const lastUserMessage =
+    [...history].reverse().find((m) => m.role === "user")?.content ?? "";
+
+  const offline = answerOffline(lastUserMessage, sites, services, hour);
+
+  return NextResponse.json({
+    reply: offline.reply,
+    source: "offline",
+    notice: offline.notice,
+    reason: result.reason,
+    intent: offline.intent,
+  });
 }
