@@ -156,6 +156,35 @@ export interface Story {
   created_at: string;
 }
 
+/** Linea de emergencia o de asistencia (Fase 2). */
+export interface EmergencyLine {
+  id: string;
+  name: string;
+  phone: string;
+  when: string;
+  scope: "nacional" | "arequipa";
+  /** 1 = emergencia real, 2 = asistencia al turista, 3 = oficina presencial. */
+  priority: 1 | 2 | 3;
+}
+
+/**
+ * Suceso imprevisto con guia de que hacer.
+ *
+ * No hay feed en vivo de paros ni bloqueos, y no lo inventamos: esto es
+ * contenido curado que explica el escenario y a quien llamar. Fingir un
+ * "estado de las vias en tiempo real" seria el peor dato falso posible, porque
+ * alguien decidiria si salir a la carretera con el.
+ */
+export interface Contingency {
+  id: string;
+  title: string;
+  summary: string;
+  what_to_do: string[];
+  /** Como golpea a quien tiene movilidad reducida. Es la tesis del proyecto. */
+  accessibility_note: string;
+  severity: "alta" | "media";
+}
+
 export type Currency = "PEN" | "USD";
 
 /** Un costo que el precio publicado NO cubre. */

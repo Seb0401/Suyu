@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import {
+  AlertIcon,
   BookIcon,
   BriefcaseIcon,
   CompassIcon,
@@ -41,6 +42,7 @@ export const NAV_ITEMS: NavItem[] = [
  */
 export const SECONDARY_NAV: NavItem[] = [
   { href: "/servicios", label: "Servicios", Icon: GridIcon },
+  { href: "/agencias", label: "Tours", Icon: BriefcaseIcon },
   { href: "/historias", label: "Historias", Icon: BookIcon },
-  { href: "/agencias", label: "Agencias", Icon: BriefcaseIcon },
+  { href: "/emergencias", label: "Emergencias", Icon: AlertIcon },
 ];
