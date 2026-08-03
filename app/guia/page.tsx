@@ -9,6 +9,7 @@ import {
   CompassIcon,
   GridIcon,
   StampIcon,
+  SunIcon,
   type IconProps,
 } from "@/components/Icons";
 import type { ComponentType } from "react";
@@ -46,6 +47,13 @@ const SECTIONS: {
     hint: "Compara planes y sus costos reales",
     Icon: BriefcaseIcon,
     tone: "bg-clay-50 text-clay-600",
+  },
+  {
+    href: "/cuando-ir",
+    label: "Cuándo ir",
+    hint: "Mejor época de cada provincia, y por qué",
+    Icon: SunIcon,
+    tone: "bg-forest-50 text-forest-700",
   },
   {
     href: "/eventos",

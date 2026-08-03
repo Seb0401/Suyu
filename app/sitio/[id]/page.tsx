@@ -16,6 +16,7 @@ import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
 import SiteDetailSection from "@/components/SiteDetailSection";
 import WeatherStrip from "@/components/WeatherStrip";
+import ZoneSeasonNote from "@/components/ZoneSeasonNote";
 import SiteThumbnail from "@/components/SiteThumbnail";
 import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
@@ -335,6 +336,8 @@ export default function SitioPage() {
           historia es para generar ganas, no para responder eso. */}
       {/* El clima va con las coordenadas del sitio, no las del centro: la Cruz
           del Condor esta a 3270 m y a 160 km, y su clima no se parece. */}
+      <ZoneSeasonNote siteId={site.id} />
+
       <WeatherStrip siteId={site.id} />
 
       <SiteDetailSection siteId={site.id} />
