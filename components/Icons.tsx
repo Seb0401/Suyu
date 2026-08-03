@@ -47,6 +47,25 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+export function ClockIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5.2l3.2 2" />
+    </svg>
+  );
+}
+
+/** Destello: marca el dato curioso de la ficha tecnica, no una accion. */
+export function SparkIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 3.5 13.7 9l5.5 1.7-5.5 1.7L12 18l-1.7-5.6L4.8 10.7 10.3 9z" />
+      <path d="M18.5 3.5v3M20 5h-3" />
+    </svg>
+  );
+}
+
 export function BriefcaseIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>
