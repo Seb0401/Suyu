@@ -47,6 +47,16 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+export function BriefcaseIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
+      <path d="M9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8" />
+      <path d="M4 12.5h16" />
+    </svg>
+  );
+}
+
 export function CompassIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

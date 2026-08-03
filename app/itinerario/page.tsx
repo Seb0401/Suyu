@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import CrowdBadge from "@/components/CrowdBadge";
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
-import { ArrowRightIcon, CalendarIcon } from "@/components/Icons";
+import { ArrowRightIcon, BriefcaseIcon, CalendarIcon } from "@/components/Icons";
 import type { SiteWithCrowd } from "@/lib/types";
 
 type Stop = {
@@ -187,6 +187,25 @@ export default function ItinerarioPage() {
                 ))}
               </ol>
             )}
+
+            {/* Enlace contextual a /agencias: aqui es donde el turista acaba de
+                ver un plan armado y puede querer compararlo con un tour ya
+                existente. En la barra inferior no cabe una quinta entrada. */}
+            <Link
+              href="/agencias"
+              className="mt-4 flex items-center gap-3 rounded-3xl border border-sand-200 bg-clay-50 p-4"
+            >
+              <BriefcaseIcon size={22} className="shrink-0 text-clay-600" />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-bold text-ink">
+                  ¿Prefieres un tour ya armado?
+                </span>
+                <span className="block text-xs text-ink-soft">
+                  Mira agencias que operan en Arequipa
+                </span>
+              </span>
+              <ArrowRightIcon size={16} className="shrink-0 text-ink-muted" />
+            </Link>
 
             {/* Nunca se descarta un sitio en silencio: si no entro, se dice por que. */}
             {data.skipped.length > 0 ? (

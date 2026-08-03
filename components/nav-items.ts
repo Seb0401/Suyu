@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import {
   BookIcon,
+  BriefcaseIcon,
   CompassIcon,
   HomeIcon,
   RouteIcon,
@@ -29,9 +30,15 @@ export const NAV_ITEMS: NavItem[] = [
 
 /**
  * Secciones de contenido. Van en el header de escritorio y como accesos desde
- * el Inicio, pero NO en la barra inferior: con el FAB al centro, cinco o seis
- * entradas dejan objetivos tactiles por debajo del minimo comodo en 390 px.
+ * el Inicio, pero NO en la barra inferior: BottomNav parte NAV_ITEMS en
+ * 2 + FAB + 2, y con cinco o seis entradas los objetivos tactiles caen por
+ * debajo del minimo comodo a 390 px.
+ *
+ * En movil cada una se alcanza por enlace contextual, en el punto donde tiene
+ * sentido: /agencias desde el itinerario, justo despues de ver un plan armado y
+ * poder querer compararlo con un tour existente.
  */
 export const SECONDARY_NAV: NavItem[] = [
   { href: "/historias", label: "Historias", Icon: BookIcon },
+  { href: "/agencias", label: "Agencias", Icon: BriefcaseIcon },
 ];
