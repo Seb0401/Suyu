@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
+import { antiCrowdAdvice } from "@/lib/crowd";
 import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
 import {
   accessibilityMilestones,
   routeAccessibilityScore,
 } from "@/lib/filters";
 import { isWalkable, walkingRoute } from "@/lib/geo";
-import { getSite } from "@/lib/sites";
+import { getSites } from "@/lib/sites";
 
 /**
  * GET /api/route-finder?origin=<id>&destination=<id>&accessible=true&hour=<0-23>
@@ -28,10 +29,9 @@ export async function GET(request: Request) {
     );
   }
 
-  const [origin, destination] = await Promise.all([
-    getSite(originId, hour),
-    getSite(destinationId, hour),
-  ]);
+  const { sites } = await getSites(hour);
+  const origin = sites.find((site) => site.id === originId);
+  const destination = sites.find((site) => site.id === destinationId);
 
   if (!origin || !destination) {
     return NextResponse.json(
@@ -42,6 +42,12 @@ export async function GET(request: Request) {
 
   const route = await walkingRoute(origin, destination);
 
+  // El aviso se calcula sobre el DESTINO: de nada sirve avisar que el punto de
+  // partida esta lleno cuando el turista ya se esta yendo de ahi.
+  const advice = antiCrowdAdvice(destination, sites, hour, {
+    accessibleOnly: accessibleFilter,
+  });
+
   return NextResponse.json({
     ...route,
     walkable: isWalkable(route.distance_m),
@@ -51,8 +57,8 @@ export async function GET(request: Request) {
     origin,
     destination,
     hour,
-    // A4 los llena; el contrato ya los declara para que B maquete contra ellos.
-    alternative: null,
-    quiet_hour: null,
+    saturated: advice.saturated,
+    alternative: advice.alternative,
+    quiet_hour: advice.quiet_hour,
   });
 }
