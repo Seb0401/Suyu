@@ -9,6 +9,9 @@
  * esto mismo entre dispositivos.
  */
 
+import type { AccessNeedId } from "@/components/accessNeeds";
+import type { TravelerPersonality } from "@/components/travelerPersonalities";
+
 export const PROFILE_KEY = "suyu:travel-profile";
 
 export type Companions = "solo" | "pareja" | "ninos" | "adultos-mayores";
@@ -16,18 +19,26 @@ export type Pace = "evitar-multitudes" | "sin-preferencia";
 export type Interest = "cultura" | "gastronomia" | "naturaleza";
 
 export interface TravelProfile {
-  /** Rasgos de accesibilidad que el usuario necesita. Claves de Site. */
-  needs: {
-    wheelchair_accessible?: boolean;
-    has_ramps?: boolean;
-    has_accessible_bathroom?: boolean;
-    has_rest_areas?: boolean;
-  };
+  /**
+   * Necesidades de accesibilidad. Las cuatro primeras claves coinciden con las
+   * de Site y sirven para filtrar directo; el resto (definidas en
+   * components/accessNeeds.ts) alimentan avisos.
+   */
+  needs: Partial<Record<AccessNeedId, boolean>>;
   companions: Companions[];
   interests: Interest[];
   /** Horas disponibles para el itinerario. */
   hours: number;
   pace: Pace;
+  /** Personalidad de viaje. null = no eligio ninguna, que es valido. */
+  personality: TravelerPersonality | null;
+  /**
+   * true si el usuario abrio las necesidades sensibles desde Perfil.
+   *
+   * Se guarda aparte del contenido: sirve para no volver a mostrar la
+   * invitacion a alguien que ya la vio y decidio que no le aplica.
+   */
+  sensitive_needs_enabled: boolean;
   /** ISO de cuando se completo. null = nunca respondio el onboarding. */
   completed_at: string | null;
 }
@@ -38,6 +49,8 @@ export const EMPTY_PROFILE: TravelProfile = {
   interests: [],
   hours: 4,
   pace: "sin-preferencia",
+  personality: null,
+  sensitive_needs_enabled: false,
   completed_at: null,
 };
 
@@ -54,6 +67,10 @@ export function readProfile(): TravelProfile {
       needs: { ...EMPTY_PROFILE.needs, ...(parsed.needs ?? {}) },
       companions: parsed.companions ?? [],
       interests: parsed.interests ?? [],
+      // Un perfil guardado antes de las personalidades trae estos en
+      // undefined, y `...parsed` los propagaria pisando el valor por defecto.
+      personality: parsed.personality ?? null,
+      sensitive_needs_enabled: parsed.sensitive_needs_enabled ?? false,
     };
   } catch {
     /* localStorage bloqueado (modo privado) o JSON corrupto. El perfil es
@@ -80,9 +97,27 @@ export function clearProfile() {
 
 /** true si el usuario viaja con niños — activa el aviso de aptitud infantil. */
 export function travelsWithKids(profile: TravelProfile): boolean {
-  return profile.companions.includes("ninos");
+  return profile.companions.includes("ninos") || profile.personality === "familiar";
 }
 
 export function hasAccessibilityNeeds(profile: TravelProfile): boolean {
   return Object.values(profile.needs).some(Boolean);
+}
+
+export function needs(profile: TravelProfile, id: AccessNeedId): boolean {
+  return profile.needs[id] === true;
+}
+
+/** true si viaja con mascota, por necesidad marcada o por perro guia. */
+export function travelsWithAnimal(profile: TravelProfile): boolean {
+  return needs(profile, "travels_with_pet") || needs(profile, "guide_dog");
+}
+
+/**
+ * true si hay que avisar sobre la altura antes de recomendar el Colca o un
+ * volcan. El aviso general de altura existe para todos; esto lo vuelve
+ * personal y lo sube de prioridad.
+ */
+export function needsAltitudeWarning(profile: TravelProfile): boolean {
+  return needs(profile, "cardiac_or_respiratory");
 }

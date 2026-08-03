@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import AccessNeedsSection from "@/components/AccessNeedsSection";
 import AccountSection from "@/components/AccountSection";
+import PersonalityPicker from "@/components/PersonalityPicker";
 import Mascot from "@/components/Mascot";
 import OnboardingDialog from "@/components/OnboardingDialog";
 import { ACCESSIBILITY_FEATURES } from "@/components/AccessibilityIcons";
@@ -18,8 +20,13 @@ import { LOCALES, LOCALE_NAME, type Locale } from "@/components/i18n/locales";
 import {
   EMPTY_PROFILE,
   readProfile,
+  writeProfile,
   type TravelProfile,
 } from "@/components/travelProfile";
+import {
+  applyPersonality,
+  getPersonality,
+} from "@/components/travelerPersonalities";
 
 import type { TranslationKey } from "@/components/i18n/dictionary";
 
@@ -64,7 +71,14 @@ export default function PerfilPage() {
   const needLabels = ACCESSIBILITY_FEATURES.filter(({ key }) => profile.needs[key]).map(
     ({ key }) => t(A11Y_KEY[key]),
   );
+  /** Unico punto de escritura del perfil en esta pantalla. */
+  const save = (next: TravelProfile) => {
+    setProfile(next);
+    writeProfile(next);
+  };
+
   const answered = Boolean(profile.completed_at);
+  const personality = getPersonality(profile.personality);
 
   return (
     <div className="mx-auto max-w-md md:max-w-2xl">
@@ -136,6 +150,16 @@ export default function PerfilPage() {
                   : t("perfil.ritmoTodo")}
               </p>
             </div>
+
+            {personality ? (
+              <div>
+                <p className="text-xs font-bold text-ink-soft">Tipo de viajero</p>
+                <p className="mt-1 text-sm text-ink-soft">
+                  <span className="font-bold text-ink">{personality.label}</span>{" "}
+                  · {personality.tagline}
+                </p>
+              </div>
+            ) : null}
           </div>
         ) : (
           <p className="mt-3 rounded-3xl border border-dashed border-sand-300 bg-sand-50 p-4 text-sm text-ink-soft">
@@ -146,6 +170,34 @@ export default function PerfilPage() {
         <p className="mt-2 px-1 text-xs text-ink-muted">
           {t("perfil.soloDispositivo")}
         </p>
+      </section>
+
+      {/* Va justo despues del resumen: es la pantalla donde el usuario ajusta
+          lo suyo, y las necesidades sensibles solo existen aqui. */}
+      <section className="px-6 pt-6">
+        <h2 className="font-extrabold text-ink">Tipo de viajero</h2>
+        <p className="mt-1 mb-3 text-sm text-ink-soft">
+          Precarga tu itinerario. Puedes cambiarla cuando quieras.
+        </p>
+        <PersonalityPicker
+          value={profile.personality}
+          onChange={(next) =>
+            save(
+              next
+                ? applyPersonality(profile, next)
+                : { ...profile, personality: null },
+            )
+          }
+        />
+      </section>
+
+      <section className="px-6 pt-6">
+        <h2 className="font-extrabold text-ink">Accesibilidad</h2>
+        <p className="mt-1 mb-3 text-sm text-ink-soft">
+          Marca solo lo que necesitas. Cada opción dice qué hace la app con ese
+          dato.
+        </p>
+        <AccessNeedsSection profile={profile} onChange={save} />
       </section>
 
       <section className="px-6 pt-6">
