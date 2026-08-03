@@ -6,10 +6,12 @@ import {
   UserIcon,
   type IconProps,
 } from "@/components/Icons";
+import type { TranslationKey } from "@/components/i18n/dictionary";
 
 export type NavItem = {
   href: string;
-  label: string;
+  /** Clave del diccionario, no el texto: la barra tambien se traduce. */
+  labelKey: TranslationKey;
   Icon: ComponentType<IconProps>;
 };
 
@@ -21,14 +23,17 @@ export type NavItem = {
  * 390 px.
  *
  * El mockup muestra "Favoritos", pero no hay pantalla de favoritos ni backend
- * que la sostenga. En su lugar va "Guía", que agrupa todo lo que antes andaba
- * suelto: lugares, servicios, tours, calendario, historias y emergencias.
- * Preferimos una entrada que lleve a algo real antes que una que prometa una
- * funcion inexistente.
+ * que la sostenga. En su lugar va "Guía", que agrupa lo que antes andaba suelto
+ * y ya no cabia: lugares, servicios, tours, calendario, historias, pasaporte y
+ * emergencias. Preferimos una entrada que lleve a algo real antes que una que
+ * prometa una funcion inexistente.
+ *
+ * "Explorar" salio de aqui al entrar "Guía": el hub la contiene y ademas
+ * Inicio ya tiene buscador y carrusel de sitios, asi que no queda huerfana.
  */
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/", label: "Inicio", Icon: HomeIcon },
-  { href: "/ruta", label: "Rutas", Icon: RouteIcon },
-  { href: "/guia", label: "Guía", Icon: BookOpenIcon },
-  { href: "/perfil", label: "Perfil", Icon: UserIcon },
+  { href: "/", labelKey: "nav.inicio", Icon: HomeIcon },
+  { href: "/ruta", labelKey: "nav.rutas", Icon: RouteIcon },
+  { href: "/guia", labelKey: "nav.guia", Icon: BookOpenIcon },
+  { href: "/perfil", labelKey: "nav.perfil", Icon: UserIcon },
 ];

@@ -1,3 +1,4 @@
+import { getAccessibilityDetail } from "@/lib/accessibility";
 import { bestHour, formatHour, nextQuietHour } from "@/lib/crowdProfile";
 import { crowdLabel } from "@/lib/crowdUi";
 import type { EventWithStatus } from "@/lib/events";
@@ -49,12 +50,32 @@ function summarizeSite(site: SiteWithCrowd, hour: number): string {
   const quiet = nextQuietHour(site.crowd_profile, hour);
   const best = bestHour(site.crowd_profile);
 
+  /* Del estado 1-3 solo se manda el rasgo PEOR calificado. Mandar las cuatro
+     notas de los seis sitios infla el prompt sin cambiar la respuesta, y lo
+     accionable es justo el punto debil: "hay bano adaptado pero no sirve". */
+  const detail = getAccessibilityDetail(site.id);
+  const peor = detail
+    ? (
+        [
+          ["rampa", detail.ramps],
+          ["bano adaptado", detail.accessible_bathroom],
+          ["zona de descanso", detail.rest_areas],
+          ["circulacion en silla de ruedas", detail.wheelchair_circulation],
+        ] as const
+      )
+        .filter(([, g]) => g.rating !== null)
+        .sort((a, b) => (a[1].rating as number) - (b[1].rating as number))[0]
+    : undefined;
+
   const partes = [
     `- ${site.name} (${site.category}, ${accessibilityScore(site)}% accesible)`,
     `  Ahora: ${crowdLabel(site)}.`,
     rasgos.length > 0
       ? `  Tiene: ${rasgos.join(", ")}.`
       : "  Sin rasgos de accesibilidad confirmados.",
+    peor && (peor[1].rating as number) <= 2
+      ? `  Punto debil: ${peor[0]} en estado ${peor[1].rating}/3. ${peor[1].note}`
+      : null,
     quiet ? `  Baja la gente a las ${formatHour(quiet.hour)}.` : null,
     !quiet && best ? `  Mejor hora del dia: ${formatHour(best.hour)}.` : null,
     site.verified_by === null ? "  Datos SIN verificar." : null,
@@ -70,10 +91,20 @@ function summarizeService(service: TouristService): string {
   return `- ${service.name} (${service.category}, ${registro})`;
 }
 
+/** Idiomas en que el copiloto puede responder. Espejo de components/i18n. */
+const LANGUAGE_RULE: Record<string, string> = {
+  es: "Responde en espanol.",
+  en: "Reply in English, even though this prompt is written in Spanish.",
+  fr: "Reponds en francais, meme si ce prompt est ecrit en espagnol.",
+  pt: "Responda em portugues, embora este prompt esteja escrito em espanhol.",
+};
+
 export interface CopilotContext {
   sites: SiteWithCrowd[];
   services: TouristService[];
   hour: number;
+  /** Idioma de la respuesta. El prompt sigue en espanol; solo cambia la salida. */
+  locale?: string;
   weather?: WeatherResult | null;
   events?: EventWithStatus[];
   emergency?: EmergencyLine[];
@@ -103,7 +134,16 @@ function summarizeEvent(e: EventWithStatus): string {
 }
 
 export function buildSystemPrompt(ctx: CopilotContext): string {
-  const { sites, services, hour, weather, events, emergency, contingencies } = ctx;
+  const {
+    sites,
+    services,
+    hour,
+    locale = "es",
+    weather,
+    events,
+    emergency,
+    contingencies,
+  } = ctx;
 
   const blocks: string[] = [
     "Eres Suyu, un companero de viaje para turistas en Arequipa, Peru.",
@@ -149,7 +189,9 @@ export function buildSystemPrompt(ctx: CopilotContext): string {
   blocks.push(
     "",
     "REGLAS:",
-    "1. Responde en espanol, en 3 a 5 frases. Es un chat en un celular, no un informe.",
+    `1. IDIOMA: ${LANGUAGE_RULE[locale] ?? LANGUAGE_RULE.es} Responde en 3 a 5 frases. Es un chat en un celular, no un informe.`,
+    "1b. ESTILO: lenguaje neutro y llano, con la ortografia y los acentos correctos del idioma en que respondas. Sin jerga, sin modismos regionales ('chevere', 'anda a', 'de una') y sin diminutivos. Frases cortas y directas. Quien lee puede no ser hablante nativo y puede estar usando un lector de pantalla.",
+    "1c. Los NOMBRES de los lugares (Monasterio de Santa Catalina, Mirador de Yanahuara, Plaza de Armas) se dejan SIEMPRE en espanol, aunque respondas en otro idioma: son los nombres con los que el turista va a preguntar en la calle y por los que estan senalizados.",
     "2. Usa SOLO los sitios, servicios y datos de arriba. Si te preguntan por otra cosa, dilo con honestidad en vez de inventarlo.",
     "3. Si un sitio esta muy congestionado, ofrece la alternativa Y la hora en que baja la gente. Las dos cosas.",
     "4. Si un sitio no tiene un rasgo de accesibilidad confirmado, di 'sin confirmar'. Nunca lo des por hecho.",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AgencyMonogram from "@/components/AgencyMonogram";
+import { useT } from "@/components/i18n/LocaleProvider";
 import { ArrowRightIcon, ChevronDownIcon, PinIcon } from "@/components/Icons";
 import type { PartnerAgency } from "@/lib/types";
 
@@ -24,6 +25,7 @@ type AgenciesResponse = {
  * servicios, para que la app se sienta de una pieza.
  */
 export default function AgencyList() {
+  const t = useT();
   const [data, setData] = useState<AgenciesResponse | null>(null);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
@@ -45,7 +47,7 @@ export default function AgencyList() {
   if (error) {
     return (
       <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
-        No pudimos cargar el directorio.
+        {t("agencias.error")}
       </p>
     );
   }
@@ -148,7 +150,7 @@ export default function AgencyList() {
                       rel="noreferrer noopener"
                       className="flex items-center gap-1.5 rounded-full bg-night-800 px-4 py-2 text-sm font-bold text-cream"
                     >
-                      Ver la agencia
+                      {t("agencias.verAgencia")}
                       <ArrowRightIcon size={15} />
                       <span className="sr-only">(se abre en una pestaña nueva)</span>
                     </a>

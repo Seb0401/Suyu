@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/LocaleProvider";
 import {
   ExternalLinkIcon,
   ServiceIcon,
@@ -28,6 +29,7 @@ type ServiceWithDistance = TouristService & {
  * serio (§6.7).
  */
 export default function ServiceList({ siteId }: { siteId: string }) {
+  const t = useT();
   const [services, setServices] = useState<ServiceWithDistance[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [businessProfiles, setBusinessProfiles] = useState<BusinessAccessibilityProfile[]>([]);
@@ -62,7 +64,7 @@ export default function ServiceList({ siteId }: { siteId: string }) {
   if (services.length === 0 && businessProfiles.length === 0) {
     return (
       <p className="text-sm text-ink-soft">
-        Todavía no tenemos servicios registrados cerca de aquí.
+        {t("servicios.sinServicios")}
       </p>
     );
   }
@@ -75,7 +77,11 @@ export default function ServiceList({ siteId }: { siteId: string }) {
         </li>
       ))}
       {services.map((service) => {
-        const label = service.registry_label ?? (service.formalized ? "Registro formal" : "Registro por verificar");
+        const label =
+          service.registry_label ??
+          (service.formalized
+            ? t("servicios.registroFormal")
+            : t("servicios.registroPorVerificar"));
         const Badge = service.formalized ? ShieldCheckIcon : HelpCircleIcon;
 
         return (
@@ -92,7 +98,7 @@ export default function ServiceList({ siteId }: { siteId: string }) {
               <p className="text-xs capitalize text-ink-muted">
                 {service.category}
                 {service.price_range ? ` · ${service.price_range}` : ""}
-                {service.walking_min !== undefined ? ` · ${service.walking_min} min a pie` : ""}
+                {service.walking_min !== undefined ? ` · ${service.walking_min} ${t("servicios.minAPie")}` : ""}
               </p>
 
               <p className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-ink-soft">
@@ -103,7 +109,7 @@ export default function ServiceList({ siteId }: { siteId: string }) {
               {service.wheelchair_accessible ? (
                 <p className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-forest-700">
                   <WheelchairIcon size={13} />
-                  Accesible en silla de ruedas
+                  {t("servicios.accesibleSilla")}
                 </p>
               ) : null}
 
@@ -114,7 +120,7 @@ export default function ServiceList({ siteId }: { siteId: string }) {
                   rel="noopener noreferrer"
                   className="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-clay-600"
                 >
-                  Ver sitio del proveedor
+                  {t("servicios.verProveedor")}
                   <ExternalLinkIcon size={13} />
                   <span className="sr-only">(se abre en una pestaña nueva)</span>
                 </a>

@@ -52,7 +52,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON invalido." }, { status: 400 });
   }
 
-  const { messages, hour: rawHour } = (body ?? {}) as Record<string, unknown>;
+  const { messages, hour: rawHour, locale: rawLocale } = (body ?? {}) as Record<string, unknown>;
+  const locale =
+    typeof rawLocale === "string" && ["es", "en", "fr", "pt"].includes(rawLocale)
+      ? rawLocale
+      : "es";
   const history = parseHistory(messages);
 
   if (!history) {
@@ -80,6 +84,7 @@ export async function POST(request: Request) {
       sites,
       services,
       hour,
+      locale,
       weather,
       // 45 dias: lo que alcanza a cambiar la decision de cuando viajar.
       events: getUpcomingEvents(45),
@@ -107,5 +112,9 @@ export async function POST(request: Request) {
     notice: offline.notice,
     reason: result.reason,
     intent: offline.intent,
+    /* El motor de reglas solo habla espanol. Si el usuario eligio otro idioma
+       la UI tiene que decirlo, no dejarle creer que la app se le rompio. */
+    reply_locale: "es",
+    requested_locale: locale,
   });
 }

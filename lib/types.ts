@@ -35,6 +35,53 @@ export interface SiteWithCrowd extends Site {
   crowd_closed: boolean;
 }
 
+/**
+ * Estado de un servicio de accesibilidad, no si existe.
+ * 1 = deficiente, 2 = utilizable con apoyo, 3 = en buen estado.
+ *
+ * Convive con los booleanos `has_*` de Site en vez de reemplazarlos: el
+ * booleano dice si el rasgo EXISTE y la nota dice COMO esta. Una rampa que
+ * existe pero solo es movil y bajo solicitud es `has_ramps: true` + rating 2.
+ */
+export type AccessibilityRating = 1 | 2 | 3;
+
+export interface AccessibilityGrade {
+  /** null = no hay dato suficiente para calificar. Nunca se asume un 2. */
+  rating: AccessibilityRating | null;
+  /** Justificacion en lenguaje de usuario. La UI la muestra tal cual. */
+  note: string;
+}
+
+/** Politica de mascotas del sitio. NO aplica a perros guia (ver §6.11). */
+export type PetPolicy = "permitidas" | "no-permitidas" | "sin-dato";
+
+export interface SiteAccessibilityDetail {
+  site_id: string;
+  ramps: AccessibilityGrade;
+  /**
+   * Gradas y escalones. Es la dimension INVERSA a las demas: aqui un 3 no
+   * significa "escaleras en buen estado" sino "pocas gradas o ninguna, y las
+   * que hay son bajas". Se califica el OBSTACULO, no el servicio, porque eso
+   * es lo que decide si alguien puede entrar.
+   */
+  steps: AccessibilityGrade;
+  accessible_bathroom: AccessibilityGrade;
+  rest_areas: AccessibilityGrade;
+  wheelchair_circulation: AccessibilityGrade;
+  /**
+   * Baño familiar o cambiador para bebes. Es un servicio DISTINTO del baño
+   * adaptado para personas con discapacidad: mezclarlos haria que un padre y
+   * un usuario de silla de ruedas lean la misma etiqueta esperando cosas
+   * distintas. null = sin dato.
+   */
+  has_family_bathroom: boolean | null;
+  family_bathroom_note: string;
+  pet_policy: PetPolicy;
+  pet_note: string;
+  source_label: string;
+  source_url: string | null;
+}
+
 export type ServiceCategory =
   | "restaurante"
   | "guia"

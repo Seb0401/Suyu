@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/LocaleProvider";
 import Meter from "@/components/Meter";
 import { ACCESSIBILITY_FEATURES } from "@/components/AccessibilityIcons";
 import { useSites } from "@/components/useSites";
@@ -11,6 +12,7 @@ import type { AccessibilityReport } from "@/lib/types";
 export default function PanelPage() {
   const { sites, source, hour, loading } = useSites();
   const [reports, setReports] = useState<AccessibilityReport[]>([]);
+  const t = useT();
 
   useEffect(() => {
     fetch("/api/reports")
@@ -24,23 +26,23 @@ export default function PanelPage() {
   const verified = sites.filter((s) => s.verified_by !== null).length;
 
   const kpis = [
-    { label: "Sitios monitoreados", value: String(total) },
-    { label: "Saturados ahora", value: String(saturated) },
-    { label: "Con dato verificado", value: `${verified}/${total || 0}` },
-    { label: "Reportes recibidos", value: String(reports.length) },
+    { label: t("panel.sitios"), value: String(total) },
+    { label: t("panel.saturados"), value: String(saturated) },
+    { label: t("panel.verificados"), value: `${verified}/${total || 0}` },
+    { label: t("panel.reportes"), value: String(reports.length) },
   ];
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-4xl">
-      <h1 className="text-2xl font-extrabold text-ink">Estado turístico</h1>
+      <h1 className="text-2xl font-extrabold text-ink">{t("panel.titulo")}</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Vista para municipalidad y operadores.
+        {t("panel.subtitulo")}
         {source ? (
           <>
             {" "}
-            Datos:{" "}
+            {t("panel.datos")}{" "}
             <span className="font-semibold text-ink">
-              {source === "demo" ? "JSON local (demo)" : source}
+              {source === "demo" ? t("panel.jsonLocal") : source}
             </span>
             {hour !== null ? ` · hora ${String(hour).padStart(2, "0")}:00` : ""}.
           </>
@@ -57,10 +59,9 @@ export default function PanelPage() {
       </ul>
 
       <section className="mt-6 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-        <h2 className="font-extrabold text-ink">Cobertura de accesibilidad</h2>
+        <h2 className="font-extrabold text-ink">{t("panel.cobertura")}</h2>
         <p className="mt-0.5 text-xs text-ink-muted">
-          Cuántos de los {total || 0} sitios declaran cada rasgo. No es una
-          certificación: es lo que pudimos confirmar.
+          {t("panel.coberturaAyuda")}
         </p>
         <div className="mt-4 flex flex-col gap-4">
           {ACCESSIBILITY_FEATURES.map(({ key, label }) => {
@@ -71,7 +72,7 @@ export default function PanelPage() {
                 label={label}
                 value={n}
                 max={total || 1}
-                valueLabel={`${n} de ${total || 0}`}
+                valueLabel={`${n} ${t("panel.deN")} ${total || 0}`}
               />
             );
           })}
@@ -81,19 +82,19 @@ export default function PanelPage() {
       {/* La tabla completa por sitio es obligatoria (§6.3): es la via de lectura
           que no depende del color. */}
       <section className="mt-6">
-        <h2 className="font-extrabold text-ink">Estado por sitio</h2>
+        <h2 className="font-extrabold text-ink">{t("panel.estadoPorSitio")}</h2>
         <div className="mt-3 overflow-x-auto rounded-3xl border border-sand-200 bg-sand-50">
           <table className="w-full min-w-[560px] text-left text-sm">
             <caption className="sr-only">
-              Ocupación, nivel de aforo, accesibilidad y procedencia del dato por sitio
+              {t("panel.tablaCaption")}
             </caption>
             <thead>
               <tr className="text-xs uppercase tracking-wide text-ink-muted">
-                <th scope="col" className="px-4 py-3">Sitio</th>
-                <th scope="col" className="px-4 py-3">Ocupación</th>
-                <th scope="col" className="px-4 py-3">Nivel</th>
-                <th scope="col" className="px-4 py-3">Accesibilidad</th>
-                <th scope="col" className="px-4 py-3">Dato</th>
+                <th scope="col" className="px-4 py-3">{t("panel.colSitio")}</th>
+                <th scope="col" className="px-4 py-3">{t("panel.colOcupacion")}</th>
+                <th scope="col" className="px-4 py-3">{t("panel.colNivel")}</th>
+                <th scope="col" className="px-4 py-3">{t("panel.colAccesibilidad")}</th>
+                <th scope="col" className="px-4 py-3">{t("panel.colDato")}</th>
               </tr>
             </thead>
             <tbody>
@@ -113,14 +114,14 @@ export default function PanelPage() {
             </tbody>
           </table>
         </div>
-        {loading ? <p className="mt-2 text-xs text-ink-muted">Cargando…</p> : null}
+        {loading ? <p className="mt-2 text-xs text-ink-muted">{t("common.cargando")}</p> : null}
       </section>
 
       <section className="mt-6">
-        <h2 className="font-extrabold text-ink">Reportes de accesibilidad</h2>
+        <h2 className="font-extrabold text-ink">{t("panel.tituloReportes")}</h2>
         {reports.length === 0 ? (
           <p className="mt-2 rounded-2xl border border-sand-200 bg-sand-50 p-4 text-sm text-ink-soft">
-            Todavía no hay reportes. Los que envíen los viajeros aparecen aquí.
+            {t("panel.sinReportes")}
           </p>
         ) : (
           <ul className="mt-3 flex flex-col gap-2">

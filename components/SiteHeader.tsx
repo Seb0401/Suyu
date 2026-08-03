@@ -6,6 +6,7 @@ import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { ChatIcon } from "@/components/Icons";
 import { NAV_ITEMS } from "@/components/nav-items";
+import { useT } from "@/components/i18n/LocaleProvider";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -17,6 +18,7 @@ function isActive(pathname: string, href: string) {
  */
 export default function SiteHeader() {
   const pathname = usePathname();
+  const t = useT();
 
   return (
     <header className="sticky top-0 z-30 hidden border-b border-sand-200 bg-sand-50/95 backdrop-blur md:block">
@@ -25,9 +27,9 @@ export default function SiteHeader() {
           <Logo />
         </Link>
 
-        <nav aria-label="Navegación principal" className="flex-1">
+        <nav aria-label={t("nav.principal")} className="flex-1">
           <ul className="flex items-center gap-1">
-            {NAV_ITEMS.map(({ href, label, Icon }) => {
+            {NAV_ITEMS.map(({ href, labelKey, Icon }) => {
               const active = isActive(pathname, href);
               return (
                 <li key={href}>
@@ -41,7 +43,7 @@ export default function SiteHeader() {
                     }`}
                   >
                     <Icon size={18} />
-                    {label}
+                    {t(labelKey)}
                   </Link>
                 </li>
               );
@@ -57,7 +59,7 @@ export default function SiteHeader() {
             className="flex items-center gap-2 rounded-full bg-night-800 px-4 py-2 text-sm font-bold text-cream"
           >
             <ChatIcon size={18} />
-            Copiloto
+            {t("nav.copiloto")}
           </Link>
         </div>
       </div>
