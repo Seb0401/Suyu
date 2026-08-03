@@ -7,6 +7,8 @@ import { ACCESSIBILITY_FEATURES } from "@/components/AccessibilityIcons";
 import { SearchIcon } from "@/components/Icons";
 import { useSites } from "@/components/useSites";
 import { passesKidsFilter } from "@/components/kidsInfo";
+import { FamilyBathroomIcon, PetIcon } from "@/components/AccessibilityIcons";
+import type { SiteAccessibilityDetail } from "@/lib/types";
 import { hasAccessibilityNeeds, readProfile, travelsWithKids } from "@/components/travelProfile";
 import { accessibilityScore } from "@/lib/filters";
 import type { SiteWithCrowd } from "@/lib/types";
@@ -31,6 +33,27 @@ function ExplorarContent() {
   const [kidsOnly, setKidsOnly] = useState(false);
   const [sort, setSort] = useState<SortKey>("nombre");
   const [fromProfile, setFromProfile] = useState(false);
+  const [familyOnly, setFamilyOnly] = useState(false);
+  const [petsOnly, setPetsOnly] = useState(false);
+  const [details, setDetails] = useState<SiteAccessibilityDetail[]>([]);
+
+  useEffect(() => {
+    fetch("/api/accessibility")
+      .then((r) => (r.ok ? r.json() : { details: [] }))
+      .then((d) => setDetails(d.details ?? []))
+      .catch(() => setDetails([]));
+  }, []);
+
+  const detailById = useMemo(
+    () => new Map(details.map((d) => [d.site_id, d])),
+    [details],
+  );
+
+  /* Cuantos sitios tienen el dato CONFIRMADO. Si es 0, el filtro se deshabilita
+     con su explicacion en vez de dejar que el usuario lo active y reciba una
+     lista vacia que parece un error de la app. */
+  const withFamilyBathroom = details.filter((d) => d.has_family_bathroom === true).length;
+  const withPets = details.filter((d) => d.pet_policy === "permitidas").length;
 
   /* Los filtros se precargan del perfil de viaje, pero la pantalla lo DICE y
      deja quitarlos de un toque: filtrar en silencio por algo que el usuario
@@ -62,6 +85,8 @@ function ExplorarContent() {
         return false;
       }
       if (kidsOnly && !passesKidsFilter(site.id)) return false;
+      if (familyOnly && detailById.get(site.id)?.has_family_bathroom !== true) return false;
+      if (petsOnly && detailById.get(site.id)?.pet_policy !== "permitidas") return false;
       return ACCESSIBILITY_FEATURES.every(({ key }) => !active[key] || site[key]);
     });
 
@@ -70,7 +95,7 @@ function ExplorarContent() {
       if (sort === "mas-accesible") return accessibilityScore(b) - accessibilityScore(a);
       return a.name.localeCompare(b.name, "es");
     });
-  }, [sites, query, active, kidsOnly, sort]);
+  }, [sites, query, active, kidsOnly, familyOnly, petsOnly, detailById, sort]);
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-4xl">
@@ -122,6 +147,50 @@ function ExplorarContent() {
             Apto con niños
           </label>
 
+          {/* Deshabilitados mientras ningun sitio tenga el dato confirmado.
+              Dejarlos activables devolveria una lista vacia, que se lee como un
+              fallo de la app y no como una falta de informacion nuestra. */}
+          {[
+            {
+              id: "familia",
+              label: "Baño familiar",
+              Icon: FamilyBathroomIcon,
+              on: familyOnly,
+              set: setFamilyOnly,
+              count: withFamilyBathroom,
+            },
+            {
+              id: "mascotas",
+              label: "Acepta mascotas",
+              Icon: PetIcon,
+              on: petsOnly,
+              set: setPetsOnly,
+              count: withPets,
+            },
+          ].map(({ id, label, Icon, on, set, count }) => (
+            <label
+              key={id}
+              className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
+                count === 0
+                  ? "cursor-not-allowed border-sand-200 bg-sand-100 text-ink-muted opacity-60"
+                  : on
+                    ? "cursor-pointer border-forest-700 bg-forest-50 text-forest-700"
+                    : "cursor-pointer border-sand-200 bg-sand-50 text-ink-soft"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={on}
+                disabled={count === 0}
+                onChange={(e) => set(e.target.checked)}
+                className="sr-only"
+              />
+              <Icon size={15} />
+              {label}
+              {count === 0 ? <span className="font-normal">(sin datos)</span> : null}
+            </label>
+          ))}
+
           {ACCESSIBILITY_FEATURES.map(({ key, label, Icon }) => {
             const on = Boolean(active[key]);
             return (
@@ -169,6 +238,15 @@ function ExplorarContent() {
 
       {error ? (
         <p className="mt-3 rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">{error}</p>
+      ) : null}
+
+      {withFamilyBathroom === 0 || withPets === 0 ? (
+        <p className="mt-2 rounded-2xl border border-sand-200 bg-sand-50 px-3 py-2 text-xs text-ink-soft">
+          Todavía no tenemos confirmado si estos lugares cuentan con baño
+          familiar o si aceptan mascotas, así que esos filtros están
+          desactivados. Los perros guía sí tienen acceso garantizado por ley en
+          todos ellos.
+        </p>
       ) : null}
 
       {kidsOnly ? (

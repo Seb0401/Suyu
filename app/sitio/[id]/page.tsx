@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccessibilityChecklist from "@/components/AccessibilityChecklist";
+import AccessibilityDetailSection from "@/components/AccessibilityDetail";
 import CrowdBadge from "@/components/CrowdBadge";
 import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
@@ -235,6 +236,10 @@ export default function SitioPage() {
           Reportar un problema aquí
         </button>
       </section>
+
+      {/* El detalle 1-3 va justo despues de la checklist booleana: primero
+          "que hay", inmediatamente despues "en que estado esta". */}
+      <AccessibilityDetailSection siteId={site.id} />
 
       <ReportDialog
         siteId={site.id}

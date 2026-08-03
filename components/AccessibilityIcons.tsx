@@ -65,6 +65,46 @@ export function RestAreaIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/**
+ * Baño familiar o cambiador. Icono DISTINTO del de baño adaptado a proposito:
+ * si compartieran dibujo, un padre y un usuario de silla de ruedas leerian lo
+ * mismo esperando cosas diferentes.
+ */
+export function FamilyBathroomIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <rect x="3" y="5" width="18" height="13" rx="2" />
+      <circle cx="8.5" cy="9.5" r="1.4" />
+      <path d="M6.5 15v-2a2 2 0 0 1 4 0v2" />
+      <circle cx="15.5" cy="10.5" r="1" />
+      <path d="M14 15v-1.5a1.5 1.5 0 0 1 3 0V15" />
+    </svg>
+  );
+}
+
+export function PetIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <ellipse cx="12" cy="16" rx="4" ry="3.2" />
+      <circle cx="6.5" cy="11" r="1.9" />
+      <circle cx="17.5" cy="11" r="1.9" />
+      <circle cx="9.5" cy="7" r="1.8" />
+      <circle cx="14.5" cy="7" r="1.8" />
+    </svg>
+  );
+}
+
+/** Perro guia. Va aparte de PetIcon porque es un derecho, no una cortesia. */
+export function GuideDogIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 9.5 6 5l3 2h4l3-2 2 4.5v3l-2.5 2V19h-8v-4.5L4 12.5z" />
+      <path d="M9.5 11h.01M14.5 11h.01" />
+      <path d="M19 14h2v5" />
+    </svg>
+  );
+}
+
 /** Las 4 dimensiones de accesibilidad que trae cada sitio, en orden fijo. */
 export const ACCESSIBILITY_FEATURES: {
   key: "wheelchair_accessible" | "has_ramps" | "has_accessible_bathroom" | "has_rest_areas";
