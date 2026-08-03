@@ -53,21 +53,21 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
   const { detail, guide_dog } = data;
 
   const rows = [
-    { key: "ramps", label: "Rampas", Icon: RampIcon, grade: detail.ramps },
+    { key: "ramps", labelKey: "a11y.rampas" as const, Icon: RampIcon, grade: detail.ramps },
     /* Gradas van justo despues de rampas: son las dos caras del mismo problema
        — una rampa buena compensa unas gradas malas, y verlas juntas es lo que
        deja leer eso de un vistazo. */
-    { key: "steps", label: "Gradas y escalones", Icon: StepsIcon, grade: detail.steps },
+    { key: "steps", labelKey: "a11y.gradas" as const, Icon: StepsIcon, grade: detail.steps },
     {
       key: "bathroom",
-      label: "Baño adaptado",
+      labelKey: "a11y.banoAdaptado" as const,
       Icon: BathroomIcon,
       grade: detail.accessible_bathroom,
     },
-    { key: "rest", label: "Zonas de descanso", Icon: RestAreaIcon, grade: detail.rest_areas },
+    { key: "rest", labelKey: "a11y.descansos" as const, Icon: RestAreaIcon, grade: detail.rest_areas },
     {
       key: "circulation",
-      label: "Circulación en silla de ruedas",
+      labelKey: "a11y.circulacion" as const,
       Icon: WheelchairIcon,
       grade: detail.wheelchair_circulation,
     },
@@ -75,19 +75,18 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
 
   return (
     <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-      <h2 className="font-extrabold text-ink">Estado de los servicios</h2>
+      <h2 className="font-extrabold text-ink">{t("a11y.estadoServicios")}</h2>
       <p className="mt-0.5 text-xs text-ink-muted">
-        No solo si existen, sino en qué estado están. 1 es deficiente y 3 es en
-        buen estado.
+        {t("a11y.estadoAyuda")}
       </p>
 
       <ul className="mt-4 flex flex-col gap-4">
-        {rows.map(({ key, label, Icon, grade }) => (
+        {rows.map(({ key, labelKey, Icon, grade }) => (
           <li key={key}>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="flex items-center gap-2 text-sm font-semibold text-ink">
                 <Icon size={17} className="text-ink-soft" />
-                {label}
+                {t(labelKey)}
               </span>
               <RatingBar rating={grade.rating} />
             </div>
@@ -105,11 +104,11 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
         <div>
           <p className="flex items-center gap-2 text-sm font-semibold text-ink">
             <FamilyBathroomIcon size={17} className="text-ink-soft" />
-            Baño familiar o cambiador
+            {t("a11y.banoFamiliar")}
             {detail.has_family_bathroom === null ? (
               <span className="flex items-center gap-1 text-xs font-bold text-ink-muted">
                 <HelpCircleIcon size={13} />
-                Sin dato
+                {t("common.sinDato")}
               </span>
             ) : (
               <span
@@ -117,7 +116,7 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
                   detail.has_family_bathroom ? "text-forest-700" : "text-ink-muted"
                 }`}
               >
-                {detail.has_family_bathroom ? "Disponible" : "No disponible"}
+                {detail.has_family_bathroom ? t("a11y.permitidas") : t("a11y.noPermitidas")}
               </span>
             )}
           </p>
@@ -127,7 +126,7 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
         <div>
           <p className="flex items-center gap-2 text-sm font-semibold text-ink">
             <PetIcon size={17} className="text-ink-soft" />
-            Mascotas
+            {t("a11y.mascotas")}
             <span
               className={`text-xs font-bold ${
                 detail.pet_policy === "permitidas"
@@ -138,10 +137,10 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
               }`}
             >
               {detail.pet_policy === "permitidas"
-                ? "Permitidas"
+                ? t("a11y.permitidas")
                 : detail.pet_policy === "no-permitidas"
-                  ? "No permitidas"
-                  : "Sin dato"}
+                  ? t("a11y.noPermitidas")
+                  : t("common.sinDato")}
             </span>
           </p>
           <p className="mt-1 text-xs text-ink-soft">{detail.pet_note}</p>
@@ -159,7 +158,7 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 font-bold underline"
             >
-              Ver la ley
+              {t("a11y.verLey")}
               <ExternalLinkIcon size={11} />
               <span className="sr-only">(se abre en una pestaña nueva)</span>
             </a>
@@ -168,7 +167,7 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
       </div>
 
       <p className="mt-4 text-xs text-ink-muted">
-        Fuente:{" "}
+        {t("common.fuente")}{" "}
         {detail.source_url ? (
           <a
             href={detail.source_url}

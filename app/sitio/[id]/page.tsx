@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useT } from "@/components/i18n/LocaleProvider";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccessibilityChecklist from "@/components/AccessibilityChecklist";
@@ -24,7 +25,7 @@ import {
   PinIcon,
   ShieldCheckIcon,
 } from "@/components/Icons";
-import { SUITABILITY_LABEL, getKidsInfo } from "@/components/kidsInfo";
+import { getKidsInfo } from "@/components/kidsInfo";
 import { crowdPresentation } from "@/lib/crowdUi";
 import type { SiteWithCrowd } from "@/lib/types";
 
@@ -45,7 +46,14 @@ function hhmm(hour: number) {
  * Aptitud para ir con niños. Siempre muestra de dónde salió el dato y, cuando
  * no está confirmado, lo dice en vez de omitir la sección (§2.1).
  */
+const KIDS_KEY = {
+  apto: "kids.apto",
+  "con-reservas": "kids.conReservas",
+  "sin-dato": "kids.sinDato",
+} as const;
+
 function KidsSection({ siteId }: { siteId: string }) {
+  const t = useT();
   const info = getKidsInfo(siteId);
   if (!info) return null;
 
@@ -53,7 +61,7 @@ function KidsSection({ siteId }: { siteId: string }) {
 
   return (
     <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-      <h2 className="font-extrabold text-ink">Ir con niños</h2>
+      <h2 className="font-extrabold text-ink">{t("sitio.irConNinos")}</h2>
 
       <p
         className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${
@@ -65,14 +73,14 @@ function KidsSection({ siteId }: { siteId: string }) {
         }`}
       >
         <Badge size={14} />
-        {SUITABILITY_LABEL[info.suitability]}
+        {t(KIDS_KEY[info.suitability])}
       </p>
 
       <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">{info.note}</p>
 
       <p className="mt-2 text-xs text-ink-muted">
-        {info.has_kids_area ? "Tiene zona de juegos. " : "Sin zona de juegos. "}
-        {info.confirmed ? "Fuente: " : "Dato sin confirmar — "}
+        {info.has_kids_area ? `${t("sitio.conZonaJuegos")} ` : `${t("sitio.sinZonaJuegos")} `}
+        {info.confirmed ? `${t("common.fuente")} ` : `${t("sitio.datoSinConfirmar")} `}
         {info.source_url ? (
           <a
             href={info.source_url}
@@ -93,9 +101,10 @@ function KidsSection({ siteId }: { siteId: string }) {
 }
 
 export default function SitioPage() {
+  const t = useT();
   const params = useParams<{ id: string }>();
   const [data, setData] = useState<CrowdResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [stories, setStories] = useState<Story[]>([]);
 
@@ -114,16 +123,18 @@ export default function SitioPage() {
         return r.json();
       })
       .then((d) => !cancelled && setData(d))
-      .catch(() => !cancelled && setError("No pudimos cargar este lugar."));
+      .catch(() => !cancelled && setFailed(true));
     return () => {
       cancelled = true;
     };
   }, [params.id]);
 
-  if (error) {
+  if (failed) {
     return (
       <div className="mx-auto max-w-md px-6 py-8">
-        <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">{error}</p>
+        <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
+          {t("sitio.errorCarga")}
+        </p>
       </div>
     );
   }
@@ -159,7 +170,7 @@ export default function SitioPage() {
       </div>
 
       <section className="mt-5 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-        <h2 className="font-extrabold text-ink">Estado del lugar</h2>
+        <h2 className="font-extrabold text-ink">{t("sitio.estadoLugar")}</h2>
         <div className="mt-2 flex items-center justify-between gap-4">
           <div>
             <p className="text-3xl font-extrabold leading-none text-ink">{occupancy}%</p>
@@ -167,7 +178,7 @@ export default function SitioPage() {
                 minutos: el perfil horario es una simulacion y convertirlo en
                 minutos concretos daria una precision que el dato no tiene. */}
             <p className="mt-1 text-sm text-ink-soft">
-              Ocupación estimada a las {hhmm(hour)} · {presentation.label}
+              {t("sitio.ocupacion")} {hhmm(hour)} · {presentation.label}
             </p>
           </div>
           <CrowdDensityIcon
@@ -184,12 +195,12 @@ export default function SitioPage() {
           <div className="flex items-start gap-3">
             <Mascot size={56} state="map" />
             <div className="min-w-0 flex-1">
-              <h2 className="font-extrabold text-ink">Suyu recomienda</h2>
+              <h2 className="font-extrabold text-ink">{t("sitio.recomienda")}</h2>
 
               {quiet_hour ? (
                 <p className="mt-1 text-sm font-semibold text-forest-700">
-                  Si puedes esperar, a las {hhmm(quiet_hour.hour)} baja a{" "}
-                  {quiet_hour.occupancy}% de ocupación.
+                  {t("sitio.siPuedesEsperar")} {hhmm(quiet_hour.hour)}{" "}
+                  {t("sitio.bajaA")} {quiet_hour.occupancy}% {t("sitio.deOcupacion")}
                 </p>
               ) : null}
 
@@ -203,7 +214,8 @@ export default function SitioPage() {
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-bold text-ink">{alternative.name}</span>
                       <span className="block text-xs text-ink-soft">
-                        {crowdPresentation(alternative).label} · alternativa cercana
+                        {crowdPresentation(alternative).label} ·{" "}
+                        {t("sitio.alternativaCercana")}
                       </span>
                     </span>
                     <ArrowRightIcon size={16} className="text-ink-muted" />
@@ -211,18 +223,16 @@ export default function SitioPage() {
 
                   <details className="mt-3">
                     <summary className="cursor-pointer text-xs font-bold text-clay-600">
-                      ¿Por qué esta recomendación?
+                      {t("sitio.porQue")}
                     </summary>
                     <p className="mt-1.5 text-xs leading-relaxed text-ink-soft">
-                      Este lugar está saturado ahora mismo. Buscamos primero otro
-                      sitio de la misma categoría con menos gente y, si no hay,
-                      el más cercano que esté menos congestionado.
+                      {t("sitio.porQueTexto")}
                     </p>
                   </details>
                 </>
               ) : (
                 <p className="mt-2 text-sm text-ink-soft">
-                  No encontramos una alternativa menos concurrida cerca.
+                  {t("sitio.sinAlternativa")}
                 </p>
               )}
             </div>
@@ -233,7 +243,7 @@ export default function SitioPage() {
       <KidsSection siteId={site.id} />
 
       <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-        <h2 className="font-extrabold text-ink">Accesibilidad</h2>
+        <h2 className="font-extrabold text-ink">{t("sitio.accesibilidad")}</h2>
         <AccessibilityChecklist site={site} className="mt-3" />
         <p className="mt-3 text-sm leading-relaxed text-ink-soft">{site.notes}</p>
 
@@ -242,7 +252,7 @@ export default function SitioPage() {
           onClick={() => setReportOpen(true)}
           className="mt-4 w-full rounded-full border-2 border-clay-600 px-4 py-2.5 text-sm font-bold text-clay-700"
         >
-          Reportar un problema aquí
+          {t("sitio.reportar")}
         </button>
       </section>
 
@@ -272,9 +282,9 @@ export default function SitioPage() {
 
       {stories.length > 0 ? (
         <section className="mt-4">
-          <h2 className="mb-1 font-extrabold text-ink">Historias de este lugar</h2>
+          <h2 className="mb-1 font-extrabold text-ink">{t("sitio.historiasLugar")}</h2>
           <p className="mb-3 text-xs text-ink-muted">
-            Notas del equipo de Suyu tras visitarlo.
+            {t("sitio.historiasAyuda")}
           </p>
           <div className="flex flex-col gap-3">
             {stories.map((story) => (
@@ -285,7 +295,7 @@ export default function SitioPage() {
       ) : null}
 
       <section className="mt-4">
-        <h2 className="mb-3 font-extrabold text-ink">Servicios cerca</h2>
+        <h2 className="mb-3 font-extrabold text-ink">{t("sitio.serviciosCerca")}</h2>
         <ServiceList siteId={site.id} />
       </section>
 
@@ -293,7 +303,7 @@ export default function SitioPage() {
         href="/ruta"
         className="mt-5 flex items-center justify-center gap-2 rounded-full bg-night-800 px-5 py-3 font-bold text-cream"
       >
-        Ver cómo llegar
+        {t("sitio.verComoLlegar")}
       </Link>
     </div>
   );

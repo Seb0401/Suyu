@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useT } from "@/components/i18n/LocaleProvider";
 import { useCallback, useEffect, useState } from "react";
 import CrowdBadge from "@/components/CrowdBadge";
 import Meter from "@/components/Meter";
@@ -45,8 +46,9 @@ export default function ItinerarioPage() {
   const [hours, setHours] = useState(4);
   const [start, setStart] = useState(() => new Date().getHours());
   const [accessible, setAccessible] = useState(true);
+  const t = useT();
   const [data, setData] = useState<ItineraryResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
   /**
    * Progreso de visita en localStorage, no en el servidor: no hay cuentas de
    * usuario y no vamos a inventar un backend para esto. Se lee en un efecto,
@@ -80,7 +82,7 @@ export default function ItinerarioPage() {
   }, []);
 
   const load = useCallback(() => {
-    setError(null);
+    setFailed(false);
     const params = new URLSearchParams({
       hours: String(hours),
       start: String(start),
@@ -92,7 +94,7 @@ export default function ItinerarioPage() {
         return r.json();
       })
       .then(setData)
-      .catch(() => setError("No pudimos armar el itinerario."));
+      .catch(() => setFailed(true));
   }, [hours, start, accessible]);
 
   useEffect(load, [load]);
@@ -104,17 +106,16 @@ export default function ItinerarioPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
-      <h1 className="text-2xl font-extrabold text-ink">Itinerario del día</h1>
+      <h1 className="text-2xl font-extrabold text-ink">{t("itinerario.titulo")}</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Dinos cuánto tiempo tienes y preparamos un plan que evita las horas
-        saturadas.
+        {t("itinerario.subtitulo")}
       </p>
 
       <div className="mt-5 flex flex-col gap-3 rounded-3xl border border-sand-200 bg-sand-50 p-4">
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1">
             <label htmlFor="horas" className="text-xs font-bold text-ink-soft">
-              Horas disponibles
+              {t("itinerario.horas")}
             </label>
             <select
               id="horas"
@@ -124,7 +125,7 @@ export default function ItinerarioPage() {
             >
               {[2, 3, 4, 6, 8].map((h) => (
                 <option key={h} value={h}>
-                  {h} horas
+                  {h} {t("common.horas")}
                 </option>
               ))}
             </select>
@@ -132,7 +133,7 @@ export default function ItinerarioPage() {
 
           <div className="flex flex-col gap-1">
             <label htmlFor="inicio" className="text-xs font-bold text-ink-soft">
-              Empiezo a las
+              {t("itinerario.empiezo")}
             </label>
             <select
               id="inicio"
@@ -157,13 +158,15 @@ export default function ItinerarioPage() {
             className="h-5 w-5 accent-[var(--color-forest-700)]"
           />
           <WheelchairIcon size={18} className="text-forest-700" />
-          Solo lugares accesibles
+          {t("itinerario.soloAccesibles")}
         </label>
       </div>
 
       <div aria-live="polite" className="mt-6">
-        {error ? (
-          <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">{error}</p>
+        {failed ? (
+          <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
+            {t("itinerario.error")}
+          </p>
         ) : null}
 
         {data ? (
@@ -175,13 +178,14 @@ export default function ItinerarioPage() {
                   "linear-gradient(135deg, var(--color-forest-banner-from), var(--color-forest-banner-to))",
               }}
             >
-              <p className="text-sm opacity-85">Tu plan</p>
+              <p className="text-sm opacity-85">{t("itinerario.tuPlan")}</p>
               <p className="text-3xl font-extrabold leading-tight">
-                {data.stops.length} {data.stops.length === 1 ? "parada" : "paradas"}
+                {data.stops.length}{" "}
+                {data.stops.length === 1 ? t("itinerario.parada") : t("itinerario.paradas")}
               </p>
               <p className="mt-1 flex items-center gap-1.5 text-sm">
                 <CalendarIcon size={15} />
-                {humanMinutes(data.total_minutes)} en total
+                {humanMinutes(data.total_minutes)} {t("itinerario.enTotal")}
               </p>
             </section>
 
@@ -191,25 +195,23 @@ export default function ItinerarioPage() {
             {data.stops.length > 0 && visitedInPlan > 0 ? (
               <div className="mt-3 rounded-3xl border border-sand-200 bg-sand-50 p-4">
                 <Meter
-                  label="Tu avance"
+                  label={t("itinerario.tuAvance")}
                   value={visitedInPlan}
                   max={data.stops.length}
-                  valueLabel={`${visitedInPlan} de ${data.stops.length}`}
+                  valueLabel={`${visitedInPlan} ${t("panel.deN")} ${data.stops.length}`}
                 />
               </div>
             ) : null}
 
             {data.needs_transport ? (
               <p className="mt-3 rounded-2xl border border-sand-200 bg-[var(--color-amber-chip-bg)] p-3 text-xs font-semibold text-[var(--color-amber-text)]">
-                Algún tramo es demasiado largo para ir a pie. Considera taxi o
-                transporte público para esa parte.
+                {t("itinerario.transporte")}
               </p>
             ) : null}
 
             {data.stops.length === 0 ? (
               <p className="mt-3 rounded-2xl border border-sand-200 bg-sand-50 p-4 text-sm text-ink-soft">
-                Con ese tiempo y esos filtros no alcanza para ninguna parada.
-                Prueba con más horas o quitando el filtro de accesibilidad.
+                {t("itinerario.sinParadas")}
               </p>
             ) : (
               <ol className="mt-4 flex flex-col gap-3">
@@ -224,7 +226,7 @@ export default function ItinerarioPage() {
                           {stop.travel_from_previous_m !== null
                             ? ` · ${stop.travel_from_previous_m} m`
                             : ""}
-                          {!stop.walkable ? " · demasiado lejos a pie" : " a pie"}
+                          {!stop.walkable ? ` · ${t("itinerario.lejosAPie")}` : ` ${t("itinerario.aPie")}`}
                         </p>
                       ) : null}
 
@@ -254,7 +256,7 @@ export default function ItinerarioPage() {
                               {stop.site.name}
                             </span>
                             <span className="block text-xs text-ink-muted">
-                              {stop.arrive_label} · {stop.visit_minutes} min de visita
+                              {stop.arrive_label} · {stop.visit_minutes} {t("itinerario.minVisita")}
                             </span>
                             <CrowdBadge site={stop.site} className="mt-2" />
                           </span>
@@ -271,7 +273,7 @@ export default function ItinerarioPage() {
                           }`}
                         >
                           <CheckIcon size={15} />
-                          {done ? "Visitado" : "Marcar como visitado"}
+                          {done ? t("itinerario.visitado") : t("itinerario.marcarVisitado")}
                         </button>
                       </div>
                     </li>
@@ -302,7 +304,7 @@ export default function ItinerarioPage() {
             {/* Nunca se descarta un sitio en silencio: si no entro, se dice por que. */}
             {data.skipped.length > 0 ? (
               <section className="mt-5 rounded-3xl border border-sand-200 bg-sand-50 p-4">
-                <h2 className="text-sm font-extrabold text-ink">Qué quedó fuera</h2>
+                <h2 className="text-sm font-extrabold text-ink">{t("itinerario.quedoFuera")}</h2>
                 <ul className="mt-2 flex flex-col gap-1.5">
                   {data.skipped.map(({ site, reason }) => (
                     <li key={site.id} className="text-xs text-ink-soft">

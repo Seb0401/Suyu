@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useT } from "@/components/i18n/LocaleProvider";
+import type { TranslationKey } from "@/components/i18n/dictionary";
 
 /**
  * Aforo por hora de un sitio.
@@ -17,12 +19,21 @@ import { useState } from "react";
 
 const CLOSED_STUB_PX = 3;
 
-function levelOf(occupancy: number): { label: string; color: string } {
-  if (occupancy === 0) return { label: "Cerrado", color: "var(--crowd-sin-datos)" };
-  if (occupancy >= 70) return { label: "Muy congestionado", color: "var(--crowd-alto)" };
-  if (occupancy >= 40) return { label: "Algo concurrido", color: "var(--crowd-medio)" };
-  return { label: "Poca gente", color: "var(--crowd-bajo)" };
+/* Devuelve la CLAVE del diccionario, no el texto: es una funcion de modulo y no
+   puede llamar al hook de traduccion. */
+function levelOf(occupancy: number): { key: TranslationKey; color: string } {
+  if (occupancy === 0) return { key: "crowd.cerrado", color: "var(--crowd-sin-datos)" };
+  if (occupancy >= 70) return { key: "crowd.alto", color: "var(--crowd-alto)" };
+  if (occupancy >= 40) return { key: "crowd.medio", color: "var(--crowd-medio)" };
+  return { key: "crowd.bajo", color: "var(--crowd-bajo)" };
 }
+
+const LEGEND: { key: TranslationKey; color: string }[] = [
+  { key: "crowd.bajo", color: "var(--crowd-bajo)" },
+  { key: "crowd.medio", color: "var(--crowd-medio)" },
+  { key: "crowd.alto", color: "var(--crowd-alto)" },
+  { key: "crowd.cerrado", color: "var(--crowd-sin-datos)" },
+];
 
 function hhmm(hour: number) {
   return `${String(hour).padStart(2, "0")}:00`;
@@ -40,29 +51,30 @@ export default function CrowdChart({
   className?: string;
 }) {
   const [showTable, setShowTable] = useState(false);
+  const t = useT();
 
   return (
     <section className={className}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="font-extrabold text-ink">Gente por hora</h3>
+        <h3 className="font-extrabold text-ink">{t("crowd.gentePorHora")}</h3>
         <button
           type="button"
           onClick={() => setShowTable((v) => !v)}
           aria-expanded={showTable}
           className="rounded-full border border-sand-200 px-3 py-1 text-xs font-bold text-ink-soft"
         >
-          {showTable ? "Ver gráfico" : "Ver tabla"}
+          {showTable ? t("crowd.verGrafico") : t("crowd.verTabla")}
         </button>
       </div>
 
       {showTable ? (
         <table className="mt-3 w-full text-left text-sm">
-          <caption className="sr-only">Ocupación estimada por hora</caption>
+          <caption className="sr-only">{t("crowd.ocupacion")}</caption>
           <thead>
             <tr className="text-xs uppercase tracking-wide text-ink-muted">
-              <th scope="col" className="py-1">Hora</th>
-              <th scope="col" className="py-1">Ocupación</th>
-              <th scope="col" className="py-1">Nivel</th>
+              <th scope="col" className="py-1">{t("crowd.hora")}</th>
+              <th scope="col" className="py-1">{t("crowd.ocupacion")}</th>
+              <th scope="col" className="py-1">{t("crowd.nivel")}</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +82,7 @@ export default function CrowdChart({
               <tr key={h} className="border-t border-sand-200">
                 <td className="py-1 font-semibold text-ink">{hhmm(h)}</td>
                 <td className="py-1 text-ink-soft">{occ}%</td>
-                <td className="py-1 text-ink-soft">{levelOf(occ).label}</td>
+                <td className="py-1 text-ink-soft">{t(levelOf(occ).key)}</td>
               </tr>
             ))}
           </tbody>
@@ -90,7 +102,8 @@ export default function CrowdChart({
 
             <ol className="absolute inset-0 flex items-end gap-[2px]">
               {profile.map((occ, h) => {
-                const { label, color } = levelOf(occ);
+                const { key: levelKey, color } = levelOf(occ);
+                const label = t(levelKey);
                 const isNow = currentHour === h;
                 const isQuiet = quietHour === h;
 
@@ -135,15 +148,10 @@ export default function CrowdChart({
           </div>
 
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
-            {[
-              { label: "Poca gente", color: "var(--crowd-bajo)" },
-              { label: "Algo concurrido", color: "var(--crowd-medio)" },
-              { label: "Muy congestionado", color: "var(--crowd-alto)" },
-              { label: "Cerrado", color: "var(--crowd-sin-datos)" },
-            ].map(({ label, color }) => (
-              <li key={label} className="flex items-center gap-1.5 text-xs text-ink-soft">
+            {LEGEND.map(({ key, color }) => (
+              <li key={key} className="flex items-center gap-1.5 text-xs text-ink-soft">
                 <span aria-hidden className="h-2.5 w-2.5 rounded-sm" style={{ background: color }} />
-                {label}
+                {t(key)}
               </li>
             ))}
           </ul>

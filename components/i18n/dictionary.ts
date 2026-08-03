@@ -273,6 +273,82 @@ const es = {
   "cuenta.cerrarSesion": "Cerrar sesión",
   "cuenta.guardado": "Perfil guardado en tu cuenta.",
 
+  "sitio.errorCarga": "No pudimos cargar este lugar.",
+
+  "itinerario.titulo": "Itinerario del día",
+  "itinerario.subtitulo":
+    "Dinos cuánto tiempo tienes y preparamos un plan que evita las horas saturadas.",
+  "itinerario.horas": "Horas disponibles",
+  "itinerario.empiezo": "Empiezo a las",
+  "itinerario.soloAccesibles": "Solo lugares accesibles",
+  "itinerario.tuPlan": "Tu plan",
+  "itinerario.parada": "parada",
+  "itinerario.paradas": "paradas",
+  "itinerario.enTotal": "en total",
+  "itinerario.transporte":
+    "Algún tramo es demasiado largo para ir a pie. Considera taxi o transporte público para esa parte.",
+  "itinerario.sinParadas":
+    "Con ese tiempo y esos filtros no alcanza para ninguna parada. Prueba con más horas o quitando el filtro de accesibilidad.",
+  "itinerario.quedoFuera": "Qué quedó fuera",
+  "itinerario.tuAvance": "Tu avance",
+  "itinerario.visitado": "Visitado",
+  "itinerario.marcarVisitado": "Marcar como visitado",
+  "itinerario.error": "No pudimos armar el itinerario.",
+  "itinerario.minVisita": "min de visita",
+  "itinerario.aPie": "a pie",
+  "itinerario.lejosAPie": "demasiado lejos a pie",
+
+  "panel.titulo": "Estado turístico",
+  "panel.subtitulo": "Vista para municipalidad y operadores.",
+  "panel.datos": "Datos:",
+  "panel.jsonLocal": "JSON local (demo)",
+  "panel.sitios": "Sitios monitoreados",
+  "panel.saturados": "Saturados ahora",
+  "panel.verificados": "Con dato verificado",
+  "panel.reportes": "Reportes recibidos",
+  "panel.cobertura": "Cobertura de accesibilidad",
+  "panel.coberturaAyuda":
+    "Cuántos sitios declaran cada rasgo. No es una certificación: es lo que pudimos confirmar.",
+  "panel.estadoPorSitio": "Estado por sitio",
+  "panel.tablaCaption":
+    "Ocupación, nivel de aforo, accesibilidad y procedencia del dato por sitio",
+  "panel.colSitio": "Sitio",
+  "panel.colOcupacion": "Ocupación",
+  "panel.colNivel": "Nivel",
+  "panel.colAccesibilidad": "Accesibilidad",
+  "panel.colDato": "Dato",
+  "panel.tituloReportes": "Reportes de accesibilidad",
+  "panel.sinReportes":
+    "Todavía no hay reportes. Los que envíen los viajeros aparecen aquí.",
+  "panel.deN": "de",
+
+  "historias.titulo": "Historias de viajeros",
+  "historias.subtitulo":
+    "Notas cortas escritas por el equipo de Suyu tras visitar cada lugar. Todavía no hay envíos de viajeros: publicar textos sin moderar habría sido peor que no tenerlos.",
+  "historias.error": "No pudimos cargar las historias.",
+
+  "agencias.titulo": "Agencias aliadas",
+  "agencias.error": "No pudimos cargar el directorio.",
+  "agencias.verAgencia": "Ver la agencia",
+
+  "servicios.registroFormal": "Registro formal",
+  "servicios.registroPorVerificar": "Registro por verificar",
+  "servicios.sinServicios": "Todavía no tenemos servicios registrados cerca de aquí.",
+  "servicios.accesibleSilla": "Accesible en silla de ruedas",
+  "servicios.verProveedor": "Ver sitio del proveedor",
+  "servicios.minAPie": "min a pie",
+
+  "reporte.titulo": "Reportar un problema",
+  "reporte.gracias":
+    "Gracias. Tu reporte queda registrado y se revisa antes de cambiar la ficha del lugar.",
+  "reporte.queEncontraste": "¿Qué encontraste?",
+  "reporte.cuentanos": "Cuéntanos más (opcional)",
+  "reporte.errorEnvio":
+    "No pudimos enviarlo. Los reportes necesitan conexión — vuelve a intentarlo cuando tengas red.",
+  "reporte.enviando": "Enviando…",
+  "reporte.enviar": "Enviar reporte",
+  "reporte.listo": "Listo",
+
   "traduccion.aviso":
     "Este texto está en español porque todavía no lo tradujimos. Preferimos mostrarlo tal cual antes que arriesgar una traducción incorrecta en datos de accesibilidad.",
 } as const;
@@ -538,6 +614,80 @@ const en: Record<TranslationKey, string> = {
   "cuenta.guardando": "Saving…",
   "cuenta.cerrarSesion": "Sign out",
   "cuenta.guardado": "Profile saved to your account.",
+
+  "sitio.errorCarga": "We could not load this place.",
+
+  "itinerario.titulo": "Day itinerary",
+  "itinerario.subtitulo":
+    "Tell us how much time you have and we will build a plan that avoids the busy hours.",
+  "itinerario.horas": "Hours available",
+  "itinerario.empiezo": "I start at",
+  "itinerario.soloAccesibles": "Accessible places only",
+  "itinerario.tuPlan": "Your plan",
+  "itinerario.parada": "stop",
+  "itinerario.paradas": "stops",
+  "itinerario.enTotal": "in total",
+  "itinerario.transporte":
+    "One leg is too long to walk. Consider a taxi or public transport for that part.",
+  "itinerario.sinParadas":
+    "With that time and those filters there is not enough for a single stop. Try more hours or remove the accessibility filter.",
+  "itinerario.quedoFuera": "What was left out",
+  "itinerario.tuAvance": "Your progress",
+  "itinerario.visitado": "Visited",
+  "itinerario.marcarVisitado": "Mark as visited",
+  "itinerario.error": "We could not build the itinerary.",
+  "itinerario.minVisita": "min visit",
+  "itinerario.aPie": "on foot",
+  "itinerario.lejosAPie": "too far on foot",
+
+  "panel.titulo": "Tourism status",
+  "panel.subtitulo": "View for the city council and operators.",
+  "panel.datos": "Data:",
+  "panel.jsonLocal": "local JSON (demo)",
+  "panel.sitios": "Sites monitored",
+  "panel.saturados": "Crowded right now",
+  "panel.verificados": "With verified data",
+  "panel.reportes": "Reports received",
+  "panel.cobertura": "Accessibility coverage",
+  "panel.coberturaAyuda":
+    "How many sites declare each feature. Not a certification: it is what we could confirm.",
+  "panel.estadoPorSitio": "Status by site",
+  "panel.tablaCaption": "Occupancy, crowd level, accessibility and data provenance by site",
+  "panel.colSitio": "Site",
+  "panel.colOcupacion": "Occupancy",
+  "panel.colNivel": "Level",
+  "panel.colAccesibilidad": "Accessibility",
+  "panel.colDato": "Data",
+  "panel.tituloReportes": "Accessibility reports",
+  "panel.sinReportes": "No reports yet. The ones travellers send will show up here.",
+  "panel.deN": "of",
+
+  "historias.titulo": "Traveller stories",
+  "historias.subtitulo":
+    "Short notes written by the Suyu team after visiting each place. There are no traveller submissions yet: publishing unmoderated text would have been worse than not having it.",
+  "historias.error": "We could not load the stories.",
+
+  "agencias.titulo": "Partner agencies",
+  "agencias.error": "We could not load the directory.",
+  "agencias.verAgencia": "Visit the agency",
+
+  "servicios.registroFormal": "Formally registered",
+  "servicios.registroPorVerificar": "Registration unverified",
+  "servicios.sinServicios": "We do not have services registered near here yet.",
+  "servicios.accesibleSilla": "Wheelchair accessible",
+  "servicios.verProveedor": "Visit the provider's site",
+  "servicios.minAPie": "min walk",
+
+  "reporte.titulo": "Report a problem",
+  "reporte.gracias":
+    "Thank you. Your report is recorded and reviewed before we change the site's entry.",
+  "reporte.queEncontraste": "What did you find?",
+  "reporte.cuentanos": "Tell us more (optional)",
+  "reporte.errorEnvio":
+    "We could not send it. Reports need a connection — try again when you are online.",
+  "reporte.enviando": "Sending…",
+  "reporte.enviar": "Send report",
+  "reporte.listo": "Done",
 
   "traduccion.aviso":
     "This text is in Spanish because we have not translated it yet. We would rather show it as is than risk an incorrect translation in accessibility data.",
@@ -810,6 +960,82 @@ const fr: Record<TranslationKey, string> = {
   "cuenta.cerrarSesion": "Se déconnecter",
   "cuenta.guardado": "Profil enregistré dans votre compte.",
 
+  "sitio.errorCarga": "Nous n'avons pas pu charger ce lieu.",
+
+  "itinerario.titulo": "Itinéraire de la journée",
+  "itinerario.subtitulo":
+    "Dites-nous de combien de temps vous disposez et nous préparons un plan qui évite les heures d'affluence.",
+  "itinerario.horas": "Heures disponibles",
+  "itinerario.empiezo": "Je commence à",
+  "itinerario.soloAccesibles": "Lieux accessibles uniquement",
+  "itinerario.tuPlan": "Votre plan",
+  "itinerario.parada": "arrêt",
+  "itinerario.paradas": "arrêts",
+  "itinerario.enTotal": "au total",
+  "itinerario.transporte":
+    "Un tronçon est trop long à pied. Envisagez un taxi ou les transports en commun pour cette partie.",
+  "itinerario.sinParadas":
+    "Avec ce temps et ces filtres, aucun arrêt n'est possible. Essayez avec plus d'heures ou en retirant le filtre d'accessibilité.",
+  "itinerario.quedoFuera": "Ce qui a été écarté",
+  "itinerario.tuAvance": "Votre progression",
+  "itinerario.visitado": "Visité",
+  "itinerario.marcarVisitado": "Marquer comme visité",
+  "itinerario.error": "Nous n'avons pas pu préparer l'itinéraire.",
+  "itinerario.minVisita": "min de visite",
+  "itinerario.aPie": "à pied",
+  "itinerario.lejosAPie": "trop loin à pied",
+
+  "panel.titulo": "État touristique",
+  "panel.subtitulo": "Vue pour la municipalité et les opérateurs.",
+  "panel.datos": "Données :",
+  "panel.jsonLocal": "JSON local (démo)",
+  "panel.sitios": "Sites suivis",
+  "panel.saturados": "Saturés en ce moment",
+  "panel.verificados": "Avec donnée vérifiée",
+  "panel.reportes": "Signalements reçus",
+  "panel.cobertura": "Couverture d'accessibilité",
+  "panel.coberturaAyuda":
+    "Combien de sites déclarent chaque caractéristique. Ce n'est pas une certification : c'est ce que nous avons pu confirmer.",
+  "panel.estadoPorSitio": "État par site",
+  "panel.tablaCaption":
+    "Affluence, niveau de fréquentation, accessibilité et provenance de la donnée par site",
+  "panel.colSitio": "Lieu",
+  "panel.colOcupacion": "Affluence",
+  "panel.colNivel": "Niveau",
+  "panel.colAccesibilidad": "Accessibilité",
+  "panel.colDato": "Donnée",
+  "panel.tituloReportes": "Signalements d'accessibilité",
+  "panel.sinReportes":
+    "Aucun signalement pour l'instant. Ceux envoyés par les voyageurs apparaîtront ici.",
+  "panel.deN": "sur",
+
+  "historias.titulo": "Récits de voyageurs",
+  "historias.subtitulo":
+    "Notes courtes écrites par l'équipe Suyu après avoir visité chaque lieu. Il n'y a pas encore de contributions de voyageurs : publier des textes non modérés aurait été pire que de ne pas en avoir.",
+  "historias.error": "Nous n'avons pas pu charger les récits.",
+
+  "agencias.titulo": "Agences partenaires",
+  "agencias.error": "Nous n'avons pas pu charger l'annuaire.",
+  "agencias.verAgencia": "Voir l'agence",
+
+  "servicios.registroFormal": "Enregistrement officiel",
+  "servicios.registroPorVerificar": "Enregistrement à vérifier",
+  "servicios.sinServicios": "Nous n'avons pas encore de services enregistrés près d'ici.",
+  "servicios.accesibleSilla": "Accessible en fauteuil roulant",
+  "servicios.verProveedor": "Voir le site du prestataire",
+  "servicios.minAPie": "min à pied",
+
+  "reporte.titulo": "Signaler un problème",
+  "reporte.gracias":
+    "Merci. Votre signalement est enregistré et vérifié avant toute modification de la fiche du lieu.",
+  "reporte.queEncontraste": "Qu'avez-vous constaté ?",
+  "reporte.cuentanos": "Dites-nous en plus (facultatif)",
+  "reporte.errorEnvio":
+    "Nous n'avons pas pu l'envoyer. Les signalements nécessitent une connexion — réessayez une fois en ligne.",
+  "reporte.enviando": "Envoi…",
+  "reporte.enviar": "Envoyer le signalement",
+  "reporte.listo": "Terminé",
+
   "traduccion.aviso":
     "Ce texte est en espagnol car nous ne l'avons pas encore traduit. Nous préférons l'afficher tel quel plutôt que de risquer une traduction incorrecte dans des données d'accessibilité.",
 };
@@ -1074,6 +1300,80 @@ const pt: Record<TranslationKey, string> = {
   "cuenta.guardando": "Salvando…",
   "cuenta.cerrarSesion": "Sair",
   "cuenta.guardado": "Perfil salvo na sua conta.",
+
+  "sitio.errorCarga": "Não conseguimos carregar este lugar.",
+
+  "itinerario.titulo": "Itinerário do dia",
+  "itinerario.subtitulo":
+    "Diga quanto tempo você tem e preparamos um plano que evita os horários lotados.",
+  "itinerario.horas": "Horas disponíveis",
+  "itinerario.empiezo": "Começo às",
+  "itinerario.soloAccesibles": "Somente lugares acessíveis",
+  "itinerario.tuPlan": "Seu plano",
+  "itinerario.parada": "parada",
+  "itinerario.paradas": "paradas",
+  "itinerario.enTotal": "no total",
+  "itinerario.transporte":
+    "Algum trecho é longe demais para ir a pé. Considere táxi ou transporte público nessa parte.",
+  "itinerario.sinParadas":
+    "Com esse tempo e esses filtros não dá para nenhuma parada. Tente mais horas ou tire o filtro de acessibilidade.",
+  "itinerario.quedoFuera": "O que ficou de fora",
+  "itinerario.tuAvance": "Seu progresso",
+  "itinerario.visitado": "Visitado",
+  "itinerario.marcarVisitado": "Marcar como visitado",
+  "itinerario.error": "Não conseguimos montar o itinerário.",
+  "itinerario.minVisita": "min de visita",
+  "itinerario.aPie": "a pé",
+  "itinerario.lejosAPie": "longe demais a pé",
+
+  "panel.titulo": "Situação turística",
+  "panel.subtitulo": "Visão para a prefeitura e operadores.",
+  "panel.datos": "Dados:",
+  "panel.jsonLocal": "JSON local (demo)",
+  "panel.sitios": "Lugares monitorados",
+  "panel.saturados": "Lotados agora",
+  "panel.verificados": "Com dado verificado",
+  "panel.reportes": "Relatos recebidos",
+  "panel.cobertura": "Cobertura de acessibilidade",
+  "panel.coberturaAyuda":
+    "Quantos lugares declaram cada característica. Não é certificação: é o que conseguimos confirmar.",
+  "panel.estadoPorSitio": "Situação por lugar",
+  "panel.tablaCaption": "Lotação, nível, acessibilidade e procedência do dado por lugar",
+  "panel.colSitio": "Lugar",
+  "panel.colOcupacion": "Lotação",
+  "panel.colNivel": "Nível",
+  "panel.colAccesibilidad": "Acessibilidade",
+  "panel.colDato": "Dado",
+  "panel.tituloReportes": "Relatos de acessibilidade",
+  "panel.sinReportes": "Ainda não há relatos. Os enviados pelos viajantes aparecem aqui.",
+  "panel.deN": "de",
+
+  "historias.titulo": "Histórias de viajantes",
+  "historias.subtitulo":
+    "Notas curtas escritas pela equipe Suyu após visitar cada lugar. Ainda não há envios de viajantes: publicar textos sem moderação teria sido pior do que não tê-los.",
+  "historias.error": "Não conseguimos carregar as histórias.",
+
+  "agencias.titulo": "Agências parceiras",
+  "agencias.error": "Não conseguimos carregar o diretório.",
+  "agencias.verAgencia": "Ver a agência",
+
+  "servicios.registroFormal": "Registro formal",
+  "servicios.registroPorVerificar": "Registro a verificar",
+  "servicios.sinServicios": "Ainda não temos serviços registrados por perto.",
+  "servicios.accesibleSilla": "Acessível para cadeira de rodas",
+  "servicios.verProveedor": "Ver site do fornecedor",
+  "servicios.minAPie": "min a pé",
+
+  "reporte.titulo": "Relatar um problema",
+  "reporte.gracias":
+    "Obrigado. Seu relato fica registrado e é revisado antes de mudarmos a ficha do lugar.",
+  "reporte.queEncontraste": "O que você encontrou?",
+  "reporte.cuentanos": "Conte mais (opcional)",
+  "reporte.errorEnvio":
+    "Não conseguimos enviar. Os relatos precisam de conexão — tente de novo quando estiver online.",
+  "reporte.enviando": "Enviando…",
+  "reporte.enviar": "Enviar relato",
+  "reporte.listo": "Pronto",
 
   "traduccion.aviso":
     "Este texto está em espanhol porque ainda não o traduzimos. Preferimos mostrá-lo como está a arriscar uma tradução incorreta em dados de acessibilidade.",

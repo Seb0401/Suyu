@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/LocaleProvider";
 import { ArrowRightIcon, BriefcaseIcon, PinIcon } from "@/components/Icons";
 import type { PartnerAgency } from "@/lib/types";
 
@@ -23,8 +24,9 @@ type AgenciesResponse = {
  * En su lugar se muestra el texto con su procedencia declarada.
  */
 export default function AgenciasPage() {
+  const t = useT();
   const [data, setData] = useState<AgenciesResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,7 +36,7 @@ export default function AgenciasPage() {
         return r.json();
       })
       .then((d) => !cancelled && setData(d))
-      .catch(() => !cancelled && setError("No pudimos cargar el directorio."));
+      .catch(() => !cancelled && setFailed(true));
     return () => {
       cancelled = true;
     };
@@ -42,20 +44,20 @@ export default function AgenciasPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
-      <h1 className="text-2xl font-extrabold text-ink">Agencias aliadas</h1>
+      <h1 className="text-2xl font-extrabold text-ink">{t("agencias.titulo")}</h1>
       <p className="mt-1 text-sm text-ink-soft">
         Operadores que ya trabajan en Arequipa. Compara tu itinerario de Suyu
         con un tour ya armado.
       </p>
 
       <div aria-live="polite" className="mt-5">
-        {error ? (
+        {failed ? (
           <p className="rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
-            {error}
+            {t("agencias.error")}
           </p>
         ) : null}
 
-        {!data && !error ? (
+        {!data && !failed ? (
           <div className="h-40 animate-pulse rounded-3xl bg-sand-200" aria-hidden />
         ) : null}
 
@@ -129,7 +131,7 @@ export default function AgenciasPage() {
                       rel="noreferrer noopener"
                       className="flex items-center gap-1.5 rounded-full bg-night-800 px-4 py-2 text-sm font-bold text-cream"
                     >
-                      Ver la agencia
+                      {t("agencias.verAgencia")}
                       <ArrowRightIcon size={15} />
                       <span className="sr-only">(se abre en una pestaña nueva)</span>
                     </a>
