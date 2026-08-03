@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
 import { ChatIcon } from "@/components/Icons";
 import { NAV_ITEMS } from "@/components/nav-items";
 
@@ -48,14 +49,17 @@ export default function SiteHeader() {
           </ul>
         </nav>
 
-        <Link
-          href="/chat"
-          aria-current={pathname.startsWith("/chat") ? "page" : undefined}
-          className="flex items-center gap-2 rounded-full bg-night-800 px-4 py-2 text-sm font-bold text-cream"
-        >
-          <ChatIcon size={18} />
-          Copiloto
-        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
+          <Link
+            href="/chat"
+            aria-current={pathname.startsWith("/chat") ? "page" : undefined}
+            className="flex items-center gap-2 rounded-full bg-night-800 px-4 py-2 text-sm font-bold text-cream"
+          >
+            <ChatIcon size={18} />
+            Copiloto
+          </Link>
+        </div>
       </div>
     </header>
   );

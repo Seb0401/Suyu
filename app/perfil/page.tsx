@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Mascot from "@/components/Mascot";
-import { ArrowRightIcon, CheckIcon } from "@/components/Icons";
+import { useTheme } from "@/components/ThemeToggle";
+import { ArrowRightIcon, CheckIcon, MoonIcon } from "@/components/Icons";
 
 const STORAGE_KEY = "suyu:prefs";
 
@@ -18,6 +19,7 @@ const PREFERENCES = [
 export default function PerfilPage() {
   const [prefs, setPrefs] = useState<Record<string, boolean>>({});
   const [loaded, setLoaded] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   useEffect(() => {
     try {
@@ -88,6 +90,34 @@ export default function PerfilPage() {
           })}
         </ul>
         {!loaded ? <p className="mt-2 text-xs text-ink-muted">Cargando preferencias…</p> : null}
+      </section>
+
+      {/* En movil no hay header de escritorio, asi que el toggle de tema vive
+          aqui — si no, no habria forma de cambiarlo desde el celular (§7.6). */}
+      <section className="px-6 pt-6">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-pressed={theme === "dark"}
+          className="flex w-full items-center justify-between gap-3 rounded-3xl border border-sand-200 bg-sand-50 px-4 py-3.5 text-left md:hidden"
+        >
+          <span className="flex items-center gap-2 text-sm font-semibold text-ink">
+            <MoonIcon size={18} className="text-ink-soft" />
+            Tema oscuro
+          </span>
+          <span
+            aria-hidden
+            className={`flex h-6 w-11 shrink-0 items-center rounded-full p-0.5 ${
+              theme === "dark" ? "bg-forest-700" : "bg-sand-300"
+            }`}
+          >
+            <span
+              className={`h-5 w-5 rounded-full bg-cream transition-transform ${
+                theme === "dark" ? "translate-x-5" : "translate-x-0"
+              }`}
+            />
+          </span>
+        </button>
       </section>
 
       <section className="px-6 pt-6">

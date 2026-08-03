@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Habilita `dark:` como variante de CLASE, no solo de prefers-color-scheme.
+   Sin esto el toggle manual no tendria efecto (§7.6). Va antes que nada. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Fuentes autohospedadas en vez de next/font/google.
  *
@@ -118,10 +122,66 @@
   --brand: #c9502a;
 }
 
+/*
+ * Tema oscuro. NO se duplican los tokens: se reescribe el valor de la misma
+ * variable CSS, asi que cada utility de Tailwind (bg-sand-50, text-ink…) sigue
+ * funcionando sin cambiar una sola clase en los componentes (§7.1).
+ *
+ * `:root.dark` y no `.dark` a secas para ganarle en especificidad al bloque
+ * `:root` que emite @theme — con la misma especificidad dependeria del orden
+ * en que Tailwind decida imprimir las reglas.
+ *
+ * Lo que NO aparece aqui es deliberado: forest-900, clay-500, la familia
+ * night-*, cream, scrim y el degradado forest-banner-* son FIJOS. Se usan como
+ * fondo de marca con texto claro encima; invertirlos rompe el contraste del
+ * boton, no lo mejora (§7.6).
+ */
+:root.dark {
+  --color-sand-50: #1c1e29;
+  --color-sand-100: #14151d;
+  --color-sand-200: #2c2f3f;
+  --color-sand-300: #454a60;
+
+  --color-forest-700: #3aa877;
+  --color-forest-600: #2f9468;
+  --color-forest-100: #1c3d27;
+  --color-forest-50: #16311f;
+
+  --color-clay-700: #e8815a;
+  --color-clay-600: #dd6b42;
+  --color-clay-100: #4a2a1e;
+  --color-clay-50: #3a2015;
+
+  --color-ink: #f2ede4;
+  --color-ink-soft: #c7c2b6;
+  --color-ink-muted: #8b8779;
+
+  --color-danger-text: #f5a98d;
+  --color-amber-text: #f3cf7a;
+  --color-amber-chip-bg: #3d3210;
+  --color-museo-text: #c7c9e6;
+  --color-route-legend: #3aa877;
+
+  /* Recalibrados contra la superficie oscura #1c1e29, no invertidos a ojo: en
+     este tema los cuatro superan 3:1, cosa que en claro el ambar no logra. */
+  --crowd-bajo: #34d399;
+  --crowd-medio: #fbbf24;
+  --crowd-alto: #f87171;
+  --crowd-sin-datos: #75705f;
+
+  --viz-grid: #2a2d3b;
+  --viz-axis: #3a3e50;
+  --viz-ink-muted: #8b8779;
+
+  --brand: #e2734c;
+}
+
 body {
   background: var(--color-sand-100);
   color: var(--color-ink);
   font-family: var(--font-nunito);
+  /* La transicion se colapsa sola con prefers-reduced-motion (bloque final). */
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* El foco visible es requisito de la tesis del proyecto (§7.7), no un detalle

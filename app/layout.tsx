@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import BottomNav from "@/components/BottomNav";
 import PwaProvider from "@/components/PwaProvider";
 import SiteHeader from "@/components/SiteHeader";
+import { THEME_INIT_SCRIPT } from "@/components/ThemeToggle";
 import "./globals.css";
 
 /*
@@ -33,7 +34,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    /* suppressHydrationWarning va SOLO aqui: el script de tema agrega la clase
+       `dark` al <html> antes de hidratar, asi que servidor y cliente difieren
+       en ese atributo a proposito (§7.6). No se propaga al resto del arbol. */
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="bg-sand-100 font-sans text-ink antialiased">
         <a href="#contenido" className="skip-link">
           Saltar al contenido
