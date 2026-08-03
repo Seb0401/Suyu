@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import { askClaude, buildSystemPrompt } from "@/lib/anthropic";
 import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
+import { getContingencies, getEmergencyLines } from "@/lib/emergency";
+import { getUpcomingEvents } from "@/lib/events";
 import { answerOffline } from "@/lib/offlineAssistant";
 import { getServices } from "@/lib/services";
 import { getSites } from "@/lib/sites";
+import { getWeather } from "@/lib/weather";
 import type { ChatMessage } from "@/lib/types";
+
+/** Centro de Arequipa: el clima del chat es el de la ciudad, no el de un sitio. */
+const AREQUIPA = { lat: -16.39889, lng: -71.537 };
 
 const MAX_HISTORY = 12;
 const MAX_MESSAGE_CHARS = 2000;
@@ -57,13 +63,29 @@ export async function POST(request: Request) {
   }
 
   const hour = normalizeHour(rawHour) ?? currentHourInArequipa();
-  const [{ sites }, { services }] = await Promise.all([
+
+  /**
+   * El clima es la unica pieza que sale a internet. Va en el Promise.all para
+   * no encadenar su latencia con la de Claude, y askClaude ya tolera que
+   * llegue null.
+   */
+  const [{ sites }, { services }, weather] = await Promise.all([
     getSites(hour),
     getServices(),
+    getWeather(AREQUIPA.lat, AREQUIPA.lng).catch(() => null),
   ]);
 
   const result = await askClaude(
-    buildSystemPrompt(sites, services, hour),
+    buildSystemPrompt({
+      sites,
+      services,
+      hour,
+      weather,
+      // 45 dias: lo que alcanza a cambiar la decision de cuando viajar.
+      events: getUpcomingEvents(45),
+      emergency: getEmergencyLines(),
+      contingencies: getContingencies(),
+    }),
     history,
   );
 

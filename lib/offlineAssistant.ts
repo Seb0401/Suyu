@@ -20,10 +20,13 @@ export const OFFLINE_NOTICE =
 
 export type Intent =
   | "saludo"
+  | "emergencia"
   | "accesibilidad"
   | "aforo"
   | "itinerario"
   | "servicios"
+  | "clima"
+  | "eventos"
   | "agradecimiento"
   | "desconocido";
 
@@ -39,6 +42,28 @@ export interface ParsedIntent {
 
 const KEYWORDS: Record<Exclude<Intent, "desconocido">, string[]> = {
   saludo: ["hola", "buenas", "buenos dias", "hey", "que tal", "saludos"],
+  emergencia: [
+    "emergencia",
+    "ayuda",
+    "socorro",
+    "robaron",
+    "robo",
+    "asalto",
+    "accidente",
+    "policia",
+    "ambulancia",
+    "bomberos",
+    "hospital",
+    "urgencia",
+    "me siento mal",
+    "paro",
+    "bloqueo",
+    "huelga",
+    "carretera",
+    "varado",
+    "soroche",
+    "mal de altura",
+  ],
   accesibilidad: [
     "silla de ruedas",
     "silla",
@@ -75,9 +100,11 @@ const KEYWORDS: Record<Exclude<Intent, "desconocido">, string[]> = {
     "que hago",
     "arma",
     "organiza",
-    "tarde",
-    "manana",
     "horas",
+    // "tarde" y "manana" NO van aqui: son demasiado debiles y se llevaban
+    // preguntas de otra cosa ("va a llover manana?" caia en itinerario).
+    // "arma mi tarde" y "que hago esta tarde" siguen funcionando por "arma" y
+    // "que hago", que si son senales de planificacion.
   ],
   servicios: [
     "comer",
@@ -91,6 +118,35 @@ const KEYWORDS: Record<Exclude<Intent, "desconocido">, string[]> = {
     "artesania",
     "souvenir",
     "tour",
+  ],
+  clima: [
+    "clima",
+    "tiempo",
+    // Las tres raices de "llover" en espanol se escriben distinto (llov-,
+    // llue-, lluv-), asi que no basta con una.
+    "llov",
+    "llue",
+    "lluv",
+    "frio",
+    "calor",
+    "temperatura",
+    "abrig",
+    "sol",
+    "paraguas",
+    "nublado",
+  ],
+  eventos: [
+    "evento",
+    "fiesta",
+    "festival",
+    "aniversario",
+    "feriado",
+    "procesion",
+    "carnaval",
+    "temporada",
+    "epoca",
+    "cuando ir",
+    "cuando viajar",
   ],
   agradecimiento: ["gracias", "genial", "perfecto", "buenisimo", "excelente"],
 };
@@ -138,8 +194,17 @@ export function parseIntent(
 
   // El orden importa: "el itinerario accesible de 3 horas" dispara varias
   // categorias, y la mas especifica gana.
+  //
+  // La emergencia va PRIMERO de todas. Si alguien escribe "me robaron cerca de
+  // Santa Catalina", la palabra del sitio no puede desviar la respuesta a una
+  // ficha turistica.
   let intent: Intent = "desconocido";
-  if (hits(KEYWORDS.itinerario)) intent = "itinerario";
+  if (hits(KEYWORDS.emergencia)) intent = "emergencia";
+  // Clima y eventos antes que itinerario: sus palabras son mas especificas
+  // ("llover", "aniversario") y no deben perder contra una generica de plan.
+  else if (hits(KEYWORDS.clima)) intent = "clima";
+  else if (hits(KEYWORDS.eventos)) intent = "eventos";
+  else if (hits(KEYWORDS.itinerario)) intent = "itinerario";
   else if (hits(KEYWORDS.aforo)) intent = "aforo";
   else if (hits(KEYWORDS.accesibilidad)) intent = "accesibilidad";
   else if (hits(KEYWORDS.servicios)) intent = "servicios";
@@ -311,6 +376,60 @@ function answerServices(
   ].join("\n");
 }
 
+/**
+ * Respuesta de emergencia.
+ *
+ * Los numeros van PRIMERO y textuales. Aunque no haya red y aunque el modelo
+ * no este disponible, esto tiene que salir bien: es la unica pregunta del chat
+ * donde equivocarse tiene consecuencias fuera de la app.
+ */
+function answerEmergency(text: string): string {
+  const t = normalize(text);
+  const roadTrouble = ["paro", "bloqueo", "huelga", "carretera", "varado"].some(
+    (w) => t.includes(w),
+  );
+  const altitude = ["soroche", "mal de altura", "altura"].some((w) => t.includes(w));
+
+  if (roadTrouble) {
+    return [
+      "No tengo el estado de las vías en tiempo real, así que no puedo decirte si la carretera está libre.",
+      "Confirma con iPerú (01 5748000, 24 h) o con tu hotel antes de salir.",
+      "Si ya estás varado, la Defensoría del Pueblo suele gestionar el paso, y en bloqueos largos la Policía ha dispuesto buses de vuelta al aeropuerto.",
+    ].join(" ");
+  }
+
+  if (altitude) {
+    return [
+      "Si hay dolor de cabeza fuerte, vómitos o confusión, lo único que resuelve es bajar de altura.",
+      "Ante síntomas severos llama al 106 (SAMU).",
+      "El mate de coca ayuda con el malestar leve, pero no reemplaza aclimatarse.",
+    ].join(" ");
+  }
+
+  return [
+    "Emergencia: 105 Policía · 106 ambulancia (SAMU) · 116 Bomberos.",
+    "Si es un problema de turista (robo de documentos, estafa de una agencia), la Policía de Turismo de Arequipa atiende al 054 201258.",
+    "iPerú da asistencia 24 h al 01 5748000.",
+  ].join(" ");
+}
+
+function answerWeather(): string {
+  return [
+    "No puedo consultar el pronóstico sin conexión.",
+    "Como referencia: Arequipa es de las ciudades más secas del mundo habitado, con sol casi todo el año y noches frías.",
+    "La única temporada de lluvias va de enero a marzo, y llueve sobre todo por la tarde.",
+    "El sillar mojado resbala, así que en esos meses los recorridos en silla de ruedas se complican.",
+  ].join(" ");
+}
+
+function answerEvents(): string {
+  return [
+    "Las fechas que más cambian un viaje a Arequipa: el Aniversario de la ciudad del 6 al 18 de agosto, con el 15 como día central; la Virgen de Chapi del 1 al 15 de mayo; y Semana Santa, que es de fecha móvil.",
+    "En esas fechas los hoteles se agotan y el centro tiene calles cerradas.",
+    "Ojo también: Juanita, la momia del Museo Santuarios Andinos, no se exhibe de enero a abril.",
+  ].join(" ");
+}
+
 export interface OfflineAnswer {
   reply: string;
   notice: string;
@@ -327,8 +446,14 @@ export function answerOffline(
 
   const reply = (() => {
     switch (parsed.intent) {
+      case "emergencia":
+        return answerEmergency(message);
+      case "clima":
+        return answerWeather();
+      case "eventos":
+        return answerEvents();
       case "saludo":
-        return "Hola. Puedo decirte que tan accesible es cada sitio, cuando hay menos gente, y armarte un plan del dia. Preguntame por un lugar o dime cuantas horas tienes.";
+        return "Hola. Puedo decirte que tan accesible es cada sitio, cuando hay menos gente, armarte un plan del dia y darte los telefonos de emergencia. Preguntame por un lugar o dime cuantas horas tienes.";
       case "agradecimiento":
         return "Con gusto. Si quieres, te armo el resto del dia.";
       case "accesibilidad":

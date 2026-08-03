@@ -1,7 +1,15 @@
 import { bestHour, formatHour, nextQuietHour } from "@/lib/crowdProfile";
 import { crowdLabel } from "@/lib/crowdUi";
+import type { EventWithStatus } from "@/lib/events";
 import { accessibilityScore } from "@/lib/filters";
-import type { ChatMessage, SiteWithCrowd, TouristService } from "@/lib/types";
+import type { WeatherResult } from "@/lib/weather";
+import type {
+  ChatMessage,
+  Contingency,
+  EmergencyLine,
+  SiteWithCrowd,
+  TouristService,
+} from "@/lib/types";
 
 /**
  * Llamada directa a la API de Anthropic (CLAUDE.md §3, §6.6).
@@ -62,12 +70,42 @@ function summarizeService(service: TouristService): string {
   return `- ${service.name} (${service.category}, ${registro})`;
 }
 
-export function buildSystemPrompt(
-  sites: SiteWithCrowd[],
-  services: TouristService[],
-  hour: number,
-): string {
-  return [
+export interface CopilotContext {
+  sites: SiteWithCrowd[];
+  services: TouristService[];
+  hour: number;
+  weather?: WeatherResult | null;
+  events?: EventWithStatus[];
+  emergency?: EmergencyLine[];
+  contingencies?: Contingency[];
+}
+
+function summarizeWeather(weather: WeatherResult): string {
+  const today = weather.days[0];
+  if (!today) return "";
+
+  const base = `Hoy: ${today.label}, maxima ${today.temp_max} y minima ${today.temp_min} grados${
+    today.rain_chance !== null ? `, ${today.rain_chance}% de lluvia` : ""
+  }.`;
+
+  return weather.source === "normales"
+    ? `${base} ATENCION: no hay conexion, esto es el clima TIPICO de la epoca, no el pronostico de hoy. Dilo si lo mencionas.`
+    : base;
+}
+
+function summarizeEvent(e: EventWithStatus): string {
+  const when = e.active_now
+    ? "ESTA PASANDO AHORA"
+    : e.days_until !== null
+      ? `en ${e.days_until} dias`
+      : e.window_label;
+  return `- ${e.name} (${when}): ${e.impact}`;
+}
+
+export function buildSystemPrompt(ctx: CopilotContext): string {
+  const { sites, services, hour, weather, events, emergency, contingencies } = ctx;
+
+  const blocks: string[] = [
     "Eres Suyu, un companero de viaje para turistas en Arequipa, Peru.",
     "Tu prioridad es la accesibilidad: rutas sin escalones, con rampa, bano accesible y zonas de descanso.",
     "",
@@ -78,16 +116,51 @@ export function buildSystemPrompt(
     "",
     "SERVICIOS CERCANOS:",
     services.map(summarizeService).join("\n"),
+  ];
+
+  if (weather) {
+    blocks.push("", "CLIMA:", summarizeWeather(weather));
+  }
+
+  if (events?.length) {
+    blocks.push(
+      "",
+      "FECHAS QUE AFECTAN EL VIAJE:",
+      events.map(summarizeEvent).join("\n"),
+    );
+  }
+
+  if (emergency?.length) {
+    blocks.push(
+      "",
+      "TELEFONOS DE EMERGENCIA (usalos textualmente, nunca inventes otro):",
+      emergency.map((l) => `- ${l.name}: ${l.phone}. ${l.when}`).join("\n"),
+    );
+  }
+
+  if (contingencies?.length) {
+    blocks.push(
+      "",
+      "IMPREVISTOS CONOCIDOS:",
+      contingencies.map((c) => `- ${c.title}: ${c.summary}`).join("\n"),
+    );
+  }
+
+  blocks.push(
     "",
     "REGLAS:",
     "1. Responde en espanol, en 3 a 5 frases. Es un chat en un celular, no un informe.",
-    "2. Usa SOLO los sitios y servicios de arriba. Si te preguntan por otro lugar, dilo con honestidad en vez de inventarlo.",
+    "2. Usa SOLO los sitios, servicios y datos de arriba. Si te preguntan por otra cosa, dilo con honestidad en vez de inventarlo.",
     "3. Si un sitio esta muy congestionado, ofrece la alternativa Y la hora en que baja la gente. Las dos cosas.",
     "4. Si un sitio no tiene un rasgo de accesibilidad confirmado, di 'sin confirmar'. Nunca lo des por hecho.",
     "5. Si los datos de un sitio estan SIN verificar, avisalo antes de recomendarlo.",
     "6. El aforo es una estimacion por franja horaria, no una medicion en vivo. Si te preguntan, dilo.",
     "7. No inventes precios, horarios exactos, telefonos ni numeros de registro.",
-  ].join("\n");
+    "8. Ante una emergencia real, da el numero PRIMERO y en la primera frase. No lo entierres al final ni lo cambies por consejos.",
+    "9. NO tienes el estado de las carreteras en tiempo real. Si te preguntan por un paro o un bloqueo, explica el escenario y manda a confirmar con iPeru o el hotel; nunca afirmes que la via esta libre o cortada.",
+  );
+
+  return blocks.join("\n");
 }
 
 export type AnthropicResult =
