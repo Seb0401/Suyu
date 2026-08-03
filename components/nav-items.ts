@@ -3,6 +3,7 @@ import {
   BookIcon,
   BriefcaseIcon,
   CompassIcon,
+  GridIcon,
   HomeIcon,
   RouteIcon,
   UserIcon,
@@ -39,6 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
  * poder querer compararlo con un tour existente.
  */
 export const SECONDARY_NAV: NavItem[] = [
+  { href: "/servicios", label: "Servicios", Icon: GridIcon },
   { href: "/historias", label: "Historias", Icon: BookIcon },
   { href: "/agencias", label: "Agencias", Icon: BriefcaseIcon },
 ];

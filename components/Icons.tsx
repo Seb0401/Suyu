@@ -47,6 +47,18 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/** Cuadricula: el hub de servicios, que agrupa categorias distintas. */
+export function GridIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
+    </svg>
+  );
+}
+
 export function ClockIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

@@ -19,6 +19,11 @@ export type ServicesSource = "supabase" | "demo";
 export interface ServiceWithDistance extends TouristService {
   distance_m: number | null;
   walking_min: number | null;
+  /**
+   * Sitio desde el que se midio la distancia. Sin esto un "194 m" suelto no
+   * dice nada: la UI necesita poder escribir "194 m de la Plaza de Armas".
+   */
+  distance_from: string | null;
   /** Etiqueta lista para mostrar. Nunca omitir el caso "por verificar". */
   registry_label: string;
 }
@@ -115,6 +120,7 @@ export async function getServices(options: {
       ...service,
       distance_m,
       walking_min: distance_m === null ? null : walkingMinutes(distance_m),
+      distance_from: reference?.name ?? null,
       registry_label: registryLabel(service),
     };
   });

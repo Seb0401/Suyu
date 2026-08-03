@@ -213,6 +213,17 @@ export default function SitioPage() {
       <section className="mt-4">
         <h2 className="mb-3 font-extrabold text-ink">Servicios cerca</h2>
         <ServiceList siteId={site.id} />
+
+        {/* Acceso a /servicios desde movil: aqui el usuario ya esta mirando
+            servicios y puede querer el directorio completo. En la barra
+            inferior no cabe otra entrada. */}
+        <Link
+          href="/servicios"
+          className="mt-3 flex items-center gap-2 text-sm font-bold text-clay-600"
+        >
+          Ver todos los servicios de Arequipa
+          <ArrowRightIcon size={15} />
+        </Link>
       </section>
 
       <Link
