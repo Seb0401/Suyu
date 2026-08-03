@@ -47,6 +47,39 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+export function CloudIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M7 18a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17.3 11 3.5 3.5 0 0 1 17 18Z" />
+    </svg>
+  );
+}
+
+export function DropIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 3.5c3 3.6 5.5 6.4 5.5 9.3a5.5 5.5 0 1 1-11 0c0-2.9 2.5-5.7 5.5-9.3Z" />
+    </svg>
+  );
+}
+
+export function AlertIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 4.5 21 19.5H3z" />
+      <path d="M12 10v4M12 17h.01" />
+    </svg>
+  );
+}
+
+export function PhoneIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M6.5 3.5h3l1.5 4L9 9a11 11 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z" />
+    </svg>
+  );
+}
+
 export function ChevronDownIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

@@ -10,6 +10,7 @@ import Mascot from "@/components/Mascot";
 import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
 import SiteDetailSection from "@/components/SiteDetailSection";
+import WeatherStrip from "@/components/WeatherStrip";
 import SiteThumbnail from "@/components/SiteThumbnail";
 import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
@@ -194,6 +195,10 @@ export default function SitioPage() {
       {/* "Conoce mas" va DESPUES de accesibilidad y aforo, nunca antes (§6.8):
           la prioridad de esta pantalla es si puedes entrar y si esta lleno. La
           historia es para generar ganas, no para responder eso. */}
+      {/* El clima va con las coordenadas del sitio, no las del centro: la Cruz
+          del Condor esta a 3270 m y a 160 km, y su clima no se parece. */}
+      <WeatherStrip siteId={site.id} />
+
       <SiteDetailSection siteId={site.id} />
 
       {stories.length > 0 ? (
