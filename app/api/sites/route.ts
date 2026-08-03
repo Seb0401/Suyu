@@ -1,19 +1,23 @@
 import { NextResponse } from "next/server";
 import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
-import { getSeedSites } from "@/lib/seed";
+import { getSites, onlyAccessible } from "@/lib/sites";
 
 /**
- * Stub del Commit 0: ya devuelve la forma final para que la UI no espere a A2.
- * A2 lo reemplaza por lib/sites.ts (Supabase con fallback a semilla) SIN cambiar
- * la forma de esta respuesta.
+ * GET /api/sites?hour=<0-23>&accessible=true
+ *
+ * `hour` existe para el demo: permite mostrar el sitio saturado a las 11 y
+ * tranquilo a las 17 sin esperar a que pase el dia.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const hour = normalizeHour(searchParams.get("hour")) ?? currentHourInArequipa();
+  const accessibleOnly = searchParams.get("accessible") === "true";
+
+  const { sites, source } = await getSites(hour);
 
   return NextResponse.json({
-    sites: getSeedSites(hour),
-    source: "demo",
+    sites: accessibleOnly ? onlyAccessible(sites) : sites,
+    source,
     hour,
   });
 }
