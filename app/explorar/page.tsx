@@ -12,6 +12,16 @@ import type { SiteAccessibilityDetail } from "@/lib/types";
 import { hasAccessibilityNeeds, readProfile, travelsWithKids } from "@/components/travelProfile";
 import { accessibilityScore } from "@/lib/filters";
 import type { SiteWithCrowd } from "@/lib/types";
+import { categoryStyle } from "@/components/SiteThumbnail";
+import { useT } from "@/components/i18n/LocaleProvider";
+import type { TranslationKey } from "@/components/i18n/dictionary";
+
+const A11Y_KEY: Record<string, TranslationKey> = {
+  wheelchair_accessible: "a11y.sillaRuedas",
+  has_ramps: "a11y.rampas",
+  has_accessible_bathroom: "a11y.bano",
+  has_rest_areas: "a11y.descansos",
+};
 
 type SortKey = "nombre" | "menos-gente" | "mas-accesible";
 
@@ -27,12 +37,14 @@ function crowdRank(site: SiteWithCrowd) {
 function ExplorarContent() {
   const params = useSearchParams();
   const { sites, loading, error } = useSites();
+  const t = useT();
 
   const [query, setQuery] = useState(params.get("q") ?? "");
   const [active, setActive] = useState<Record<string, boolean>>({});
   const [kidsOnly, setKidsOnly] = useState(false);
   const [sort, setSort] = useState<SortKey>("nombre");
   const [fromProfile, setFromProfile] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
   const [familyOnly, setFamilyOnly] = useState(false);
   const [petsOnly, setPetsOnly] = useState(false);
   const [details, setDetails] = useState<SiteAccessibilityDetail[]>([]);
@@ -47,6 +59,13 @@ function ExplorarContent() {
   const detailById = useMemo(
     () => new Map(details.map((d) => [d.site_id, d])),
     [details],
+  );
+
+  /* Solo las categorias que existen en los datos: un filtro para una categoria
+     vacia siempre devuelve cero y confunde. */
+  const availableCategories = useMemo(
+    () => [...new Set(sites.map((s) => s.category))].sort(),
+    [sites],
   );
 
   /* Cuantos sitios tienen el dato CONFIRMADO. Si es 0, el filtro se deshabilita
@@ -84,6 +103,7 @@ function ExplorarContent() {
       if (q && !site.name.toLowerCase().includes(q) && !site.category.toLowerCase().includes(q)) {
         return false;
       }
+      if (categories.length > 0 && !categories.includes(site.category)) return false;
       if (kidsOnly && !passesKidsFilter(site.id)) return false;
       if (familyOnly && detailById.get(site.id)?.has_family_bathroom !== true) return false;
       if (petsOnly && detailById.get(site.id)?.pet_policy !== "permitidas") return false;
@@ -95,41 +115,78 @@ function ExplorarContent() {
       if (sort === "mas-accesible") return accessibilityScore(b) - accessibilityScore(a);
       return a.name.localeCompare(b.name, "es");
     });
-  }, [sites, query, active, kidsOnly, familyOnly, petsOnly, detailById, sort]);
+  }, [sites, query, active, categories, kidsOnly, familyOnly, petsOnly, detailById, sort]);
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-4xl">
-      <h1 className="text-2xl font-extrabold text-ink">Explora Arequipa</h1>
+      <h1 className="text-2xl font-extrabold text-ink">{t("explorar.titulo")}</h1>
       <p className="mt-1 text-sm text-ink-soft">
-        Filtra por lo que necesitas para moverte con tranquilidad.
+        {t("explorar.subtitulo")}
       </p>
 
       <div className="mt-4 flex items-center gap-2 rounded-full border border-sand-200 bg-sand-50 px-4 py-2.5">
         <SearchIcon size={18} className="shrink-0 text-ink-muted" />
         <label htmlFor="filtrar" className="sr-only">
-          Filtrar por nombre o categoría
+          {t("explorar.filtrarLabel")}
         </label>
         <input
           id="filtrar"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Nombre o categoría"
+          placeholder={t("explorar.filtrarPlaceholder")}
           className="w-full bg-transparent text-sm text-ink placeholder:text-ink-muted focus:outline-none"
         />
       </div>
 
       {fromProfile ? (
         <p className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-forest-50 px-3 py-2 text-xs text-forest-700">
-          <span className="font-semibold">Filtros aplicados desde tu perfil de viaje.</span>
+          <span className="font-semibold">{t("explorar.filtrosPerfil")}</span>
           <button type="button" onClick={clearProfileFilters} className="font-bold underline">
-            Ver todos los lugares
+            {t("explorar.verTodosLugares")}
           </button>
         </p>
       ) : null}
 
+      {/* Filtro por categoria. Usa los MISMOS iconos que marcan cada sitio en
+          las tarjetas, asi que el simbolo ya viene aprendido de mirar el
+          catalogo — por eso el icono sigue estando encima de la foto. */}
       <fieldset className="mt-4">
-        <legend className="text-xs font-bold text-ink-soft">Necesito</legend>
+        <legend className="text-xs font-bold text-ink-soft">{t("explorar.categoria")}</legend>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {availableCategories.map((cat) => {
+            const on = categories.includes(cat);
+            const { Icon } = categoryStyle(cat);
+            const key = `cat.${cat}` as TranslationKey;
+            return (
+              <label
+                key={cat}
+                className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
+                  on
+                    ? "border-clay-600 bg-clay-50 text-clay-700"
+                    : "border-sand-200 bg-sand-50 text-ink-soft"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={(e) =>
+                    setCategories((prev) =>
+                      e.target.checked ? [...prev, cat] : prev.filter((c) => c !== cat),
+                    )
+                  }
+                  className="sr-only"
+                />
+                <Icon size={15} />
+                {t(key)}
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
+
+      <fieldset className="mt-4">
+        <legend className="text-xs font-bold text-ink-soft">{t("explorar.necesito")}</legend>
         <div className="mt-2 flex flex-wrap gap-2">
           <label
             className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
@@ -144,7 +201,7 @@ function ExplorarContent() {
               onChange={(e) => setKidsOnly(e.target.checked)}
               className="sr-only"
             />
-            Apto con niños
+            {t("explorar.aptoNinos")}
           </label>
 
           {/* Deshabilitados mientras ningun sitio tenga el dato confirmado.
@@ -153,7 +210,7 @@ function ExplorarContent() {
           {[
             {
               id: "familia",
-              label: "Baño familiar",
+              labelKey: "explorar.banoFamiliar" as TranslationKey,
               Icon: FamilyBathroomIcon,
               on: familyOnly,
               set: setFamilyOnly,
@@ -161,13 +218,13 @@ function ExplorarContent() {
             },
             {
               id: "mascotas",
-              label: "Acepta mascotas",
+              labelKey: "explorar.aceptaMascotas" as TranslationKey,
               Icon: PetIcon,
               on: petsOnly,
               set: setPetsOnly,
               count: withPets,
             },
-          ].map(({ id, label, Icon, on, set, count }) => (
+          ].map(({ id, labelKey, Icon, on, set, count }) => (
             <label
               key={id}
               className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
@@ -186,12 +243,14 @@ function ExplorarContent() {
                 className="sr-only"
               />
               <Icon size={15} />
-              {label}
-              {count === 0 ? <span className="font-normal">(sin datos)</span> : null}
+              {t(labelKey)}
+              {count === 0 ? (
+                <span className="font-normal">{t("explorar.sinDatos")}</span>
+              ) : null}
             </label>
           ))}
 
-          {ACCESSIBILITY_FEATURES.map(({ key, label, Icon }) => {
+          {ACCESSIBILITY_FEATURES.map(({ key, Icon }) => {
             const on = Boolean(active[key]);
             return (
               <label
@@ -209,7 +268,7 @@ function ExplorarContent() {
                   className="sr-only"
                 />
                 <Icon size={15} />
-                {label}
+                {t(A11Y_KEY[key])}
               </label>
             );
           })}
@@ -218,7 +277,7 @@ function ExplorarContent() {
 
       <div className="mt-4 flex items-center gap-2">
         <label htmlFor="orden" className="text-xs font-bold text-ink-soft">
-          Ordenar por
+          {t("explorar.ordenar")}
         </label>
         <select
           id="orden"
@@ -226,14 +285,16 @@ function ExplorarContent() {
           onChange={(e) => setSort(e.target.value as SortKey)}
           className="rounded-full border border-sand-200 bg-sand-50 px-3 py-1.5 text-xs text-ink"
         >
-          <option value="nombre">Nombre</option>
-          <option value="menos-gente">Menos gente ahora</option>
-          <option value="mas-accesible">Más accesible</option>
+          <option value="nombre">{t("explorar.ordenNombre")}</option>
+          <option value="menos-gente">{t("explorar.ordenGente")}</option>
+          <option value="mas-accesible">{t("explorar.ordenAccesible")}</option>
         </select>
       </div>
 
       <p aria-live="polite" className="mt-4 text-sm text-ink-soft">
-        {loading ? "Cargando lugares…" : `${visible.length} de ${sites.length} lugares`}
+        {loading
+          ? t("common.cargando")
+          : `${visible.length} ${t("explorar.de")} ${sites.length} ${t("explorar.resultados")}`}
       </p>
 
       {error ? (
@@ -242,25 +303,19 @@ function ExplorarContent() {
 
       {withFamilyBathroom === 0 || withPets === 0 ? (
         <p className="mt-2 rounded-2xl border border-sand-200 bg-sand-50 px-3 py-2 text-xs text-ink-soft">
-          Todavía no tenemos confirmado si estos lugares cuentan con baño
-          familiar o si aceptan mascotas, así que esos filtros están
-          desactivados. Los perros guía sí tienen acceso garantizado por ley en
-          todos ellos.
+          {t("explorar.sinDatosAyuda")}
         </p>
       ) : null}
 
       {kidsOnly ? (
         <p className="mt-2 rounded-2xl border border-sand-200 bg-sand-50 px-3 py-2 text-xs text-ink-soft">
-          Solo mostramos lugares donde <strong>confirmamos</strong> que conviene ir
-          con niños. Los que están sin verificar quedan fuera aunque quizá sirvan:
-          un filtro promete algo y no podemos prometer lo que no comprobamos.
+          {t("explorar.aptoNinosAyuda")}
         </p>
       ) : null}
 
       {!loading && visible.length === 0 && !error ? (
         <p className="mt-3 rounded-2xl border border-sand-200 bg-sand-50 p-4 text-sm text-ink-soft">
-          Ningún lugar cumple todo lo que marcaste. Prueba quitando un filtro —
-          preferimos decírtelo antes que mostrarte algo que no cumple.
+          {t("explorar.sinResultados")}
         </p>
       ) : null}
 

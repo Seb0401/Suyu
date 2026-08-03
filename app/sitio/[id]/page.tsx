@@ -8,6 +8,7 @@ import AccessibilityDetailSection from "@/components/AccessibilityDetail";
 import CrowdBadge from "@/components/CrowdBadge";
 import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
+import PhotoCredit from "@/components/PhotoCredit";
 import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
 import SiteDetailSection from "@/components/SiteDetailSection";
@@ -141,7 +142,14 @@ export default function SitioPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
-      <SiteThumbnail category={site.category} className="h-36 w-full rounded-3xl" iconSize={52} />
+      <SiteThumbnail
+        siteId={site.id}
+        siteName={site.name}
+        category={site.category}
+        className="h-48 w-full rounded-3xl"
+        iconSize={52}
+      />
+      <PhotoCredit siteId={site.id} />
 
       <h1 className="mt-4 text-2xl font-extrabold leading-tight text-ink">{site.name}</h1>
 

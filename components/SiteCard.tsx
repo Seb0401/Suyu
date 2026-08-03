@@ -26,6 +26,8 @@ export default function SiteCard({
       }`}
     >
       <SiteThumbnail
+        siteId={site.id}
+        siteName={site.name}
         category={site.category}
         className={isCarousel ? "h-28 w-full" : "h-32 w-full"}
         iconSize={isCarousel ? 36 : 44}

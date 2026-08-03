@@ -1,0 +1,44 @@
+[
+  {
+    "author": "Yupanasimi",
+    "license": "CC BY-SA 4.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Vista_del_Monasterio_de_Santa_Catalina_de_Siena_en_Arequipa.jpg",
+    "site_id": "monasterio-de-santa-catalina",
+    "file": "/sitios/monasterio-de-santa-catalina.jpg"
+  },
+  {
+    "author": "Paulo Guereta",
+    "license": "CC BY 2.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Mirador_de_Yanahuara.jpg",
+    "site_id": "mirador-de-yanahuara",
+    "file": "/sitios/mirador-de-yanahuara.jpg"
+  },
+  {
+    "author": "Apugaia",
+    "license": "CC BY-SA 4.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Plaza_de_Armas_de_Arequipa,_Per%C3%BA.jpg",
+    "site_id": "plaza-de-armas-de-arequipa",
+    "file": "/sitios/plaza-de-armas-de-arequipa.jpg"
+  },
+  {
+    "author": "BrunoLocatelli",
+    "license": "CC BY-SA 4.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Cathedral,_Arequipa,_Peru.jpg",
+    "site_id": "basilica-catedral-de-arequipa",
+    "file": "/sitios/basilica-catedral-de-arequipa.jpg"
+  },
+  {
+    "author": "Estuardo02",
+    "license": "CC BY-SA 4.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Portada_del_museo_de_Santuarios_andinos,_Arequipa.jpg",
+    "site_id": "museo-santuarios-andinos",
+    "file": "/sitios/museo-santuarios-andinos.jpg"
+  },
+  {
+    "author": "Joao Paulo de Vasconcelos",
+    "license": "CC BY 2.0",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Cruz_del_Condor_no_Colca_Canyon_-_Peru_(17963069742).jpg",
+    "site_id": "mirador-de-la-cruz-del-condor",
+    "file": "/sitios/mirador-de-la-cruz-del-condor.jpg"
+  }
+]
