@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
 import { haversineMeters, walkingMinutes } from "@/lib/geo";
-import { currentHourInArequipa, getSeedSite } from "@/lib/seed";
+import { getSeedSite } from "@/lib/seed";
 import type { RouteGeometry } from "@/lib/types";
 
 /**
@@ -13,11 +14,7 @@ export async function GET(request: Request) {
   const originId = searchParams.get("origin");
   const destinationId = searchParams.get("destination");
   const accessible = searchParams.get("accessible") === "true";
-  const hourParam = Number(searchParams.get("hour"));
-  const hour =
-    Number.isInteger(hourParam) && hourParam >= 0 && hourParam <= 23
-      ? hourParam
-      : currentHourInArequipa();
+  const hour = normalizeHour(searchParams.get("hour")) ?? currentHourInArequipa();
 
   if (!originId || !destinationId) {
     return NextResponse.json(
