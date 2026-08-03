@@ -1,0 +1,66 @@
+[
+  {
+    "id": "pablo-tour",
+    "name": "Pablo Tour",
+    "summary": "Operador especializado en el Canon del Colca, con raices en Cabanaconde. Ademas del Colca arma rutas al Canon de Cotahuasi, ascensos a volcanes y viajes al origen del Amazonas. Su dueno es guia oficial local y habla ingles y frances.",
+    "sample_tours": [
+      "Colca de 2 y 3 dias con trekking",
+      "Canon de Cotahuasi",
+      "Ascenso a volcanes de la region"
+    ],
+    "address": "Calle Jerusalen 400, AB-1, Arequipa",
+    "phone": "+51 941 414 048",
+    "url": "https://www.pablotour.com/",
+    "reviews_note": "Resenas publicas en TripAdvisor consistentemente positivas, con mencion frecuente a guias que conocen la zona y a itinerarios armados para evitar las horas de mayor afluencia. No calculamos una calificacion propia.",
+    "reviews_source": "resenas",
+    "formalized": false,
+    "registry_id": null
+  },
+  {
+    "id": "giardino-tours",
+    "name": "Giardino Tours",
+    "summary": "Operador de Arequipa con salidas diarias al Colca en grupos pequenos, de 2 y 3 dias, ademas de paquetes a otros destinos del Peru. Declara 30 anos de experiencia en el rubro.",
+    "sample_tours": [
+      "Colca de 2 dias en grupo pequeno",
+      "Colca Plus de 3 dias",
+      "City tour de Arequipa"
+    ],
+    "address": "Calle Jerusalen 604-A, Arequipa",
+    "phone": null,
+    "url": "https://giardinotours.com/",
+    "reviews_note": "Los 30 anos de experiencia son un dato autoreportado por la propia agencia en su sitio web. Tiene presencia activa en TripAdvisor con resenas positivas de sus tours al Colca, pero no verificamos ninguna cifra.",
+    "reviews_source": "agencia",
+    "formalized": false,
+    "registry_id": null
+  },
+  {
+    "id": "chacu-travel",
+    "name": "Chacu Travel",
+    "summary": "Agencia local con tours de dia completo en Arequipa y alrededores, incluida la Ruta del Sillar y el Colca en un dia.",
+    "sample_tours": [
+      "Colca full day",
+      "Ruta del Sillar",
+      "City tour de Arequipa"
+    ],
+    "address": "Portal de Flores 136, Int. 43, Arequipa",
+    "phone": null,
+    "url": "https://www.tripadvisor.com/Attraction_Review-g294313-d33101645-Reviews-Chacu_Travel-Arequipa_Arequipa_Region.html",
+    "reviews_note": "Agregadores publicos reportan alrededor de 4.9 sobre 91 resenas. Esa cifra viene del agregador, no de un calculo nuestro, y no la pudimos verificar de forma independiente. Los comentarios coinciden en destacar a los guias.",
+    "reviews_source": "resenas",
+    "formalized": false,
+    "registry_id": null
+  },
+  {
+    "id": "arequipa-tours-peru",
+    "name": "Arequipa Tours Peru",
+    "summary": "Agencia de viajes y turismo de Arequipa con city tours y salidas al Colca.",
+    "sample_tours": ["City tour de Arequipa", "Colca de 2 dias"],
+    "address": null,
+    "phone": null,
+    "url": "https://www.arequipatoursagencia.com/",
+    "reviews_note": "Resenas publicas limitadas: no encontramos suficiente evidencia independiente para decir nada sobre la calidad del servicio. Confirmar condiciones y precios directamente antes de reservar.",
+    "reviews_source": null,
+    "formalized": false,
+    "registry_id": null
+  }
+]
