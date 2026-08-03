@@ -1,0 +1,30 @@
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+venv/
+__pycache__/
+*.py[cod]
+
+# Builds
+dist/
+build/
+out/
+.next/
+
+# Entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editores / SO
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
