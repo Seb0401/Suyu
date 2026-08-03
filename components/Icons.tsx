@@ -47,6 +47,35 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+export function ClockIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5.2l3.2 2" />
+    </svg>
+  );
+}
+
+/** Destello: marca el dato curioso de la ficha tecnica, no una accion. */
+export function SparkIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 3.5 13.7 9l5.5 1.7-5.5 1.7L12 18l-1.7-5.6L4.8 10.7 10.3 9z" />
+      <path d="M18.5 3.5v3M20 5h-3" />
+    </svg>
+  );
+}
+
+export function BriefcaseIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
+      <path d="M9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8" />
+      <path d="M4 12.5h16" />
+    </svg>
+  );
+}
+
 export function CompassIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>
@@ -242,6 +271,13 @@ export const SERVICE_PATHS: Record<string, string> = {
   transporte: "M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8H4zM4 15h16v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM7.5 18v2M16.5 18v2",
   hospedaje: "M4 19V7M4 11h11a4 4 0 0 1 4 4v4M4 19h16M7.5 8.5h.01",
   artesania: "M6 21V9l6-5 6 5v12M10 21v-6h4v6M9 12h.01M15 12h.01",
+  // Las tres categorias de A14. Silla de ruedas de perfil, cruz medica y
+  // brujula: cada una tiene silueta distinta a simple vista, que es lo que
+  // importa en una lista donde el icono va a 20 px.
+  movilidad:
+    "M8.5 4.5a1.5 1.5 0 1 0 0-.01M8 7v6h5l3 5M8 13a4.5 4.5 0 1 0 4.2 6M18.5 18h1.5",
+  salud: "M12 6v12M6 12h12M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z",
+  actividad: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM15.5 8.5l-2 5-5 2 2-5z",
 };
 
 const SERVICE_FALLBACK = "M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM9 8V6a3 3 0 0 1 6 0v2";

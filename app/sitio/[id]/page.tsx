@@ -10,6 +10,7 @@ import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
 import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
+import SiteDetailSection from "@/components/SiteDetailSection";
 import SiteThumbnail from "@/components/SiteThumbnail";
 import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
@@ -255,6 +256,11 @@ export default function SitioPage() {
           quietHour={quiet_hour?.hour ?? null}
         />
       </section>
+
+      {/* "Conoce mas" va DESPUES de accesibilidad y aforo, nunca antes (§6.8):
+          la prioridad de esta pantalla es si puedes entrar y si esta lleno. La
+          historia es para generar ganas, no para responder eso. */}
+      <SiteDetailSection siteId={site.id} />
 
       {stories.length > 0 ? (
         <section className="mt-4">
