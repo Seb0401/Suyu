@@ -18,12 +18,13 @@ import VerificationChip from "@/components/VerificationChip";
 import type { PassportStamp, Story } from "@/lib/types";
 import { ArrowRightIcon, CheckIcon, CrowdDensityIcon, PinIcon } from "@/components/Icons";
 import { crowdPresentation } from "@/lib/crowdUi";
+import type { Alternative } from "@/lib/crowd";
 import type { SiteWithCrowd } from "@/lib/types";
 
 type CrowdResponse = {
   site: SiteWithCrowd;
   saturated: boolean;
-  alternative: SiteWithCrowd | null;
+  alternative: Alternative | null;
   quiet_hour: { hour: number; occupancy: number; level: string } | null;
   hour: number;
   source: string;
@@ -155,14 +156,14 @@ export default function SitioPage() {
               {alternative ? (
                 <>
                   <Link
-                    href={`/sitio/${alternative.id}`}
+                    href={`/sitio/${alternative.site.id}`}
                     className="mt-3 flex items-center gap-2 rounded-2xl border border-sand-200 bg-sand-50 p-3"
                   >
                     <PinIcon size={18} className="shrink-0 text-forest-700" />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-ink">{alternative.name}</span>
+                      <span className="block text-sm font-bold text-ink">{alternative.site.name}</span>
                       <span className="block text-xs text-ink-soft">
-                        {crowdPresentation(alternative).label} · alternativa cercana
+                        {crowdPresentation(alternative.site).label} · alternativa cercana
                       </span>
                     </span>
                     <ArrowRightIcon size={16} className="text-ink-muted" />

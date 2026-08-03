@@ -9,6 +9,7 @@ import { WheelchairIcon } from "@/components/AccessibilityIcons";
 import { ArrowRightIcon, CalendarIcon, PinIcon, SearchIcon } from "@/components/Icons";
 import { useSites } from "@/components/useSites";
 import { crowdPresentation } from "@/lib/crowdUi";
+import type { Alternative } from "@/lib/crowd";
 import type { RouteGeometry, SiteWithCrowd } from "@/lib/types";
 
 type RouteResult = {
@@ -23,7 +24,7 @@ type RouteResult = {
   destination: SiteWithCrowd;
   hour: number;
   saturated: boolean;
-  alternative: SiteWithCrowd | null;
+  alternative: Alternative | null;
   quiet_hour: { hour: number; occupancy: number; level: string } | null;
 };
 
@@ -269,16 +270,16 @@ export default function RutaPage() {
 
                     {result.alternative ? (
                       <Link
-                        href={`/sitio/${result.alternative.id}`}
+                        href={`/sitio/${result.alternative.site.id}`}
                         className="mt-3 flex items-center gap-2 rounded-2xl border border-sand-200 bg-sand-50 p-3"
                       >
                         <PinIcon size={18} className="shrink-0 text-forest-700" />
                         <span className="flex-1">
                           <span className="block text-sm font-bold text-ink">
-                            {result.alternative.name}
+                            {result.alternative.site.name}
                           </span>
                           <span className="block text-xs text-ink-soft">
-                            {crowdPresentation(result.alternative).label} · alternativa cercana
+                            {crowdPresentation(result.alternative.site).label} · alternativa cercana
                           </span>
                         </span>
                         <ArrowRightIcon size={16} className="text-ink-muted" />
