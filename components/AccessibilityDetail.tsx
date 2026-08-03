@@ -9,9 +9,11 @@ import {
   PetIcon,
   RampIcon,
   RestAreaIcon,
+  StepsIcon,
   WheelchairIcon,
 } from "@/components/AccessibilityIcons";
 import { ExternalLinkIcon, HelpCircleIcon } from "@/components/Icons";
+import { useT } from "@/components/i18n/LocaleProvider";
 import type { SiteAccessibilityDetail } from "@/lib/types";
 
 type Response = {
@@ -27,6 +29,7 @@ type Response = {
  * angosta para entrar con silla.
  */
 export default function AccessibilityDetailSection({ siteId }: { siteId: string }) {
+  const t = useT();
   const [data, setData] = useState<Response | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -51,6 +54,10 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
 
   const rows = [
     { key: "ramps", label: "Rampas", Icon: RampIcon, grade: detail.ramps },
+    /* Gradas van justo despues de rampas: son las dos caras del mismo problema
+       — una rampa buena compensa unas gradas malas, y verlas juntas es lo que
+       deja leer eso de un vistazo. */
+    { key: "steps", label: "Gradas y escalones", Icon: StepsIcon, grade: detail.steps },
     {
       key: "bathroom",
       label: "Baño adaptado",
@@ -85,6 +92,11 @@ export default function AccessibilityDetailSection({ siteId }: { siteId: string 
               <RatingBar rating={grade.rating} />
             </div>
             <p className="mt-1 text-xs leading-relaxed text-ink-soft">{grade.note}</p>
+            {/* La escala de gradas esta invertida respecto a las demas, y sin
+                decirlo un 3 se leeria como "escaleras bonitas". */}
+            {key === "steps" ? (
+              <p className="mt-1 text-[11px] italic text-ink-muted">{t("a11y.gradasAyuda")}</p>
+            ) : null}
           </li>
         ))}
       </ul>

@@ -58,6 +58,13 @@ export type PetPolicy = "permitidas" | "no-permitidas" | "sin-dato";
 export interface SiteAccessibilityDetail {
   site_id: string;
   ramps: AccessibilityGrade;
+  /**
+   * Gradas y escalones. Es la dimension INVERSA a las demas: aqui un 3 no
+   * significa "escaleras en buen estado" sino "pocas gradas o ninguna, y las
+   * que hay son bajas". Se califica el OBSTACULO, no el servicio, porque eso
+   * es lo que decide si alguien puede entrar.
+   */
+  steps: AccessibilityGrade;
   accessible_bathroom: AccessibilityGrade;
   rest_areas: AccessibilityGrade;
   wheelchair_circulation: AccessibilityGrade;

@@ -44,6 +44,16 @@ export function RampIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/** Gradas y escalones. Es un OBSTACULO, no un servicio: ver §steps en types. */
+export function StepsIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M3 20h4v-4h4v-4h4V8h5" />
+      <path d="M3 20v-1" />
+    </svg>
+  );
+}
+
 export function BathroomIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

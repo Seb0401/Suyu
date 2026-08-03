@@ -63,6 +63,7 @@ export function getAllAccessibilityDetails(): SiteAccessibilityDetail[] {
 export function averageRating(detail: SiteAccessibilityDetail): number | null {
   const grades: AccessibilityGrade[] = [
     detail.ramps,
+    detail.steps,
     detail.accessible_bathroom,
     detail.rest_areas,
     detail.wheelchair_circulation,
@@ -76,6 +77,7 @@ export function averageRating(detail: SiteAccessibilityDetail): number | null {
 export function ratedCount(detail: SiteAccessibilityDetail): number {
   return [
     detail.ramps,
+    detail.steps,
     detail.accessible_bathroom,
     detail.rest_areas,
     detail.wheelchair_circulation,

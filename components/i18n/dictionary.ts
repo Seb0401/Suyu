@@ -94,6 +94,9 @@ const es = {
 
   "a11y.sillaRuedas": "Silla de ruedas",
   "a11y.rampas": "Rampas",
+  "a11y.gradas": "Gradas y escalones",
+  "a11y.gradasAyuda":
+    "Aquí 3 significa pocas gradas o ninguna, no escaleras en buen estado: lo que se califica es el obstáculo.",
   "a11y.bano": "Baño accesible",
   "a11y.descansos": "Zonas de descanso",
   "a11y.disponible": "disponible",
@@ -358,6 +361,9 @@ const en: Record<TranslationKey, string> = {
 
   "a11y.sillaRuedas": "Wheelchair",
   "a11y.rampas": "Ramps",
+  "a11y.gradas": "Steps and stairs",
+  "a11y.gradasAyuda":
+    "Here 3 means few or no steps, not stairs in good repair: what is rated is the obstacle.",
   "a11y.bano": "Accessible toilet",
   "a11y.descansos": "Rest areas",
   "a11y.disponible": "available",
@@ -621,6 +627,9 @@ const fr: Record<TranslationKey, string> = {
 
   "a11y.sillaRuedas": "Fauteuil roulant",
   "a11y.rampas": "Rampes",
+  "a11y.gradas": "Marches et escaliers",
+  "a11y.gradasAyuda":
+    "Ici 3 signifie peu ou pas de marches, et non des escaliers en bon état : ce qui est noté, c'est l'obstacle.",
   "a11y.bano": "Toilettes accessibles",
   "a11y.descansos": "Zones de repos",
   "a11y.disponible": "disponible",
@@ -887,6 +896,9 @@ const pt: Record<TranslationKey, string> = {
 
   "a11y.sillaRuedas": "Cadeira de rodas",
   "a11y.rampas": "Rampas",
+  "a11y.gradas": "Degraus e escadas",
+  "a11y.gradasAyuda":
+    "Aqui 3 significa poucos ou nenhum degrau, não escadas em bom estado: o que se avalia é o obstáculo.",
   "a11y.bano": "Banheiro acessível",
   "a11y.descansos": "Áreas de descanso",
   "a11y.disponible": "disponível",
