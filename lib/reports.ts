@@ -59,10 +59,11 @@ export function validateReport(input: NewReport): ReportValidation {
   };
 }
 
-/** Costura para A8. */
+/** Costura para A8. Devuelve true si el reporte quedo persistido en Supabase. */
 async function insertReportInDb(
-  _report: AccessibilityReport,
+  report: AccessibilityReport,
 ): Promise<boolean> {
+  void report;
   return false;
 }
 
