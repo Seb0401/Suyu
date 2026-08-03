@@ -139,6 +139,42 @@ const es = {
   "explorar.filtrosPerfil": "Filtros aplicados desde tu perfil de viaje.",
   "explorar.verTodosLugares": "Ver todos los lugares",
 
+  "ruta.titulo": "Ruta accesible",
+  "ruta.subtitulo":
+    "Elige de dónde sales y a dónde vas. Te decimos qué tan accesible es el camino y cuánta gente hay.",
+  "ruta.desde": "Desde",
+  "ruta.hasta": "Hasta",
+  "ruta.eligeLugar": "Elige un lugar",
+  "ruta.aQueHora": "¿A qué hora?",
+  "ruta.soloAccesibles": "Solo caminos accesibles",
+  "ruta.mismoLugar": "El origen y el destino no pueden ser el mismo lugar.",
+  "ruta.buscando": "Buscando…",
+  "ruta.buscar": "Buscar ruta accesible",
+  "ruta.errorCalculo": "No pudimos calcular la ruta. Revisa tu conexión e inténtalo de nuevo.",
+  "ruta.accesibilidad": "Accesibilidad",
+  "ruta.distancia": "Distancia",
+  "ruta.tiempo": "Tiempo",
+  "ruta.paradas": "Paradas",
+  "ruta.aproximada":
+    "Ruta aproximada: sin token de Mapbox trazamos una línea recta y estimamos el tiempo a pie. No es un recorrido peatonal real.",
+  "ruta.noCaminable": "Es demasiado lejos para ir caminando. Considera transporte.",
+  "ruta.tuRecorrido": "Tu recorrido",
+  "ruta.estaLleno": "está lleno a las",
+  "ruta.inicio": "Inicio",
+  "ruta.destino": "Destino",
+  "ruta.miUbicacion": "Mi ubicación",
+  "ruta.usarMiUbicacion": "Usar mi ubicación",
+  "ruta.ubicandote": "Ubicándote…",
+  "ruta.ubicacionDenegada":
+    "No nos diste permiso de ubicación. Elige un punto de partida de la lista.",
+  "ruta.ubicacionNoSoportada":
+    "Tu navegador no permite compartir la ubicación. Elige un punto de partida de la lista.",
+  "ruta.ubicacionLejos":
+    "Estás lejos de Arequipa, así que la ruta desde tu ubicación no tendría sentido. Elige un punto de la lista.",
+  "ruta.desdeTuUbicacion": "Desde tu ubicación actual",
+  "ruta.origenSinDatos":
+    "El porcentaje mide solo el destino: no tenemos datos de accesibilidad de la calle donde estás parado.",
+
   "sitio.estadoLugar": "Estado del lugar",
   "sitio.ocupacion": "Ocupación estimada a las",
   "sitio.accesibilidad": "Accesibilidad",
@@ -362,6 +398,42 @@ const en: Record<TranslationKey, string> = {
   "explorar.filtrosPerfil": "Filters applied from your travel profile.",
   "explorar.verTodosLugares": "See all places",
 
+  "ruta.titulo": "Accessible route",
+  "ruta.subtitulo":
+    "Choose where you start and where you are going. We tell you how accessible the way is and how busy it is.",
+  "ruta.desde": "From",
+  "ruta.hasta": "To",
+  "ruta.eligeLugar": "Choose a place",
+  "ruta.aQueHora": "At what time?",
+  "ruta.soloAccesibles": "Accessible paths only",
+  "ruta.mismoLugar": "Origin and destination cannot be the same place.",
+  "ruta.buscando": "Searching…",
+  "ruta.buscar": "Find an accessible route",
+  "ruta.errorCalculo": "We could not work out the route. Check your connection and try again.",
+  "ruta.accesibilidad": "Accessibility",
+  "ruta.distancia": "Distance",
+  "ruta.tiempo": "Time",
+  "ruta.paradas": "Stops",
+  "ruta.aproximada":
+    "Approximate route: without a Mapbox token we draw a straight line and estimate the walking time. It is not a real pedestrian route.",
+  "ruta.noCaminable": "It is too far to walk. Consider transport.",
+  "ruta.tuRecorrido": "Your route",
+  "ruta.estaLleno": "is crowded at",
+  "ruta.inicio": "Start",
+  "ruta.destino": "Destination",
+  "ruta.miUbicacion": "My location",
+  "ruta.usarMiUbicacion": "Use my location",
+  "ruta.ubicandote": "Locating you…",
+  "ruta.ubicacionDenegada":
+    "You did not grant location permission. Pick a starting point from the list.",
+  "ruta.ubicacionNoSoportada":
+    "Your browser cannot share your location. Pick a starting point from the list.",
+  "ruta.ubicacionLejos":
+    "You are far from Arequipa, so a route from your location would not make sense. Pick a point from the list.",
+  "ruta.desdeTuUbicacion": "From your current location",
+  "ruta.origenSinDatos":
+    "The percentage covers the destination only: we have no accessibility data for the street you are standing on.",
+
   "sitio.estadoLugar": "Place status",
   "sitio.ocupacion": "Estimated occupancy at",
   "sitio.accesibilidad": "Accessibility",
@@ -583,6 +655,43 @@ const fr: Record<TranslationKey, string> = {
     "Nous n'avons pas confirmé si ces lieux disposent de toilettes familiales ou acceptent les animaux, ces filtres sont donc désactivés. Les chiens guides, eux, ont un accès garanti par la loi partout.",
   "explorar.filtrosPerfil": "Filtres appliqués depuis votre profil de voyage.",
   "explorar.verTodosLugares": "Voir tous les lieux",
+
+  "ruta.titulo": "Itinéraire accessible",
+  "ruta.subtitulo":
+    "Choisissez votre point de départ et votre destination. Nous vous disons si le chemin est accessible et s'il y a du monde.",
+  "ruta.desde": "De",
+  "ruta.hasta": "À",
+  "ruta.eligeLugar": "Choisissez un lieu",
+  "ruta.aQueHora": "À quelle heure ?",
+  "ruta.soloAccesibles": "Chemins accessibles uniquement",
+  "ruta.mismoLugar": "Le départ et la destination ne peuvent pas être le même lieu.",
+  "ruta.buscando": "Recherche…",
+  "ruta.buscar": "Chercher un itinéraire accessible",
+  "ruta.errorCalculo":
+    "Nous n'avons pas pu calculer l'itinéraire. Vérifiez votre connexion et réessayez.",
+  "ruta.accesibilidad": "Accessibilité",
+  "ruta.distancia": "Distance",
+  "ruta.tiempo": "Durée",
+  "ruta.paradas": "Arrêts",
+  "ruta.aproximada":
+    "Itinéraire approximatif : sans jeton Mapbox nous traçons une ligne droite et estimons le temps de marche. Ce n'est pas un vrai parcours piéton.",
+  "ruta.noCaminable": "C'est trop loin pour y aller à pied. Envisagez un transport.",
+  "ruta.tuRecorrido": "Votre parcours",
+  "ruta.estaLleno": "est saturé à",
+  "ruta.inicio": "Départ",
+  "ruta.destino": "Destination",
+  "ruta.miUbicacion": "Ma position",
+  "ruta.usarMiUbicacion": "Utiliser ma position",
+  "ruta.ubicandote": "Localisation…",
+  "ruta.ubicacionDenegada":
+    "Vous n'avez pas autorisé la localisation. Choisissez un point de départ dans la liste.",
+  "ruta.ubicacionNoSoportada":
+    "Votre navigateur ne permet pas de partager votre position. Choisissez un point de départ dans la liste.",
+  "ruta.ubicacionLejos":
+    "Vous êtes loin d'Arequipa, un itinéraire depuis votre position n'aurait pas de sens. Choisissez un point dans la liste.",
+  "ruta.desdeTuUbicacion": "Depuis votre position actuelle",
+  "ruta.origenSinDatos":
+    "Le pourcentage ne concerne que la destination : nous n'avons aucune donnée d'accessibilité sur la rue où vous vous trouvez.",
 
   "sitio.estadoLugar": "État du lieu",
   "sitio.ocupacion": "Affluence estimée à",
@@ -807,6 +916,42 @@ const pt: Record<TranslationKey, string> = {
     "Ainda não confirmamos se estes lugares têm banheiro familiar ou aceitam animais, então esses filtros estão desativados. Cães-guia têm acesso garantido por lei em todos eles.",
   "explorar.filtrosPerfil": "Filtros aplicados a partir do seu perfil de viagem.",
   "explorar.verTodosLugares": "Ver todos os lugares",
+
+  "ruta.titulo": "Rota acessível",
+  "ruta.subtitulo":
+    "Escolha de onde você sai e para onde vai. Dizemos o quão acessível é o caminho e quanta gente há.",
+  "ruta.desde": "De",
+  "ruta.hasta": "Até",
+  "ruta.eligeLugar": "Escolha um lugar",
+  "ruta.aQueHora": "A que horas?",
+  "ruta.soloAccesibles": "Somente caminhos acessíveis",
+  "ruta.mismoLugar": "A origem e o destino não podem ser o mesmo lugar.",
+  "ruta.buscando": "Buscando…",
+  "ruta.buscar": "Buscar rota acessível",
+  "ruta.errorCalculo": "Não conseguimos calcular a rota. Verifique sua conexão e tente de novo.",
+  "ruta.accesibilidad": "Acessibilidade",
+  "ruta.distancia": "Distância",
+  "ruta.tiempo": "Tempo",
+  "ruta.paradas": "Paradas",
+  "ruta.aproximada":
+    "Rota aproximada: sem token do Mapbox traçamos uma linha reta e estimamos o tempo a pé. Não é um percurso de pedestres real.",
+  "ruta.noCaminable": "É longe demais para ir a pé. Considere transporte.",
+  "ruta.tuRecorrido": "Seu percurso",
+  "ruta.estaLleno": "está lotado às",
+  "ruta.inicio": "Início",
+  "ruta.destino": "Destino",
+  "ruta.miUbicacion": "Minha localização",
+  "ruta.usarMiUbicacion": "Usar minha localização",
+  "ruta.ubicandote": "Localizando…",
+  "ruta.ubicacionDenegada":
+    "Você não deu permissão de localização. Escolha um ponto de partida na lista.",
+  "ruta.ubicacionNoSoportada":
+    "Seu navegador não permite compartilhar a localização. Escolha um ponto de partida na lista.",
+  "ruta.ubicacionLejos":
+    "Você está longe de Arequipa, então uma rota a partir da sua localização não faria sentido. Escolha um ponto na lista.",
+  "ruta.desdeTuUbicacion": "A partir da sua localização atual",
+  "ruta.origenSinDatos":
+    "A porcentagem cobre apenas o destino: não temos dados de acessibilidade da rua onde você está.",
 
   "sitio.estadoLugar": "Situação do lugar",
   "sitio.ocupacion": "Lotação estimada às",

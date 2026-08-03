@@ -18,13 +18,14 @@ import {
   SearchIcon,
 } from "@/components/Icons";
 import { useSites } from "@/components/useSites";
+import { useT } from "@/components/i18n/LocaleProvider";
 
 const QUICK_ACCESS = [
-  { href: "/ruta", label: "Ruta accesible", tile: "bg-forest-700 text-cream", Icon: WheelchairIcon },
-  { href: "/chat", label: "Suyu IA", tile: "bg-night-800 text-cream", Icon: ChatIcon },
-  { href: "/panel", label: "Estado turístico", tile: "bg-clay-600 text-cream", Icon: CrowdIcon },
-  { href: "/itinerario", label: "Itinerario", tile: "bg-sand-200 text-ink", Icon: CalendarIcon },
-];
+  { href: "/ruta", labelKey: "home.buscarRuta", tile: "bg-forest-700 text-cream", Icon: WheelchairIcon },
+  { href: "/chat", labelKey: "chat.titulo", tile: "bg-night-800 text-cream", Icon: ChatIcon },
+  { href: "/panel", labelKey: "home.estadoTuristico", tile: "bg-clay-600 text-cream", Icon: CrowdIcon },
+  { href: "/itinerario", labelKey: "home.itinerario", tile: "bg-sand-200 text-ink", Icon: CalendarIcon },
+] as const;
 
 function CrowdIcon({ size, className }: { size?: number; className?: string }) {
   return <CrowdDensityIcon count={3} size={size} className={className} />;
@@ -32,6 +33,7 @@ function CrowdIcon({ size, className }: { size?: number; className?: string }) {
 
 export default function Home() {
   const { sites, loading, error } = useSites();
+  const t = useT();
   const [query, setQuery] = useState("");
   const [stories, setStories] = useState<Story[]>([]);
   const router = useRouter();
@@ -53,9 +55,9 @@ export default function Home() {
 
           {/* La tarjeta monta sobre el paisaje, como en el mockup. */}
           <div className="mt-40 rounded-3xl border border-sand-200 bg-sand-50 p-5 shadow-lg">
-            <p className="text-center font-extrabold text-ink">¡Hola, viajero!</p>
+            <p className="text-center font-extrabold text-ink">{t("home.hola")}</p>
             <p className="mt-0.5 text-center text-sm text-ink-soft">
-              ¿A dónde quieres ir hoy?
+              {t("home.aDonde")}
             </p>
 
             <form
@@ -66,7 +68,7 @@ export default function Home() {
               }}
             >
               <label htmlFor="buscar-sitio" className="sr-only">
-                Busca un lugar o atractivo
+                {t("home.buscarLabel")}
               </label>
               <div className="flex items-center gap-2 rounded-full border border-sand-200 bg-sand-100 px-4 py-2.5">
                 <SearchIcon size={18} className="shrink-0 text-ink-muted" />
@@ -75,7 +77,7 @@ export default function Home() {
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Busca un lugar o atractivo"
+                  placeholder={t("home.buscarPlaceholder")}
                   className="w-full bg-transparent text-sm text-ink placeholder:text-ink-muted focus:outline-none"
                 />
               </div>
@@ -87,7 +89,7 @@ export default function Home() {
                 type="submit"
                 className="rounded-full border-2 border-forest-700 px-5 py-2.5 text-sm font-bold text-forest-700"
               >
-                Ver sitios que coincidan
+                {t("home.verCoincidan")}
               </button>
             </form>
 
@@ -96,7 +98,7 @@ export default function Home() {
               className="mt-3 flex items-center justify-center gap-2 rounded-full bg-clay-600 px-5 py-3 font-bold text-cream"
             >
               <WheelchairIcon size={20} />
-              Buscar ruta accesible
+              {t("home.buscarRuta")}
             </Link>
           </div>
         </div>
@@ -107,13 +109,13 @@ export default function Home() {
       <section className="px-6 pt-6" aria-labelledby="explora-titulo">
         <div className="flex items-baseline justify-between">
           <h2 id="explora-titulo" className="text-lg font-extrabold text-ink">
-            Explora Arequipa
+            {t("home.explora")}
           </h2>
           <Link
             href="/explorar"
             className="flex items-center gap-1 text-sm font-semibold text-clay-600"
           >
-            Ver todos
+            {t("common.verTodos")}
             <ArrowRightIcon size={16} />
           </Link>
         </div>
@@ -126,7 +128,7 @@ export default function Home() {
           </ul>
         ) : error ? (
           <p className="mt-4 rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">
-            {error} Revisa tu conexión e inténtalo de nuevo.
+            {t("common.errorCarga")}
           </p>
         ) : (
           <ul className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
@@ -141,17 +143,17 @@ export default function Home() {
 
       <section className="px-6 pt-8" aria-labelledby="accesos-titulo">
         <h2 id="accesos-titulo" className="text-lg font-extrabold text-ink">
-          Accesos rápidos
+          {t("home.accesos")}
         </h2>
         <ul className="mt-4 grid grid-cols-4 gap-3">
-          {QUICK_ACCESS.map(({ href, label, tile, Icon }) => (
+          {QUICK_ACCESS.map(({ href, labelKey, tile, Icon }) => (
             <li key={href}>
               <Link href={href} className="flex flex-col items-center gap-2 text-center">
                 <span className={`flex h-16 w-full items-center justify-center rounded-2xl ${tile}`}>
                   <Icon size={26} />
                 </span>
                 <span className="text-[11px] font-semibold leading-tight text-ink-soft">
-                  {label}
+                  {t(labelKey)}
                 </span>
               </Link>
             </li>
@@ -163,13 +165,13 @@ export default function Home() {
         <section className="px-6 pt-8" aria-labelledby="historias-titulo">
           <div className="flex items-baseline justify-between">
             <h2 id="historias-titulo" className="text-lg font-extrabold text-ink">
-              Historias de viajeros
+              {t("home.historias")}
             </h2>
             <Link
               href="/historias"
               className="flex items-center gap-1 text-sm font-semibold text-clay-600"
             >
-              Ver todas
+              {t("common.verTodas")}
               <ArrowRightIcon size={16} />
             </Link>
           </div>
@@ -186,11 +188,10 @@ export default function Home() {
           <Mascot size={64} state="wave" />
           <div>
             <h2 id="consejo-titulo" className="font-extrabold text-ink">
-              Consejo de Suyu
+              {t("home.consejoTitulo")}
             </h2>
             <p className="mt-1 text-sm text-ink-soft">
-              Lleva agua y bloqueador solar. En Arequipa el sol pega fuerte aunque
-              el día esté fresco.
+              {t("home.consejoTexto")}
             </p>
           </div>
         </div>

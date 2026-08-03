@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BathroomIcon,
   RampIcon,
@@ -5,6 +7,7 @@ import {
   WheelchairIcon,
 } from "@/components/AccessibilityIcons";
 import { CheckIcon, CloseIcon, PinIcon, type IconProps } from "@/components/Icons";
+import { useT } from "@/components/i18n/LocaleProvider";
 import type { ComponentType } from "react";
 
 export type Milestone = {
@@ -52,9 +55,11 @@ export default function RouteTimeline({
   destinationName: string;
   milestones: Milestone[];
 }) {
+  const t = useT();
+
   return (
     <ol className="relative">
-      <Endpoint name={originName} role="Inicio" />
+      <Endpoint name={originName} role={t("ruta.inicio")} />
 
       {milestones.map((m, i) => {
         const Icon = iconFor(m.label);
@@ -83,7 +88,7 @@ export default function RouteTimeline({
         );
       })}
 
-      <Endpoint name={destinationName} role="Destino" />
+      <Endpoint name={destinationName} role={t("ruta.destino")} />
     </ol>
   );
 }
