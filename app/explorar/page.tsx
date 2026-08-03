@@ -1,11 +1,13 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import SiteCard from "@/components/SiteCard";
 import { ACCESSIBILITY_FEATURES } from "@/components/AccessibilityIcons";
 import { SearchIcon } from "@/components/Icons";
 import { useSites } from "@/components/useSites";
+import { passesKidsFilter } from "@/components/kidsInfo";
+import { hasAccessibilityNeeds, readProfile, travelsWithKids } from "@/components/travelProfile";
 import { accessibilityScore } from "@/lib/filters";
 import type { SiteWithCrowd } from "@/lib/types";
 
@@ -26,7 +28,31 @@ function ExplorarContent() {
 
   const [query, setQuery] = useState(params.get("q") ?? "");
   const [active, setActive] = useState<Record<string, boolean>>({});
+  const [kidsOnly, setKidsOnly] = useState(false);
   const [sort, setSort] = useState<SortKey>("nombre");
+  const [fromProfile, setFromProfile] = useState(false);
+
+  /* Los filtros se precargan del perfil de viaje, pero la pantalla lo DICE y
+     deja quitarlos de un toque: filtrar en silencio por algo que el usuario
+     respondio hace dias parece que faltan lugares. */
+  useEffect(() => {
+    const profile = readProfile();
+    if (!profile.completed_at) return;
+
+    const needs = hasAccessibilityNeeds(profile);
+    const kids = travelsWithKids(profile);
+    if (!needs && !kids) return;
+
+    setActive({ ...(profile.needs as Record<string, boolean>) });
+    setKidsOnly(kids);
+    setFromProfile(true);
+  }, []);
+
+  function clearProfileFilters() {
+    setActive({});
+    setKidsOnly(false);
+    setFromProfile(false);
+  }
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -35,6 +61,7 @@ function ExplorarContent() {
       if (q && !site.name.toLowerCase().includes(q) && !site.category.toLowerCase().includes(q)) {
         return false;
       }
+      if (kidsOnly && !passesKidsFilter(site.id)) return false;
       return ACCESSIBILITY_FEATURES.every(({ key }) => !active[key] || site[key]);
     });
 
@@ -43,7 +70,7 @@ function ExplorarContent() {
       if (sort === "mas-accesible") return accessibilityScore(b) - accessibilityScore(a);
       return a.name.localeCompare(b.name, "es");
     });
-  }, [sites, query, active, sort]);
+  }, [sites, query, active, kidsOnly, sort]);
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-4xl">
@@ -67,9 +94,34 @@ function ExplorarContent() {
         />
       </div>
 
+      {fromProfile ? (
+        <p className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-forest-50 px-3 py-2 text-xs text-forest-700">
+          <span className="font-semibold">Filtros aplicados desde tu perfil de viaje.</span>
+          <button type="button" onClick={clearProfileFilters} className="font-bold underline">
+            Ver todos los lugares
+          </button>
+        </p>
+      ) : null}
+
       <fieldset className="mt-4">
         <legend className="text-xs font-bold text-ink-soft">Necesito</legend>
         <div className="mt-2 flex flex-wrap gap-2">
+          <label
+            className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
+              kidsOnly
+                ? "border-clay-600 bg-clay-50 text-clay-700"
+                : "border-sand-200 bg-sand-50 text-ink-soft"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={kidsOnly}
+              onChange={(e) => setKidsOnly(e.target.checked)}
+              className="sr-only"
+            />
+            Apto con niños
+          </label>
+
           {ACCESSIBILITY_FEATURES.map(({ key, label, Icon }) => {
             const on = Boolean(active[key]);
             return (
@@ -117,6 +169,14 @@ function ExplorarContent() {
 
       {error ? (
         <p className="mt-3 rounded-2xl bg-clay-50 p-4 text-sm text-[var(--color-danger-text)]">{error}</p>
+      ) : null}
+
+      {kidsOnly ? (
+        <p className="mt-2 rounded-2xl border border-sand-200 bg-sand-50 px-3 py-2 text-xs text-ink-soft">
+          Solo mostramos lugares donde <strong>confirmamos</strong> que conviene ir
+          con niños. Los que están sin verificar quedan fuera aunque quizá sirvan:
+          un filtro promete algo y no podemos prometer lo que no comprobamos.
+        </p>
       ) : null}
 
       {!loading && visible.length === 0 && !error ? (

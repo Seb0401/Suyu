@@ -13,7 +13,15 @@ import SiteThumbnail from "@/components/SiteThumbnail";
 import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
 import type { Story } from "@/lib/types";
-import { ArrowRightIcon, CrowdDensityIcon, PinIcon } from "@/components/Icons";
+import {
+  ArrowRightIcon,
+  CrowdDensityIcon,
+  ExternalLinkIcon,
+  HelpCircleIcon,
+  PinIcon,
+  ShieldCheckIcon,
+} from "@/components/Icons";
+import { SUITABILITY_LABEL, getKidsInfo } from "@/components/kidsInfo";
 import { crowdPresentation } from "@/lib/crowdUi";
 import type { SiteWithCrowd } from "@/lib/types";
 
@@ -28,6 +36,57 @@ type CrowdResponse = {
 
 function hhmm(hour: number) {
   return `${String(hour).padStart(2, "0")}:00`;
+}
+
+/**
+ * Aptitud para ir con niños. Siempre muestra de dónde salió el dato y, cuando
+ * no está confirmado, lo dice en vez de omitir la sección (§2.1).
+ */
+function KidsSection({ siteId }: { siteId: string }) {
+  const info = getKidsInfo(siteId);
+  if (!info) return null;
+
+  const Badge = info.confirmed ? ShieldCheckIcon : HelpCircleIcon;
+
+  return (
+    <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
+      <h2 className="font-extrabold text-ink">Ir con niños</h2>
+
+      <p
+        className={`mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${
+          info.suitability === "apto"
+            ? "bg-forest-50 text-forest-700"
+            : info.suitability === "con-reservas"
+              ? "bg-[var(--color-amber-chip-bg)] text-[var(--color-amber-text)]"
+              : "bg-sand-200 text-ink-soft"
+        }`}
+      >
+        <Badge size={14} />
+        {SUITABILITY_LABEL[info.suitability]}
+      </p>
+
+      <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">{info.note}</p>
+
+      <p className="mt-2 text-xs text-ink-muted">
+        {info.has_kids_area ? "Tiene zona de juegos. " : "Sin zona de juegos. "}
+        {info.confirmed ? "Fuente: " : "Dato sin confirmar — "}
+        {info.source_url ? (
+          <a
+            href={info.source_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-clay-600"
+          >
+            {info.source_label}
+            <ExternalLinkIcon size={12} />
+            <span className="sr-only">(se abre en una pestaña nueva)</span>
+          </a>
+        ) : (
+          <span className="font-semibold">{info.source_label}</span>
+        )}
+      </p>
+    </section>
+  );
 }
 
 export default function SitioPage() {
@@ -160,6 +219,8 @@ export default function SitioPage() {
           </div>
         </section>
       ) : null}
+
+      <KidsSection siteId={site.id} />
 
       <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">
         <h2 className="font-extrabold text-ink">Accesibilidad</h2>
