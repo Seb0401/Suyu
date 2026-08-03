@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-/**
- * NOTA PARA PERSONA B (B1): el scaffold traia Geist via next/font/google, pero
- * fonts.googleapis.com no es alcanzable desde la red del equipo y eso rompe
- * `npm run build`. Se quito para que el Commit 0 compile.
- *
- * Cuando montes Nunito + Yellowtail, o se prueba desde una red que si alcance
- * Google Fonts, o se autohospedan los .woff2 en public/fonts/ con @font-face.
+/*
+ * Nunito + Yellowtail se cargan con @font-face desde public/fonts/, no con
+ * next/font/google: fonts.googleapis.com esta bloqueado en la red del equipo y
+ * next/font resuelve en build, asi que `npm run build` fallaba. Ver el comentario
+ * al inicio de globals.css.
  */
 
 export const metadata: Metadata = {
@@ -23,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="antialiased">{children}</body>
+      <body className="bg-sand-100 font-sans text-ink antialiased">{children}</body>
     </html>
   );
 }

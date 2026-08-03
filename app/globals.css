@@ -1,24 +1,152 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Fuentes autohospedadas en vez de next/font/google.
+ *
+ * fonts.googleapis.com no es alcanzable desde la red del equipo (el firewall la
+ * bloquea), y next/font/google resuelve en build: con esa red `npm run build`
+ * falla. Los .woff2 viven en public/fonts/ y se sirven same-origin, asi que la
+ * app compila y renderiza igual sin salida a internet — coherente con el
+ * principio offline-first de CLAUDE.md §2.1.
+ */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/nunito-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/nunito-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/nunito-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/nunito-latin-800-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Yellowtail";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/yellowtail-latin-400-normal.woff2") format("woff2");
 }
 
+/* Paleta base — CLAUDE.md §7.1. El modo oscuro (B13) sobreescribe estos mismos
+   nombres de variable en un bloque .dark; nunca se duplican aqui. */
+@theme {
+  --color-sand-50: #fdfbf6;
+  --color-sand-100: #f8f2e7;
+  --color-sand-200: #ede3d2;
+  --color-sand-300: #dfd2bc;
+
+  --color-forest-900: #0e4a34;
+  --color-forest-700: #15664a;
+  --color-forest-600: #1b7a58;
+  --color-forest-100: #cfe4d8;
+  --color-forest-50: #e7f1ea;
+
+  --color-clay-700: #a8401f;
+  --color-clay-600: #c9502a;
+  --color-clay-500: #dd5b2c;
+  --color-clay-100: #f6ddd1;
+  --color-clay-50: #fbede6;
+
+  --color-night-900: #1c1f3d;
+  --color-night-800: #262a4f;
+  --color-night-700: #343a66;
+
+  --color-ink: #2e2a25;
+  --color-ink-soft: #5c554b;
+  --color-ink-muted: #938a7c;
+
+  /* Tokens FIJOS: nunca invierten con el tema (§7.6). `cream` es texto claro
+     sobre botones/burbujas de color; si invirtiera, el boton perderia
+     contraste. `scrim` es fondo de modales. El degradado del banner de
+     accesibilidad siempre necesita verde oscuro + texto claro. */
+  --color-cream: #fdfbf6;
+  --color-scrim: #241f1a;
+  --color-forest-banner-from: #15664a;
+  --color-forest-banner-to: #0e4a34;
+
+  --color-danger-text: #8f2a1c;
+  --color-amber-text: #7a5800;
+  --color-amber-chip-bg: #fbf1d8;
+  --color-museo-text: #262a4f;
+  --color-route-legend: #15664a;
+}
+
+/* Las variables de fuente van en `@theme inline`, no en `@theme` — §7.2. Con
+   `@theme` a secas Tailwind resuelve el valor en build y el utility sale vacio. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-yellowtail);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Tokens auxiliares (aforo, graficos, foco). Van en :root plano, no en @theme:
+   no necesitan generar utilities de Tailwind y asi el bloque .dark de B13 los
+   reescribe sin tocar la paleta base. */
+:root {
+  --font-nunito: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-yellowtail: "Yellowtail", ui-serif, cursive;
+
+  /* Validados contra la superficie de tarjeta #fdfbf6. El ambar no llega a
+     3:1, por eso todo nivel de aforo lleva ademas texto o altura de barra
+     (§2.3) — el color nunca carga el significado solo. */
+  --crowd-bajo: #15803d;
+  --crowd-medio: #e5a50a;
+  --crowd-alto: #d6412f;
+  --crowd-sin-datos: #a99e8c;
+
+  --viz-grid: #ece3d4;
+  --viz-axis: #d8cbb6;
+  --viz-ink-muted: #938a7c;
+
+  --brand: #c9502a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-sand-100);
+  color: var(--color-ink);
+  font-family: var(--font-nunito);
+}
+
+/* El foco visible es requisito de la tesis del proyecto (§7.7), no un detalle
+   de estilo: nunca se elimina el outline sin reemplazarlo. */
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Banda textil andina — SVG data-uri, sin archivos de imagen (§7.3). */
+.andean-band {
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16'%3E%3Crect width='64' height='16' fill='%23f6ddd1'/%3E%3Cpath d='M8 2 L14 8 L8 14 L2 8 Z' fill='%23c9502a'/%3E%3Cpath d='M24 2 L30 8 L24 14 L18 8 Z' fill='%2315664a'/%3E%3Cpath d='M40 2 L46 8 L40 14 L34 8 Z' fill='%23c9502a'/%3E%3Cpath d='M56 2 L62 8 L56 14 L50 8 Z' fill='%2315664a'/%3E%3Crect width='64' height='1.5' fill='%23a8401f'/%3E%3Crect y='14.5' width='64' height='1.5' fill='%23a8401f'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 64px 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
