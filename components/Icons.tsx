@@ -173,6 +173,16 @@ export function CrowdDensityIcon({
   );
 }
 
+export function BookIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v15H5.5A1.5 1.5 0 0 0 4 19.5z" />
+      <path d="M4 19.5A1.5 1.5 0 0 1 5.5 21H19" />
+      <path d="M8 7.5h7M8 11h5" />
+    </svg>
+  );
+}
+
 export function SunIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

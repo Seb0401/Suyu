@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { ChatIcon } from "@/components/Icons";
-import { NAV_ITEMS } from "@/components/nav-items";
+import { NAV_ITEMS, SECONDARY_NAV } from "@/components/nav-items";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -27,7 +27,7 @@ export default function SiteHeader() {
 
         <nav aria-label="Navegación principal" className="flex-1">
           <ul className="flex items-center gap-1">
-            {NAV_ITEMS.map(({ href, label, Icon }) => {
+            {[...NAV_ITEMS, ...SECONDARY_NAV].map(({ href, label, Icon }) => {
               const active = isActive(pathname, href);
               return (
                 <li key={href}>

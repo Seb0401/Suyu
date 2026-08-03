@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import StoryCard from "@/components/StoryCard";
+import type { Story } from "@/lib/types";
 import HeroArt from "@/components/HeroArt";
 import Logo from "@/components/Logo";
 import Mascot from "@/components/Mascot";
@@ -31,7 +33,15 @@ function CrowdIcon({ size, className }: { size?: number; className?: string }) {
 export default function Home() {
   const { sites, loading, error } = useSites();
   const [query, setQuery] = useState("");
+  const [stories, setStories] = useState<Story[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    fetch("/api/stories")
+      .then((r) => (r.ok ? r.json() : { stories: [] }))
+      .then((d) => setStories((d.stories ?? []).slice(0, 2)))
+      .catch(() => setStories([]));
+  }, []);
 
   return (
     <div className="mx-auto max-w-md md:max-w-5xl">
@@ -148,6 +158,28 @@ export default function Home() {
           ))}
         </ul>
       </section>
+
+      {stories.length > 0 ? (
+        <section className="px-6 pt-8" aria-labelledby="historias-titulo">
+          <div className="flex items-baseline justify-between">
+            <h2 id="historias-titulo" className="text-lg font-extrabold text-ink">
+              Historias de viajeros
+            </h2>
+            <Link
+              href="/historias"
+              className="flex items-center gap-1 text-sm font-semibold text-clay-600"
+            >
+              Ver todas
+              <ArrowRightIcon size={16} />
+            </Link>
+          </div>
+          <div className="mt-4 flex flex-col gap-3 md:grid md:grid-cols-2">
+            {stories.map((story) => (
+              <StoryCard key={story.id} story={story} compact />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="px-6 pt-8" aria-labelledby="consejo-titulo">
         <div className="flex items-center gap-4 rounded-3xl border border-sand-200 bg-clay-50 p-4">

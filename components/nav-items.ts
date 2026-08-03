@@ -1,5 +1,12 @@
 import type { ComponentType } from "react";
-import { CompassIcon, HomeIcon, RouteIcon, UserIcon, type IconProps } from "@/components/Icons";
+import {
+  BookIcon,
+  CompassIcon,
+  HomeIcon,
+  RouteIcon,
+  UserIcon,
+  type IconProps,
+} from "@/components/Icons";
 
 export type NavItem = {
   href: string;
@@ -18,4 +25,13 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/ruta", label: "Rutas", Icon: RouteIcon },
   { href: "/explorar", label: "Explorar", Icon: CompassIcon },
   { href: "/perfil", label: "Perfil", Icon: UserIcon },
+];
+
+/**
+ * Secciones de contenido. Van en el header de escritorio y como accesos desde
+ * el Inicio, pero NO en la barra inferior: con el FAB al centro, cinco o seis
+ * entradas dejan objetivos tactiles por debajo del minimo comodo en 390 px.
+ */
+export const SECONDARY_NAV: NavItem[] = [
+  { href: "/historias", label: "Historias", Icon: BookIcon },
 ];

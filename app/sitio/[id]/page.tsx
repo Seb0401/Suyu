@@ -10,7 +10,9 @@ import Mascot from "@/components/Mascot";
 import ReportDialog from "@/components/ReportDialog";
 import ServiceList from "@/components/ServiceList";
 import SiteThumbnail from "@/components/SiteThumbnail";
+import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
+import type { Story } from "@/lib/types";
 import { ArrowRightIcon, CrowdDensityIcon, PinIcon } from "@/components/Icons";
 import { crowdPresentation } from "@/lib/crowdUi";
 import type { SiteWithCrowd } from "@/lib/types";
@@ -33,6 +35,14 @@ export default function SitioPage() {
   const [data, setData] = useState<CrowdResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
+  const [stories, setStories] = useState<Story[]>([]);
+
+  useEffect(() => {
+    fetch(`/api/stories?site=${params.id}`)
+      .then((r) => (r.ok ? r.json() : { stories: [] }))
+      .then((d) => setStories(d.stories ?? []))
+      .catch(() => setStories([]));
+  }, [params.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -179,6 +189,20 @@ export default function SitioPage() {
           quietHour={quiet_hour?.hour ?? null}
         />
       </section>
+
+      {stories.length > 0 ? (
+        <section className="mt-4">
+          <h2 className="mb-1 font-extrabold text-ink">Historias de este lugar</h2>
+          <p className="mb-3 text-xs text-ink-muted">
+            Notas del equipo de Suyu tras visitarlo.
+          </p>
+          <div className="flex flex-col gap-3">
+            {stories.map((story) => (
+              <StoryCard key={story.id} story={story} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-4">
         <h2 className="mb-3 font-extrabold text-ink">Servicios cerca</h2>
