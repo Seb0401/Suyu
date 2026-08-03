@@ -1,11 +1,13 @@
-# Wayki — compañero de viaje inteligente para Arequipa
+# Suyu — compañero de viaje inteligente para Arequipa
 
 App web (PWA) construida para **TURISTON: Hackathon de Innovación Turística**
 (Arequipa, 3–4 de agosto de 2026).
 
-> *Wayki* significa "amigo/compañero" en quechua.
+> *Suyu* significa "región, territorio" en quechua — la raíz de *Tawantinsuyu*,
+> las cuatro regiones del imperio inca. El territorio que la app te ayuda a
+> recorrer.
 
-Wayki arma **rutas accesibles** hacia los atractivos de Arequipa (rampas, baños,
+Suyu arma **rutas accesibles** hacia los atractivos de Arequipa (rampas, baños,
 pendientes, descansos), avisa cuándo un sitio está saturado y propone
 alternativas, y responde en lenguaje natural con un copiloto conversacional.
 
@@ -127,7 +129,7 @@ Tipos: `feat`, `fix`, `refactor`, `chore`, `docs`.
 | Archivo | Qué contiene |
 |---|---|
 | [`CLAUDE.md`](CLAUDE.md) | Contrato técnico: arquitectura, tipos, reglas de negocio, sistema de diseño |
-| [`plan_proyecto_wayki_turiston.md`](plan_proyecto_wayki_turiston.md) | Plan de producto y pitch: problema, público, encaje con el modelo DTI |
+| [`plan_proyecto_suyu_turiston.md`](plan_proyecto_suyu_turiston.md) | Plan de producto y pitch: problema, público, encaje con el modelo DTI |
 | [`PLAN-EQUIPO.md`](PLAN-EQUIPO.md) | Reparto de trabajo y plan de commits completo (A1–A14 / B1–B18) |
 | [`PROYECTO-DESDE-CERO.md`](PROYECTO-DESDE-CERO.md) | Guía para reconstruir la app entera: assets, tokens exactos, checklist de fidelidad |
 

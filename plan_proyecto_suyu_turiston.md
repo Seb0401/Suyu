@@ -1,14 +1,14 @@
-# Wayki — Tu compañero de viaje inteligente para Arequipa
+# Suyu — Tu compañero de viaje inteligente para Arequipa
 ### Plan de proyecto | TURISTON: Hackathon de Innovación Turística (3-4 agosto 2026)
 
-> *Wayki* significa "amigo/compañero" en quechua — refuerza el concepto de un compañero de viaje cercano y confiable, y conecta con el eje de cultura y saberes ancestrales.
-> **Nombre tentativo, ajustar libremente.**
+> *Suyu* significa "región, territorio" en quechua — es la raíz de *Tawantinsuyu*, las cuatro regiones del imperio inca. Nombra el territorio que la app te ayuda a recorrer y conecta con el eje de cultura y saberes ancestrales.
+> **Nombre definitivo.**
 
 ---
 
 ## 1. Resumen ejecutivo
 
-Wayki es una app que actúa como compañero de viaje inteligente para turistas en Arequipa. Su función central es generar **rutas accesibles en tiempo real** (rampas, baños, pendientes, descansos) hacia los principales atractivos turísticos, y se complementa con un **copiloto conversacional (IA real vía API de Claude)** que arma itinerarios personalizados, y un **recomendador anti-aforo** que sugiere alternativas cuando un sitio está saturado.
+Suyu es una app que actúa como compañero de viaje inteligente para turistas en Arequipa. Su función central es generar **rutas accesibles en tiempo real** (rampas, baños, pendientes, descansos) hacia los principales atractivos turísticos, y se complementa con un **copiloto conversacional (IA real vía API de Claude)** que arma itinerarios personalizados, y un **recomendador anti-aforo** que sugiere alternativas cuando un sitio está saturado.
 
 El objetivo es demostrar cómo una sola plataforma puede cubrir simultáneamente accesibilidad, personalización, gestión basada en datos y tecnología — los ejes donde el modelo DTI-SEGITTUR pide mayor énfasis.
 
@@ -185,7 +185,7 @@ tiempo" (§6.3 original). Lo que se agregó, más allá del plan de este documen
 - **Historias de viajeros**: un blog curado por el equipo (no un sistema de
   comentarios de usuarios sin moderar) con experiencias reales por sitio.
 - **Directorio de agencias de turismo aliadas**: para que el turista compare el
-  itinerario armado por Wayki contra tours ya existentes de operadores reales
+  itinerario armado por Suyu contra tours ya existentes de operadores reales
   de Arequipa (Arequipa Tours Perú, Pablo Tour, Giardino Tours, Chacu Travel),
   con honestidad explícita sobre qué se pudo verificar de cada una y qué no.
 - **Modo oscuro** con toggle manual persistente, aplicado a todos los tokens de

@@ -1,7 +1,7 @@
-# CLAUDE.md — Wayki: compañero de viaje inteligente para Arequipa
+# CLAUDE.md — Suyu: compañero de viaje inteligente para Arequipa
 
 > Contrato técnico del proyecto. Claude Code lee este archivo automáticamente.
-> El plan de producto y el pitch viven en `plan_proyecto_wayki_turiston.md`.
+> El plan de producto y el pitch viven en `plan_proyecto_suyu_turiston.md`.
 > El reparto de trabajo y el plan de commits, en `docs/PLAN-EQUIPO.md`.
 > Para reconstruir la app completa desde cero (assets necesarios, tokens de
 > diseño exactos, checklist de fidelidad visual), ver `docs/REPLICA-DESDE-CERO.md`.
@@ -117,7 +117,7 @@ revisarse en **ambos** temas antes de commitear, no solo en claro.
 > esperado si tu Node es más nuevo de lo que el `engines` del proyecto declara.
 >
 > ```bash
-> npx create-next-app@15 wayki --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm
+> npx create-next-app@15 suyu --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm
 > npm install @supabase/supabase-js mapbox-gl
 > ```
 
@@ -161,7 +161,7 @@ En Vercel, las mismas variables en **Project Settings → Environment Variables*
 ## 5. Estructura de carpetas
 
 ```
-wayki/
+suyu/
 ├── CLAUDE.md
 ├── README.md                    # arranque para humanos
 ├── docs/
@@ -448,7 +448,7 @@ seguiría el mismo patrón que `accessibility_reports` — tabla en Supabase,
 Directorio informativo de operadores turísticos **reales, ya operando en
 Arequipa** (Arequipa Tours Perú, Pablo Tour, Giardino Tours, Chacu Travel),
 pensado para que el turista compare itinerarios y precios existentes contra el
-plan que arma Wayki. Vive en `data/seed-agencies.json`, sin tabla en Supabase
+plan que arma Suyu. Vive en `data/seed-agencies.json`, sin tabla en Supabase
 (§6.2) ni integración de reservas: son enlaces de salida a cada operador.
 
 **Regla de honestidad que originó §2.1 (párrafo de datos verificados):** no se
@@ -580,7 +580,7 @@ Sigue siendo decorativa por defecto (`aria-hidden` salvo que pases `title`).
 ### 7.6 Modo oscuro
 
 Toggle manual (no solo `prefers-color-scheme`), persistido en
-`localStorage["wayki:theme"]`, sin parpadeo al cargar.
+`localStorage["suyu:theme"]`, sin parpadeo al cargar.
 
 - `app/globals.css`: `@custom-variant dark (&:where(.dark, .dark *));` habilita
   `dark:` como variante de **clase**, no solo de preferencia del sistema.

@@ -1,7 +1,7 @@
-# Plan de equipo — Wayki
+# Plan de equipo — Suyu
 
 > Reparto de trabajo y plan de commits para 2 personas.
-> El contrato técnico está en `CLAUDE.md`. El pitch, en `plan_proyecto_wayki_turiston.md`.
+> El contrato técnico está en `CLAUDE.md`. El pitch, en `plan_proyecto_suyu_turiston.md`.
 > Para una guía de reconstrucción desde cero con checklist de fidelidad visual y
 > lista de assets necesarios, ver `docs/REPLICA-DESDE-CERO.md`.
 
@@ -48,7 +48,7 @@ chore: scaffold Next.js 15 + contrato compartido
 
 Contenido:
 
-1. `npx create-next-app@15 wayki --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm`
+1. `npx create-next-app@15 suyu --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm`
 2. `npm install @supabase/supabase-js mapbox-gl`
 3. `lib/types.ts` completo (copiar de `CLAUDE.md` §6.1)
 4. `data/seed-sites.json` — 6 sitios con `crowd_profile` de 24 valores,
@@ -107,7 +107,7 @@ levantando. Si un commit no cumple eso, es demasiado grande.
 | B1 | `feat(ui): sistema de diseño y mascota` | Tokens en `globals.css`, Nunito + Yellowtail (`@theme inline`), `.andean-band`, `Mascot.tsx` vectorial, `Logo.tsx` | 2 h |
 | B2 | `feat(ui): shell de navegación` | `layout.tsx`, `BottomNav` con FAB, `NavLink`, skip link | 1 h |
 | B3 | `feat(ui): átomos de sitio` | `CrowdBadge` (con estado Cerrado), `VerificationChip`, `AccessibilityIcons`, `SiteThumbnail` | 1.5 h |
-| B4 | `feat(ui): pantalla Inicio` | Hero, buscador, carrusel, accesos rápidos, consejo Wayki | 1.5 h |
+| B4 | `feat(ui): pantalla Inicio` | Hero, buscador, carrusel, accesos rápidos, consejo Suyu | 1.5 h |
 | B5 | `feat(ui): mapa` | `MapView` con marcadores por aforo, encuadre automático, placeholder sin token | 1.5 h |
 | B6 | `feat(ui): pantalla Ruta` **(CORE)** | Filtros, selects, cabecera verde de % accesibilidad, `RouteTimeline` | 2 h |
 | B7 | `feat(ui): gráfico de aforo por hora` | `CrowdChart`: barras por umbral, "Ver tabla", etiqueta solo en la hora tranquila | 1.5 h |

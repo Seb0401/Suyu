@@ -1,4 +1,4 @@
-# Réplica desde cero — Wayki
+# Réplica desde cero — Suyu
 
 > Guía para reconstruir la app **completa** (MVP + todo lo agregado después) en
 > un repositorio nuevo, con la mayor fidelidad posible al estado actual.
@@ -17,7 +17,7 @@ ellos no es posible una réplica fiel — son insumos de diseño, no código.
 
 | Archivo origen | Destino en el proyecto nuevo | Por qué es obligatorio |
 |---|---|---|
-| `img_ref_turiston.png` (raíz del repo actual) | raíz del proyecto nuevo | **Mockup de referencia de toda la UI.** Grilla de 6 pantallas de un mismo diseño: (1) Inicio — buscador + carrusel de sitios + accesos rápidos, (2) navegación en mapa con una ruta accesible trazada entre Yanahuara y Santa Catalina, (3) chat "Wayki IA" con un itinerario de 3 horas de respuesta, (4) detalle de "Ruta accesible" (95% accesibilidad, distancia/tiempo/paradas, timeline vertical), (5) "Estado del lugar" con un sitio saturado y la alternativa recomendada, (6) perfil/preferencias en modo oscuro con la mascota. **Sin este archivo no hay forma de saber cómo debe verse cada pantalla** — es la única fuente del diseño visual, todo lo demás en este repo es interpretación de ese mockup. |
+| `img_ref_turiston.png` (raíz del repo actual) | raíz del proyecto nuevo | **Mockup de referencia de toda la UI.** Grilla de 6 pantallas de un mismo diseño: (1) Inicio — buscador + carrusel de sitios + accesos rápidos, (2) navegación en mapa con una ruta accesible trazada entre Yanahuara y Santa Catalina, (3) chat "Suyu IA" con un itinerario de 3 horas de respuesta, (4) detalle de "Ruta accesible" (95% accesibilidad, distancia/tiempo/paradas, timeline vertical), (5) "Estado del lugar" con un sitio saturado y la alternativa recomendada, (6) perfil/preferencias en modo oscuro con la mascota. **Sin este archivo no hay forma de saber cómo debe verse cada pantalla** — es la única fuente del diseño visual, todo lo demás en este repo es interpretación de ese mockup. |
 | `material_proyecto/WaikyIA.png` | misma ruta relativa en el proyecto nuevo | **Hoja de referencia de la mascota**, 500×500 px, con las 12 poses/expresiones de la alpaca con chullo que alimentan `public/mascot/*.png`. Sin este archivo hay que rehacer el arte de la mascota desde cero (ver §6 para el recorte exacto). |
 
 **Qué NO copiar:** la carpeta `material_hackaton/` (fichas técnicas, plantilla de
@@ -38,8 +38,8 @@ tener cada uno.
 Igual que `CLAUDE.md` §3-§4. Resumen ejecutable:
 
 ```bash
-npx create-next-app@15 wayki --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm
-cd wayki
+npx create-next-app@15 suyu --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm
+cd suyu
 npm install @supabase/supabase-js mapbox-gl
 ```
 
@@ -138,7 +138,7 @@ invertir o pierde contraste — solo invierten los tokens de superficie neutra
 (fondo de página, tarjetas, texto principal).
 
 **Tipografía:** Nunito (`--font-nunito`, cuerpo) + Yellowtail (`--font-yellowtail`,
-wordmark "Wayki"), ambas vía `next/font/google`. Van en un bloque `@theme inline`
+wordmark "Suyu"), ambas vía `next/font/google`. Van en un bloque `@theme inline`
 separado, no en `@theme` — ver la nota de `CLAUDE.md` §7.2 sobre por qué.
 
 **Habilitar el toggle manual de tema:** agrega `@custom-variant dark
@@ -155,7 +155,7 @@ Para que la implementación coincida con `img_ref_turiston.png` panel por panel:
 |---|---|---|
 | 1 — Inicio (buscador + carrusel + accesos rápidos) | `/` | `app/page.tsx` |
 | 2 — Navegación en mapa con ruta trazada | `/ruta` | `components/MapView.tsx` |
-| 3 — Chat "Wayki IA" con itinerario de respuesta | `/chat` | `components/ChatWidget.tsx` |
+| 3 — Chat "Suyu IA" con itinerario de respuesta | `/chat` | `components/ChatWidget.tsx` |
 | 4 — Detalle "Ruta accesible" (% accesibilidad, timeline) | `/ruta` (resultado) | `components/RouteTimeline.tsx` |
 | 5 — "Estado del lugar" con alternativa por aforo | `/sitio/[id]` | `app/sitio/[id]/page.tsx` |
 | 6 — Perfil/preferencias en modo oscuro con mascota | `/perfil` | `app/perfil/page.tsx` |
