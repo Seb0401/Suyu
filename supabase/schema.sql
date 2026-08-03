@@ -92,6 +92,66 @@ create index if not exists services_near_site_idx
   on public.services (near_site_id);
 
 -- ---------------------------------------------------------------------------
+-- passport_stamps — Pasaporte Arequipeño (CLAUDE.md §6.x).
+--
+-- Una estampa por sitio y usuario, ganada solo tras pasar una geocerca GPS
+-- server-side (lib/passport.ts). Es permanente por diseño (como un sello real
+-- de pasaporte): no hay UPDATE ni DELETE en el codigo de la app.
+--
+-- El insert/select real de la app pasa por el cliente de service role
+-- (getSupabaseAdmin(), ver lib/passport.ts) despues de verificar el JWT en
+-- codigo, asi que estas policies NO son la barrera que protege el endpoint:
+-- son defensa en profundidad para un eventual acceso directo a la base.
+-- ---------------------------------------------------------------------------
+
+create table if not exists public.passport_stamps (
+  id                    uuid primary key default gen_random_uuid(),
+  user_id               uuid not null references auth.users(id) on delete cascade,
+  site_id               text not null references public.sites(id) on delete cascade,
+  accessibility_rating  smallint not null check (accessibility_rating between 1 and 5),
+  review                text not null default '',
+  photo_path            text,
+  -- Ubicacion del check-in y distancia calculada al sitio: prueba de que la
+  -- geocerca se evaluo, y permite recalibrar el radio despues sin migrar.
+  lat                   double precision not null,
+  lng                   double precision not null,
+  distance_m            double precision not null,
+  created_at            timestamptz not null default now(),
+  constraint passport_stamps_one_per_site unique (user_id, site_id)
+);
+
+create index if not exists passport_stamps_user_idx
+  on public.passport_stamps (user_id, created_at desc);
+
+alter table public.passport_stamps enable row level security;
+
+drop policy if exists "estampas propias lectura" on public.passport_stamps;
+create policy "estampas propias lectura"
+  on public.passport_stamps for select using (auth.uid() = user_id);
+
+drop policy if exists "estampas propias escritura" on public.passport_stamps;
+create policy "estampas propias escritura"
+  on public.passport_stamps for insert with check (auth.uid() = user_id);
+
+-- ---------------------------------------------------------------------------
+-- passport-photos — bucket de fotos del check-in.
+--
+-- Lectura publica (son fotos de lugares turisticos publicos, no hay dato
+-- sensible), pero SIN policy de insert para anon/authenticated: la unica
+-- escritura es server-side con la service role key (bypassea RLS), asi que
+-- el default-deny de storage ya es correcto tal cual.
+-- ---------------------------------------------------------------------------
+
+insert into storage.buckets (id, name, public)
+values ('passport-photos', 'passport-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "passport-photos lectura publica" on storage.objects;
+create policy "passport-photos lectura publica"
+  on storage.objects for select
+  using (bucket_id = 'passport-photos');
+
+-- ---------------------------------------------------------------------------
 -- RLS
 --
 -- Lectura publica: son datos turisticos, no hay nada privado.
@@ -147,3 +207,16 @@ create policy "reportes escritura anonima"
 --   check (category in ('restaurante', 'guia', 'agencia', 'transporte',
 --                       'hospedaje', 'artesania', 'movilidad', 'salud',
 --                       'actividad'));
+
+-- Beneficios reales del pasaporte (hoy son simulados, ver lib/passportUi.ts).
+-- El beneficio se gana por NIVEL (1/3/6 estampas), no por estampa individual,
+-- asi que no es una columna en passport_stamps: cuando se implemente de
+-- verdad, es una tabla nueva:
+--
+-- create table public.passport_tier_rewards (
+--   user_id       uuid not null references auth.users(id) on delete cascade,
+--   tier          text not null,
+--   discount_code text not null,
+--   issued_at     timestamptz not null default now(),
+--   primary key (user_id, tier)
+-- );

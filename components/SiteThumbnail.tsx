@@ -28,6 +28,11 @@ const BY_CATEGORY: Record<string, Style> = {
 
 const FALLBACK: Style = { wrap: "bg-sand-200 text-ink-soft", Icon: PlazaIcon };
 
+/** Icono por categoria, reutilizado por components/PassportStamp.tsx. */
+export function categoryIcon(category: string): ComponentType<IconProps> {
+  return (BY_CATEGORY[category] ?? FALLBACK).Icon;
+}
+
 export default function SiteThumbnail({
   category,
   className = "",

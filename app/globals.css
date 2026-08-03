@@ -86,6 +86,14 @@
   --color-forest-banner-from: #15664a;
   --color-forest-banner-to: #0e4a34;
 
+  /* Portada del Pasaporte Arequipeño (§6.11): rojo-granate + dorado, como la
+     tapa de un pasaporte diplomatico real — FIJO por la misma razon que el
+     banner de accesibilidad de arriba, es una tapa de documento, no una
+     superficie que deba invertir con el tema. */
+  --color-passport-cover-from: #7a1f2b;
+  --color-passport-cover-to: #4a1019;
+  --color-passport-gold: #d9b978;
+
   --color-danger-text: #8f2a1c;
   --color-amber-text: #7a5800;
   --color-amber-chip-bg: #fbf1d8;
@@ -120,6 +128,19 @@
   --viz-ink-muted: #938a7c;
 
   --brand: #c9502a;
+
+  /* Medallas del pasaporte por nivel (Bronce/Cobre/Plata/Oro, §6.11). FIJAS
+     tambien: representan un material fisico (el bronce de una medalla se ve
+     igual de bronce en modo oscuro), no un color de marca que deba
+     adaptarse — por eso viven aca y no en el bloque .dark. */
+  --metal-bronze-from: #9c6b3f;
+  --metal-bronze-to: #6b4423;
+  --metal-copper-from: #c97a45;
+  --metal-copper-to: #8f4a1f;
+  --metal-silver-from: #cfd3d8;
+  --metal-silver-to: #9aa0a6;
+  --metal-gold-from: #f0cf7a;
+  --metal-gold-to: #b8892c;
 }
 
 /*
@@ -132,9 +153,11 @@
  * en que Tailwind decida imprimir las reglas.
  *
  * Lo que NO aparece aqui es deliberado: forest-900, clay-500, la familia
- * night-*, cream, scrim y el degradado forest-banner-* son FIJOS. Se usan como
- * fondo de marca con texto claro encima; invertirlos rompe el contraste del
- * boton, no lo mejora (§7.6).
+ * night-*, cream, scrim, el degradado forest-banner-*, el degradado
+ * passport-cover-* + passport-gold, y las 4 parejas metal-*-from/to son
+ * FIJOS. Se usan como fondo de marca con texto claro encima o representan un
+ * material fisico (metal de una medalla); invertirlos rompe el contraste del
+ * boton o deja de parecer el material que es — no lo mejora (§7.6).
  */
 :root.dark {
   --color-sand-50: #1c1e29;

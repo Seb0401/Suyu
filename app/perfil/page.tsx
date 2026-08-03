@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Mascot from "@/components/Mascot";
 import { useTheme } from "@/components/ThemeToggle";
-import { ArrowRightIcon, CheckIcon, MoonIcon } from "@/components/Icons";
+import { ArrowRightIcon, CheckIcon, MoonIcon, StampIcon } from "@/components/Icons";
 
 const STORAGE_KEY = "suyu:prefs";
 
@@ -142,6 +142,24 @@ export default function PerfilPage() {
 
       <section className="px-6 pt-6">
         <Link
+          href="/pasaporte"
+          className="flex items-center justify-between rounded-3xl border border-sand-200 bg-sand-50 px-4 py-3.5"
+        >
+          <span className="flex items-center gap-2">
+            <StampIcon size={18} className="text-forest-700" />
+            <span>
+              <span className="block text-sm font-semibold text-ink">Pasaporte Arequipeño</span>
+              <span className="block text-xs text-ink-muted">
+                Tus estampas, calificaciones y nivel
+              </span>
+            </span>
+          </span>
+          <ArrowRightIcon size={18} className="shrink-0 text-ink-muted" />
+        </Link>
+      </section>
+
+      <section className="px-6 pt-6">
+        <Link
           href="/panel"
           className="flex items-center justify-between rounded-3xl border border-sand-200 bg-sand-50 px-4 py-3.5"
         >
@@ -149,6 +167,21 @@ export default function PerfilPage() {
             <span className="block text-sm font-semibold text-ink">Estado turístico</span>
             <span className="block text-xs text-ink-muted">
               Vista para municipalidad y operadores
+            </span>
+          </span>
+          <ArrowRightIcon size={18} className="shrink-0 text-ink-muted" />
+        </Link>
+      </section>
+
+      <section className="px-6 pt-3">
+        <Link
+          href="/negocio"
+          className="flex items-center justify-between rounded-3xl border border-sand-200 bg-sand-50 px-4 py-3.5"
+        >
+          <span>
+            <span className="block text-sm font-semibold text-ink">¿Tienes un negocio?</span>
+            <span className="block text-xs text-ink-muted">
+              Registra tu local y su accesibilidad
             </span>
           </span>
           <ArrowRightIcon size={18} className="shrink-0 text-ink-muted" />

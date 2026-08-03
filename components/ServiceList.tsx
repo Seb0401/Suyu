@@ -8,6 +8,9 @@ import {
   HelpCircleIcon,
 } from "@/components/Icons";
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
+import BusinessProfileCard from "@/components/BusinessProfileCard";
+import { getAllBusinessProfiles } from "@/lib/businessProfile";
+import type { BusinessAccessibilityProfile } from "@/lib/businessProfile";
 import type { TouristService } from "@/lib/types";
 
 type ServiceWithDistance = TouristService & {
@@ -27,6 +30,7 @@ type ServiceWithDistance = TouristService & {
 export default function ServiceList({ siteId }: { siteId: string }) {
   const [services, setServices] = useState<ServiceWithDistance[] | null>(null);
   const [failed, setFailed] = useState(false);
+  const [businessProfiles, setBusinessProfiles] = useState<BusinessAccessibilityProfile[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,13 +46,20 @@ export default function ServiceList({ siteId }: { siteId: string }) {
     };
   }, [siteId]);
 
+  // Fichas autoreportadas por negocios desde el portal /negocio (§ "Conectar
+  // con la recomendacion"). Viven solo en localStorage de este dispositivo,
+  // asi que el cruce por near_site_id se hace en el cliente, no via /api/services.
+  useEffect(() => {
+    setBusinessProfiles(getAllBusinessProfiles().filter((p) => p.near_site_id === siteId));
+  }, [siteId]);
+
   if (failed) return null;
 
   if (!services) {
     return <div className="h-24 animate-pulse rounded-2xl bg-sand-200" aria-hidden />;
   }
 
-  if (services.length === 0) {
+  if (services.length === 0 && businessProfiles.length === 0) {
     return (
       <p className="text-sm text-ink-soft">
         Todavía no tenemos servicios registrados cerca de aquí.
@@ -58,6 +69,11 @@ export default function ServiceList({ siteId }: { siteId: string }) {
 
   return (
     <ul className="flex flex-col gap-3">
+      {businessProfiles.map((profile) => (
+        <li key={profile.account_id}>
+          <BusinessProfileCard profile={profile} />
+        </li>
+      ))}
       {services.map((service) => {
         const label = service.registry_label ?? (service.formalized ? "Registro formal" : "Registro por verificar");
         const Badge = service.formalized ? ShieldCheckIcon : HelpCircleIcon;

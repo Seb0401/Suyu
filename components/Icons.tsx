@@ -334,3 +334,58 @@ export function PlazaIcon({ size = 24, className }: IconProps) {
     </svg>
   );
 }
+
+/** Estampa de pasaporte ganada (§6.x). */
+export function StampIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <circle cx="12" cy="12" r="8" strokeDasharray="2.4 2.4" />
+      <path d="m8.5 12.5 2.2 2.2 4.3-4.7" />
+    </svg>
+  );
+}
+
+/** Insignia de nivel del pasaporte. */
+export function MedalIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M8.5 3 6 9l3 2M15.5 3 18 9l-3 2" />
+      <circle cx="12" cy="14" r="7" />
+      <path d="M12 10.5v7M9 13l3-2.5 3 2.5" />
+    </svg>
+  );
+}
+
+export function CameraIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1-2h7l1 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z" />
+      <circle cx="12" cy="12.5" r="3.5" />
+    </svg>
+  );
+}
+
+/** Estrella de calificacion de accesibilidad. `filled` solo cambia el relleno;
+ *  el numero de estrellas seleccionadas siempre se anuncia como texto aparte
+ *  (§2.3), esto es apoyo visual, no la unica fuente del dato. */
+export function StarIcon({
+  filled,
+  size = 24,
+  className,
+}: IconProps & { filled?: boolean }) {
+  return (
+    <svg {...base(size, className)} fill={filled ? "currentColor" : "none"}>
+      <path d="m12 3.5 2.4 5 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" />
+    </svg>
+  );
+}
+
+/** Estampa todavia no ganada. */
+export function LockIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <rect x="5" y="11" width="14" height="9" rx="2" />
+      <path d="M8 11V7.5a4 4 0 0 1 8 0V11" />
+    </svg>
+  );
+}

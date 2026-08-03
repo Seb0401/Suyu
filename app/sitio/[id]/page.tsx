@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AccessibilityChecklist from "@/components/AccessibilityChecklist";
+import { useAuth } from "@/components/AuthProvider";
+import CheckInDialog from "@/components/CheckInDialog";
 import CrowdBadge from "@/components/CrowdBadge";
 import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
@@ -13,8 +15,8 @@ import SiteDetailSection from "@/components/SiteDetailSection";
 import SiteThumbnail from "@/components/SiteThumbnail";
 import StoryCard from "@/components/StoryCard";
 import VerificationChip from "@/components/VerificationChip";
-import type { Story } from "@/lib/types";
-import { ArrowRightIcon, CrowdDensityIcon, PinIcon } from "@/components/Icons";
+import type { PassportStamp, Story } from "@/lib/types";
+import { ArrowRightIcon, CheckIcon, CrowdDensityIcon, PinIcon } from "@/components/Icons";
 import { crowdPresentation } from "@/lib/crowdUi";
 import type { SiteWithCrowd } from "@/lib/types";
 
@@ -36,7 +38,10 @@ export default function SitioPage() {
   const [data, setData] = useState<CrowdResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
+  const [checkinOpen, setCheckinOpen] = useState(false);
   const [stories, setStories] = useState<Story[]>([]);
+  const { user, session } = useAuth();
+  const [stampedSites, setStampedSites] = useState<Set<string> | null>(null);
 
   useEffect(() => {
     fetch(`/api/stories?site=${params.id}`)
@@ -44,6 +49,28 @@ export default function SitioPage() {
       .then((d) => setStories(d.stories ?? []))
       .catch(() => setStories([]));
   }, [params.id]);
+
+  // Solo para mostrar "ya tienes esta estampa" sin abrir el dialogo en vano;
+  // el servidor sigue siendo quien decide de verdad en el submit del check-in.
+  useEffect(() => {
+    if (!session) {
+      setStampedSites(null);
+      return;
+    }
+    let cancelled = false;
+    fetch("/api/passport", { headers: { Authorization: `Bearer ${session.access_token}` } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d?.summary) return;
+        setStampedSites(
+          new Set((d.summary.stamps as PassportStamp[]).map((s) => s.site_id)),
+        );
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
 
   useEffect(() => {
     let cancelled = false;
@@ -174,6 +201,22 @@ export default function SitioPage() {
         >
           Reportar un problema aquí
         </button>
+
+        {user ? (
+          stampedSites?.has(site.id) ? (
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-700">
+              <CheckIcon size={14} /> Ya tienes esta estampa en tu pasaporte
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setCheckinOpen(true)}
+              className="mt-3 w-full rounded-full bg-forest-700 px-4 py-2.5 text-sm font-bold text-cream"
+            >
+              Marca tu visita · gana una estampa
+            </button>
+          )
+        ) : null}
       </section>
 
       <ReportDialog
@@ -181,6 +224,16 @@ export default function SitioPage() {
         siteName={site.name}
         open={reportOpen}
         onClose={() => setReportOpen(false)}
+      />
+
+      <CheckInDialog
+        siteId={site.id}
+        siteName={site.name}
+        open={checkinOpen}
+        onClose={() => setCheckinOpen(false)}
+        onCheckedIn={() =>
+          setStampedSites((prev) => new Set(prev ? [...prev, site.id] : [site.id]))
+        }
       />
 
       <section className="mt-4 rounded-3xl border border-sand-200 bg-sand-50 p-4">

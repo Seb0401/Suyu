@@ -5,6 +5,7 @@ import {
   CompassIcon,
   HomeIcon,
   RouteIcon,
+  StampIcon,
   UserIcon,
   type IconProps,
 } from "@/components/Icons";
@@ -41,4 +42,5 @@ export const NAV_ITEMS: NavItem[] = [
 export const SECONDARY_NAV: NavItem[] = [
   { href: "/historias", label: "Historias", Icon: BookIcon },
   { href: "/agencias", label: "Agencias", Icon: BriefcaseIcon },
+  { href: "/pasaporte", label: "Pasaporte", Icon: StampIcon },
 ];

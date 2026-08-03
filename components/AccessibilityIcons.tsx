@@ -65,6 +65,21 @@ export function RestAreaIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/** Pet-friendly, para la ficha de accesibilidad de negocios (portal /negocio).
+ *  No entra en ACCESSIBILITY_FEATURES: ese arreglo esta tipado sobre las
+ *  claves de Site, no de una ficha de negocio. */
+export function PawIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <circle cx="7" cy="8.5" r="1.6" />
+      <circle cx="12" cy="6.5" r="1.6" />
+      <circle cx="17" cy="8.5" r="1.6" />
+      <circle cx="9.3" cy="12" r="1.6" />
+      <path d="M12 13.2c-3 0-5.5 2-5.5 4.3 0 1.4 1.2 2.3 2.7 1.9.9-.2 1.8-.2 2.8-.2s1.9 0 2.8.2c1.5.4 2.7-.5 2.7-1.9 0-2.3-2.5-4.3-5.5-4.3Z" />
+    </svg>
+  );
+}
+
 /** Las 4 dimensiones de accesibilidad que trae cada sitio, en orden fijo. */
 export const ACCESSIBILITY_FEATURES: {
   key: "wheelchair_accessible" | "has_ramps" | "has_accessible_bathroom" | "has_rest_areas";

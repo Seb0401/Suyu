@@ -117,3 +117,32 @@ export interface PartnerAgency {
   formalized: boolean;
   registry_id: string | null;
 }
+
+/**
+ * Pasaporte Arequipeño (§6.x). Una estampa por sitio, ganada solo tras pasar
+ * una geocerca GPS server-side — es permanente, no se edita ni se borra.
+ */
+export interface PassportStamp {
+  id: string;
+  site_id: string;
+  site_name: string;
+  accessibility_rating: number;
+  review: string;
+  photo_url: string | null;
+  created_at: string;
+}
+
+export type PassportTier = "descubridor" | "explorador" | "conocedor" | "maestro";
+
+export interface PassportSummary {
+  stamps: PassportStamp[];
+  tier: PassportTier;
+  tier_label: string;
+  stamps_count: number;
+  total_sites: number;
+  /** null cuando ya se alcanzo el nivel maximo. */
+  next_tier_at: number | null;
+  benefit: string;
+  /** Siempre true por ahora: el beneficio se muestra pero no es canjeable (§2.1). */
+  benefit_is_simulated: boolean;
+}

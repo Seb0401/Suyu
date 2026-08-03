@@ -38,6 +38,7 @@ margen. Estado actual, todo funcional:
 | Fichas técnicas por sitio ("Conoce más") | ✅ (§6.8) |
 | Historias de viajeros (blog curado) | ✅ (§6.9) |
 | Directorio de agencias de turismo aliadas | ✅ (§6.10) |
+| Pasaporte Arequipeño (cuentas, check-in por GPS, niveles) | ✅ (§6.11) |
 | Modo oscuro (toggle manual + persistente) | ✅ (§7.6) |
 | Mascota ilustrada con 12 estados contextuales | ✅ (§7.5) |
 | PWA instalable + service worker | ✅ |
@@ -67,6 +68,7 @@ vive en JSON local. La conexión *mejora* la experiencia, nunca es requisito.
 | Servicios turísticos | `data/seed-services.json` | + enlaces externos del proveedor |
 | Fichas técnicas, historias, agencias | `data/site-details.json`, `seed-stories.json`, `seed-agencies.json` | (sin backend propio, ver §6.8-6.10) |
 | Reportes | almacén en memoria del proceso | tabla `accessibility_reports` |
+| Pasaporte Arequipeño | **no disponible** (requiere cuenta real) | check-in verificado por GPS, estampas y nivel (§6.11) |
 
 **Nunca simules salida de IA.** Si no hay `ANTHROPIC_API_KEY` o no hay red, el
 copiloto responde con el motor de reglas y lo dice en pantalla
@@ -153,8 +155,9 @@ En Vercel, las mismas variables en **Project Settings → Environment Variables*
 
 > `lib/supabase.ts` usa un placeholder válido cuando falta la URL: sin él,
 > `createClient` lanza excepción y **rompe el build**, no solo el runtime.
-> `getSupabaseAdmin()` (cliente con `SUPABASE_SERVICE_ROLE_KEY`) existe para uso
-> futuro server-only; hoy ningún endpoint lo llama todavía.
+> `getSupabaseAdmin()` (cliente con `SUPABASE_SERVICE_ROLE_KEY`) lo usa
+> `lib/passport.ts` para el Pasaporte Arequipeño (§6.11) — es su primer y
+> único llamador hoy.
 
 ---
 
@@ -193,8 +196,12 @@ suyu/
 │   ├── geo.ts                   # haversine, tiempo a pie
 │   ├── filters.ts               # filtros de accesibilidad
 │   ├── reports.ts               # reportes (Supabase o memoria)
+│   ├── passport.ts              # pasaporte: check-in con geocerca GPS (Supabase, sin fallback)
+│   ├── passportUi.ts            # presentacion compartida de niveles del pasaporte
+│   ├── authServer.ts            # verificacion de sesion (JWT) en rutas de servidor
 │   ├── anthropic.ts             # llamada directa a la API de Claude (sin SDK)
-│   └── supabase.ts
+│   ├── supabase.ts              # cliente anonimo/admin (servidor)
+│   └── supabaseBrowser.ts       # cliente de sesion de Auth (solo navegador)
 ├── app/
 │   ├── api/                     # ── PERSONA A ──
 │   │   ├── sites/route.ts
@@ -204,7 +211,10 @@ suyu/
 │   │   ├── agencies/route.ts
 │   │   ├── route-finder/route.ts
 │   │   ├── reports/route.ts
-│   │   └── chat/route.ts
+│   │   ├── chat/route.ts
+│   │   └── passport/
+│   │       ├── route.ts
+│   │       └── checkin/route.ts
 │   ├── globals.css              # ── PERSONA B ── tokens de diseño, claro + oscuro
 │   ├── layout.tsx               # ── PERSONA B ── incluye script anti-parpadeo de tema
 │   ├── page.tsx                 # Inicio
@@ -215,11 +225,16 @@ suyu/
 │   ├── chat/page.tsx
 │   ├── historias/page.tsx
 │   ├── agencias/page.tsx
+│   ├── pasaporte/page.tsx       # Pasaporte Arequipeño: cuentas, check-in GPS, niveles
 │   ├── panel/page.tsx           # municipalidad / operadores
 │   └── perfil/page.tsx          # preferencias + toggle de tema
 ├── components/                  # ── PERSONA B ──
 │   ├── Mascot.tsx                # 12 estados ilustrados (ver §7.5), no vectorial
 │   ├── ThemeToggle.tsx            # toggle claro/oscuro + hook useTheme()
+│   ├── AuthProvider.tsx           # sesion de Auth (Pasaporte Arequipeño, §6.11)
+│   ├── CheckInDialog.tsx          # check-in con geocerca GPS del pasaporte
+│   ├── PassportRing.tsx           # anillo de progreso de estampas
+│   ├── PassportStamp.tsx          # medalla/escudo por sitio (bronce/cobre/plata/oro)
 │   ├── Icons.tsx                 # iconografia propia (nada de emoji)
 │   ├── PwaProvider.tsx           # registra el SW + aviso sin conexión
 │   └── ServiceList.tsx
@@ -237,8 +252,10 @@ suyu/
 - `/api/sites` y `/api/services`: red primero con copia en caché; si todo falla,
   devuelve un JSON sintético `{ sites: [], services: [], source: "offline" }` en
   vez de romper la pantalla.
-- `/api/chat` y `/api/reports`: **solo red**. El chat cae al motor de reglas del
-  cliente; los reportes no se pueden inventar sin conexión.
+- `/api/chat`, `/api/reports` y `/api/passport`: **solo red**. El chat cae al
+  motor de reglas del cliente; los reportes no se pueden inventar sin
+  conexión; una estampa del pasaporte depende de verificar el GPS en vivo
+  (§6.11) y no puede servirse desde caché.
 - Tiles de Mapbox: **nunca se cachean**, sus términos de uso lo limitan (ni
   siquiera son same-origin, así que el SW los deja pasar directo a red).
 - `/api/site-details`, `/api/stories`, `/api/agencies` no tienen estrategia
@@ -319,12 +336,35 @@ export interface PartnerAgency {
   reviews_source: "agencia" | "resenas" | "premio" | null;
   formalized: boolean; registry_id: string | null;
 }
+
+/**
+ * Pasaporte Arequipeño (§6.11). Una estampa por sitio, ganada solo tras pasar
+ * una geocerca GPS server-side — es permanente, no se edita ni se borra.
+ */
+export interface PassportStamp {
+  id: string; site_id: string; site_name: string;
+  accessibility_rating: number; review: string;
+  photo_url: string | null; created_at: string;
+}
+
+export type PassportTier = "nuevo" | "explorador" | "andariego" | "embajador";
+
+export interface PassportSummary {
+  stamps: PassportStamp[];
+  tier: PassportTier; tier_label: string;
+  stamps_count: number; total_sites: number;
+  next_tier_at: number | null;
+  benefit: string; benefit_is_simulated: boolean;
+}
 ```
 
 ### 6.2 Esquema Supabase
 
 Completo en `supabase/schema.sql` (incluye RLS y una sección de migración
-comentada). Tablas: `sites`, `crowd_status`, `accessibility_reports`, `services`.
+comentada). Tablas: `sites`, `crowd_status`, `accessibility_reports`,
+`services`, `passport_stamps` (+ el bucket `passport-photos`, ver §6.11).
+`passport_stamps` es la primera tabla del proyecto que referencia
+`auth.users`: el pasaporte es la primera funcionalidad con cuentas reales.
 
 **Gap conocido:** el check constraint de `services.category` en
 `supabase/schema.sql` solo permite `restaurante/guia/agencia/transporte/
@@ -468,6 +508,119 @@ procedencia**, y `reviews_source` la clasifica:
 **Nunca muestres una calificación o precio que no puedas atribuir a una fuente
 concreta.** Si no se puede verificar, se dice explícitamente — no se omite en
 silencio ni se aproxima.
+
+### 6.11 Pasaporte Arequipeño (`lib/passport.ts`, `lib/passportUi.ts`, `/api/passport/*`, `/pasaporte`)
+
+El turista gana una **estampa** por sitio al hacer check-in verificado por
+GPS, califica la accesibilidad del lugar (1-5) y opcionalmente deja una
+reseña y una foto. Acumular estampas sube de nivel y desbloquea un beneficio.
+Es la primera funcionalidad del proyecto con **cuentas de usuario reales**
+(Supabase Auth) y, junto con `/api/chat` y `/api/reports`, la única que
+**requiere** conexión y Supabase configurado (§2.1): su honestidad depende de
+verificar el GPS en vivo, así que no tiene sentido offline.
+
+**Modo de prueba, no el login final:** por decisión explícita del equipo,
+`/pasaporte` no pide correo ni valida contraseña — solo un nombre.
+`enterAsGuestName(name)` (en `components/AuthProvider.tsx`) deriva un correo
+interno (`nameToDemoEmail()`: `<nombre>@pasaporte.local.invalid`, el TLD
+reservado por RFC 2606 para direcciones que a propósito no van a ningún
+lado) y siempre inicia sesión con una contraseña fija propia del proyecto —
+lo que la persona escriba en el campo de nombre es lo único que importa.
+Primera vez con un nombre → crea la cuenta; mismo nombre otra vez → recupera
+el mismo pasaporte. La UI lo dice explícitamente ("Modo de prueba"). Es una
+simplificación deliberada para poder probar rápido calificar un sitio, sumarse
+a la red y ver el pasaporte con sus recompensas — **no es autenticación
+real**: cualquiera que escriba un nombre ya usado entra a esa cuenta.
+Aceptable hoy porque el pasaporte no guarda nada sensible (fotos y reseñas de
+sitios turísticos públicos). Migrar a un login real (correo + contraseña que
+sí se validen) es un cambio contenido a `enterAsGuestName` y al formulario de
+`/pasaporte`, sin tocar el resto de la arquitectura (geocerca, niveles,
+esquema de Supabase).
+
+**Arquitectura, en tres piezas:**
+
+- **Sesión de Auth, solo navegador.** `lib/supabaseBrowser.ts` es un cliente
+  de Supabase nuevo y separado de `lib/supabase.ts` (que sigue con
+  `persistSession: false` para las lecturas anónimas de siempre, sin tocar).
+  `components/AuthProvider.tsx` expone `useAuth()` con el mismo patrón
+  hook/provider que `useTheme()` (`components/ThemeToggle.tsx`). Es la única
+  excepción sancionada a la regla de "las pantallas nunca tocan Supabase
+  directo" (§2.2): la sesión de Auth es inherentemente del navegador con el
+  SDK de Supabase.
+- **Verificación del JWT en servidor.** Las rutas de `/api/passport/*` leen
+  `Authorization: Bearer <token>` y lo validan con `lib/authServer.ts` sobre
+  el cliente compartido existente (`supabase.auth.getUser(token)`, una
+  llamada sin estado, segura sobre el singleton). El `userId` nunca sale del
+  body/query, solo del JWT ya verificado.
+- **Escritura con service role.** `lib/passport.ts` usa `getSupabaseAdmin()`
+  para insertar la estampa y subir la foto — su primer llamador real en el
+  proyecto. Cada query lleva `.eq("user_id", userId)` explícito porque el
+  cliente admin bypassea RLS. **A diferencia de `lib/reports.ts`, no hay
+  fallback en memoria**: si Supabase no está configurado, el pasaporte falla
+  cerrado con un mensaje honesto, nunca simula una estampa que después
+  desaparece.
+
+**Geocerca: 300 metros**, constante en `lib/passport.ts` (no en `lib/geo.ts`,
+que solo aporta `haversineMeters`: el radio es una regla del dominio
+pasaporte). Falsear GPS es trivial a cualquier radio, así que apretarlo no
+compra seguridad real — sí compra rechazos falsos a visitantes genuinos
+(colonial-center con error de GPS de 20-100m, sitios amurallados o miradores
+donde el pin no coincide con dónde para la gente). El servidor recalcula la
+distancia siempre; cualquier distancia mostrada en el cliente antes de
+enviar es solo UX, nunca bloquea el envío.
+
+**Niveles** (`lib/passportUi.ts`, contra los 6 sitios semilla), en metales
+como en la referencia visual del equipo: 0-1 estampas = **Descubridor**
+(Bronce), 2-3 = **Explorador** (Cobre), 4-5 = **Conocedor** (Plata), 6 =
+**Maestro** (Oro). Cada beneficio lleva el sufijo explícito "(simulado —
+todavía no es un código real)" — el usuario pidió que el sistema de niveles
+funcione completo pero el descuento no invente un código canjeable (§2.1,
+mismo criterio que evitó el incidente de §6.10). Cuando exista un descuento
+real, se resuelve por `(user_id, tier)` en una tabla nueva
+`passport_tier_rewards` (sketch comentado al final de `supabase/schema.sql`)
+— no es una columna en `passport_stamps`, porque el beneficio se gana por
+nivel, no por estampa individual.
+
+**Identidad visual** (pedido explícito: que la colección de estampas "sume
+como arte" a la app, no solo funcione):
+
+- `components/PassportStamp.tsx` — la medalla de cada sitio: un escudo SVG
+  (path a mano, no una librería de iconos) con relleno degradado del metal
+  del nivel ACTUAL del usuario cuando el sitio ya tiene estampa (bronce/
+  cobre/plata/oro se aplican parejo a toda la colección — no es un color fijo
+  por sitio, sube junto con el usuario), o contorno punteado + candado si
+  todavía no. `iconTone` ("light"/"dark") evita que un icono claro se pierda
+  sobre plata/oro: la única codificación de significado nunca es solo el
+  color (§2.3), así que el contorno punteado vs. sólido y el candado vs. el
+  icono de categoría del sitio ya distinguen ganado/no-ganado sin depender
+  del metal. Una fila de puntitos cerca de la punta del escudo es un guiño
+  decorativo al patrón braille que ya usa el resto de la app — ornamento,
+  no dato.
+- `components/PassportRing.tsx` — anillo de progreso SVG (`stampsCount/total`
+  en el centro, el número manda, el anillo refuerza) sobre la tapa del
+  pasaporte.
+- **Tapa del pasaporte**: rojo-granate + dorado (`--color-passport-cover-from
+  /to`, `--color-passport-gold` en `app/globals.css`), inspirada en la
+  referencia de un pasaporte diplomático real — deliberadamente **distinta**
+  del verde fijo de `--color-forest-banner-*` que usan `/ruta` e
+  `/itinerario`, para que el pasaporte se sienta como su propio documento y
+  no como una pantalla más de la app. Igual que ese banner, es FIJA en ambos
+  temas (§7.6): es la tapa de un objeto, no una superficie de la interfaz.
+- Los 4 pares de metal (`--metal-bronze/copper/silver/gold-from/to` en
+  `app/globals.css`) también son fijos por la misma razón: una medalla de
+  bronce se ve de bronce sin importar el tema.
+
+**Roadmap explícito (no construido):** reset de contraseña, editar o borrar
+una estampa (no es un recorte por tiempo — es permanente por diseño, como un
+sello real de pasaporte), feed público de reseñas o leaderboard (también una
+cuestión de privacidad, no solo de alcance), moderación de reseñas/fotos,
+radio de geocerca por sitio (`checkin_radius_m`), y la emisión/canje real de
+códigos de descuento.
+
+**Checklist operativo para demo en vivo (no es código):** desactivar
+"Confirm email" en el dashboard de Supabase Auth (o preparar una cuenta ya
+confirmada) — con la confirmación activada, un registro en vivo se queda
+esperando un correo que puede no llegar en wifi de evento.
 
 ---
 

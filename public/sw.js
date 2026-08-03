@@ -73,9 +73,16 @@ self.addEventListener("fetch", (event) => {
      ser same-origin, simplemente no los interceptamos. */
   if (url.origin !== self.location.origin) return;
 
-  /* Chat y reportes son solo-red. El chat cae al motor de reglas del cliente y
-     un reporte no se puede inventar sin conexion. */
-  if (url.pathname.startsWith("/api/chat") || url.pathname.startsWith("/api/reports")) {
+  /* Chat, reportes y pasaporte son solo-red. El chat cae al motor de reglas
+     del cliente, un reporte no se puede inventar sin conexion, y una estampa
+     de pasaporte depende de verificar el GPS en vivo — servir una copia en
+     cache (o el offlinePayload generico de sites/services) mentiria sobre si
+     el usuario tiene o no esa estampa. */
+  if (
+    url.pathname.startsWith("/api/chat") ||
+    url.pathname.startsWith("/api/reports") ||
+    url.pathname.startsWith("/api/passport")
+  ) {
     return;
   }
 
