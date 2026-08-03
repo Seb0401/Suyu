@@ -103,7 +103,7 @@ export default function SitioPage() {
       {saturated ? (
         <section className="mt-4 rounded-3xl border border-sand-200 bg-clay-50 p-4">
           <div className="flex items-start gap-3">
-            <Mascot size={56} />
+            <Mascot size={56} state="map" />
             <div className="min-w-0 flex-1">
               <h2 className="font-extrabold text-ink">Suyu recomienda</h2>
 

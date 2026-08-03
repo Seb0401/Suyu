@@ -251,7 +251,7 @@ export default function RutaPage() {
             {result.saturated ? (
               <section className="rounded-3xl border border-sand-200 bg-clay-50 p-4">
                 <div className="flex items-start gap-3">
-                  <Mascot size={56} />
+                  <Mascot size={56} state="map" />
                   <div className="flex-1">
                     <h2 className="font-extrabold text-ink">
                       {result.destination.name} está lleno a las {hhmm(result.hour)}

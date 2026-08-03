@@ -1,13 +1,27 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Mascot from "@/components/Mascot";
+import Mascot, { type MascotState } from "@/components/Mascot";
 import { OfflineIcon, SendIcon } from "@/components/Icons";
 import { useSites } from "@/components/useSites";
 import { OFFLINE_NOTICE, answerOffline } from "@/lib/offlineAssistant";
 import type { ChatMessage, TouristService } from "@/lib/types";
 
-type Turn = ChatMessage & { notice?: string };
+type Turn = ChatMessage & { notice?: string; mascot?: MascotState };
+
+/**
+ * Elige la pose de la mascota segun lo que pregunto el usuario. Es presentacion
+ * pura: no toca la logica de la respuesta, que sigue saliendo de /api/chat o
+ * del motor de reglas (§6.6).
+ */
+function pickMascotState(text: string): MascotState {
+  const t = text.toLowerCase();
+  if (/\b(hola|buenas|buenos dias|hey|que tal)\b/.test(t)) return "wave";
+  if (/\b(gracias|genial|perfecto|excelente)\b/.test(t)) return "cheer";
+  if (/(ruta|mapa|llegar|camino|ir de|hasta)/.test(t)) return "map";
+  if (/(busca|buscar|donde|lleno|gente|aforo|congestion)/.test(t)) return "search";
+  return "chat";
+}
 
 const SUGGESTIONS = [
   "¿Qué lugares son accesibles en silla de ruedas?",
@@ -56,6 +70,8 @@ export default function ChatWidget() {
     setDraft("");
     setSending(true);
 
+    const mascot = pickMascotState(message);
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -76,6 +92,7 @@ export default function ChatWidget() {
           // El aviso no es opcional: si la respuesta no vino de Claude, la UI
           // esta obligada a decirlo (§2.1).
           notice: data.source === "offline" ? (data.notice ?? OFFLINE_NOTICE) : undefined,
+          mascot,
         },
       ]);
     } catch {
@@ -84,7 +101,7 @@ export default function ChatWidget() {
       const local = answerOffline(message, sites, services, new Date().getHours());
       setTurns((prev) => [
         ...prev,
-        { role: "assistant", content: local.reply, notice: local.notice },
+        { role: "assistant", content: local.reply, notice: local.notice, mascot },
       ]);
     } finally {
       setSending(false);
@@ -95,7 +112,7 @@ export default function ChatWidget() {
     <div className="flex min-h-[70vh] flex-col">
       <header className="flex items-center gap-3 rounded-3xl bg-night-800 p-4 text-cream">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-night-700">
-          <Mascot size={38} />
+          <Mascot size={38} state={online ? "chat" : "confused"} />
         </span>
         <div className="flex-1">
           <p className="font-extrabold">Suyu IA</p>
@@ -116,7 +133,7 @@ export default function ChatWidget() {
       >
         {turns.length === 0 ? (
           <div className="flex flex-col items-center gap-3 rounded-3xl border border-sand-200 bg-sand-50 p-6 text-center">
-            <Mascot size={80} />
+            <Mascot size={80} state="wave" />
             <p className="font-bold text-ink">¿En qué te ayudo?</p>
             <p className="text-sm text-ink-soft">
               Pregúntame por accesibilidad, aforo o pídeme un plan para tu día.
@@ -134,7 +151,7 @@ export default function ChatWidget() {
             </p>
           ) : (
             <div key={i} className="flex max-w-[92%] items-start gap-2">
-              <Mascot size={32} className="mt-1 shrink-0" />
+              <Mascot size={32} state={turn.mascot ?? "chat"} className="mt-1 shrink-0" />
               <div className="rounded-3xl rounded-bl-lg border border-sand-200 bg-sand-50 px-4 py-2.5">
                 <p className="whitespace-pre-line text-sm text-ink">{turn.content}</p>
                 {turn.notice ? (
@@ -150,7 +167,7 @@ export default function ChatWidget() {
 
         {sending ? (
           <div className="flex items-center gap-2 text-sm text-ink-muted">
-            <Mascot size={32} />
+            <Mascot size={32} state="search" />
             Escribiendo…
           </div>
         ) : null}

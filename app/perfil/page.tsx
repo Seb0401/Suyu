@@ -48,7 +48,7 @@ export default function PerfilPage() {
     <div className="mx-auto max-w-md md:max-w-2xl">
       <section className="bg-night-800 px-6 pb-8 pt-8 text-center text-cream md:rounded-b-3xl">
         <span className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border-4 border-night-700 bg-night-900">
-          <Mascot size={72} />
+          <Mascot size={72} state="wave" />
         </span>
         <h1 className="mt-3 text-xl font-extrabold">¡Hola, viajero!</h1>
         <p className="text-sm opacity-80">Edita tus preferencias de viaje</p>

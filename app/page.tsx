@@ -151,7 +151,7 @@ export default function Home() {
 
       <section className="px-6 pt-8" aria-labelledby="consejo-titulo">
         <div className="flex items-center gap-4 rounded-3xl border border-sand-200 bg-clay-50 p-4">
-          <Mascot size={64} />
+          <Mascot size={64} state="wave" />
           <div>
             <h2 id="consejo-titulo" className="font-extrabold text-ink">
               Consejo de Suyu
