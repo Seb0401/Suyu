@@ -46,6 +46,47 @@ export type ServiceCategory =
   | "salud"
   | "actividad";
 
+export type ActivityDifficulty = "facil" | "moderado" | "exigente";
+
+/**
+ * Campos que solo aplican a algunas categorias. Todos opcionales: una entrada
+ * llena unicamente lo que le corresponde.
+ *
+ * Es una bolsa de opcionales en vez de una union discriminada a proposito. La
+ * union obligaria a la UI a hacer narrowing por categoria en cada punto donde
+ * quiere mostrar un telefono, y el 90% de los campos que la UI toca son
+ * comunes. Si algun dia un campo se vuelve obligatorio por categoria, ahi si
+ * vale la pena separar.
+ */
+export interface ServiceDetails {
+  /** Telefono de contacto. Aplica a cualquier categoria. */
+  phone?: string;
+
+  /** hospedaje: estrellas DECLARADAS por el establecimiento. Ver §6.7. */
+  stars?: number;
+
+  /** restaurante: tipo de cocina ("picanteria arequipena", "fusion"). */
+  cuisine?: string;
+  /** restaurante: plato por el que vale la pena ir. */
+  signature_dish?: string;
+
+  /** transporte: a donde llega. */
+  destinations?: string[];
+  /** transporte: horario o frecuencia, en texto libre. */
+  schedule?: string;
+  /** transporte: precio de referencia con su fecha, nunca un precio "actual". */
+  reference_fare?: string;
+
+  /** actividad: que se hace ("canotaje", "escalada", "trekking"). */
+  activity?: string;
+  difficulty?: ActivityDifficulty;
+  duration_hours?: number;
+  /** actividad: temporada recomendada. */
+  best_months?: string;
+  /** actividad: requisitos reales (edad minima, saber nadar, aclimatacion). */
+  requirements?: string;
+}
+
 export interface TouristService {
   id: string;
   name: string;
@@ -61,6 +102,7 @@ export interface TouristService {
   url: string | null;
   price_range: "$" | "$$" | "$$$" | null;
   notes: string;
+  details?: ServiceDetails;
 }
 
 export interface AccessibilityReport {
@@ -85,6 +127,17 @@ export interface ChatMessage {
 /** Ficha tecnica curada de un sitio (§6.8). */
 export interface SiteDetail {
   site_id: string;
+  /**
+   * Que es el lugar, en una frase. Va ANTES que la historia: el turista que
+   * llega a la ficha muchas veces no sabe todavia de que se trata, y arrancar
+   * con "fundado en 1579 por dona Maria de Guzman" responde una pregunta que
+   * todavia no se hizo.
+   */
+  what_is: string;
+  /** Por que vale la pena ir. Es el argumento, no la descripcion. */
+  why_visit: string;
+  /** Lo concreto que hay que ver o hacer estando ahi. */
+  highlights: string[];
   history: string;
   curiosity: string;
   best_time: string;
@@ -101,6 +154,80 @@ export interface Story {
   body: string;
   tag: string;
   created_at: string;
+}
+
+/** Linea de emergencia o de asistencia (Fase 2). */
+export interface EmergencyLine {
+  id: string;
+  name: string;
+  phone: string;
+  when: string;
+  scope: "nacional" | "arequipa";
+  /** 1 = emergencia real, 2 = asistencia al turista, 3 = oficina presencial. */
+  priority: 1 | 2 | 3;
+}
+
+/**
+ * Suceso imprevisto con guia de que hacer.
+ *
+ * No hay feed en vivo de paros ni bloqueos, y no lo inventamos: esto es
+ * contenido curado que explica el escenario y a quien llamar. Fingir un
+ * "estado de las vias en tiempo real" seria el peor dato falso posible, porque
+ * alguien decidiria si salir a la carretera con el.
+ */
+export interface Contingency {
+  id: string;
+  title: string;
+  summary: string;
+  what_to_do: string[];
+  /** Como golpea a quien tiene movilidad reducida. Es la tesis del proyecto. */
+  accessibility_note: string;
+  severity: "alta" | "media";
+}
+
+export type Currency = "PEN" | "USD";
+
+/** Un costo que el precio publicado NO cubre. */
+export interface ExtraCost {
+  label: string;
+  amount: number;
+  currency: Currency;
+  /** De donde salio el monto. Nunca un numero sin procedencia. */
+  source: string;
+  /** true si practicamente nadie puede evitarlo (una entrada obligatoria). */
+  unavoidable: boolean;
+}
+
+/**
+ * Plan turistico comparable (§6.11).
+ *
+ * El objetivo NO es rankear agencias por precio: es que el turista vea que el
+ * precio publicado casi nunca es lo que termina pagando. En el Colca el boleto
+ * turistico son S/ 70 que ninguna agencia incluye, y eso pesa mas que la
+ * diferencia entre operadores.
+ */
+export interface TourPlan {
+  id: string;
+  /** Agencia que lo vende. null = precio de referencia del mercado. */
+  agency_id: string | null;
+  agency_name: string;
+  name: string;
+  /** Clave para agrupar planes comparables entre si. */
+  destination: string;
+  duration_label: string;
+  duration_hours: number;
+  /** Precio "desde" publicado. null si no se pudo confirmar. */
+  price_from: number | null;
+  currency: Currency;
+  /** Fecha de consulta. Un precio sin fecha envejece mal y se lee como garantia. */
+  price_checked_at: string | null;
+  price_source: string;
+  includes: string[];
+  /** Lo que el precio NO cubre, con monto. Es la parte util de la comparacion. */
+  extras: ExtraCost[];
+  /** El angulo de Suyu: se puede hacer con movilidad reducida? */
+  accessibility_note: string;
+  wheelchair_viable: boolean | null;
 }
 
 /** Agencia de turismo real ya operando en Arequipa, no un afiliado (§6.10). */

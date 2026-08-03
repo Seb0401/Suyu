@@ -1,0 +1,112 @@
+{
+  "lines": [
+    {
+      "id": "policia",
+      "name": "Policía Nacional",
+      "phone": "105",
+      "when": "Robo, agresión, delito en curso o cualquier situación que necesite intervención policial inmediata.",
+      "scope": "nacional",
+      "priority": 1
+    },
+    {
+      "id": "samu",
+      "name": "SAMU — emergencia médica",
+      "phone": "106",
+      "when": "Emergencia de salud: accidente, desmayo, dificultad para respirar, mal de altura severo. Línea gratuita del Ministerio de Salud.",
+      "scope": "nacional",
+      "priority": 1
+    },
+    {
+      "id": "bomberos",
+      "name": "Bomberos",
+      "phone": "116",
+      "when": "Incendio, rescate, fuga de gas, persona atrapada, accidente vehicular con heridos.",
+      "scope": "nacional",
+      "priority": 1
+    },
+    {
+      "id": "policia-turismo-arequipa",
+      "name": "Policía de Turismo Arequipa",
+      "phone": "054 201258",
+      "when": "Problemas específicos de turistas: estafa de una agencia, robo de documentos, conflicto con un operador. Atienden en español e inglés.",
+      "scope": "arequipa",
+      "priority": 2
+    },
+    {
+      "id": "iperu-24h",
+      "name": "iPerú — asistencia al turista, 24 h",
+      "phone": "01 5748000",
+      "when": "Orientación y asistencia a cualquier hora. Es el servicio oficial de PromPerú y también atiende por WhatsApp al +51 944 492 314.",
+      "scope": "nacional",
+      "priority": 2
+    },
+    {
+      "id": "iperu-arequipa",
+      "name": "iPerú Arequipa — Plaza de Armas",
+      "phone": "054 223265",
+      "when": "Oficina presencial en Portal de la Municipalidad 110, sobre la Plaza. Lunes a sábado de 9:00 a 18:00 y domingos de 9:00 a 13:00.",
+      "scope": "arequipa",
+      "priority": 3
+    },
+    {
+      "id": "iperu-aeropuerto",
+      "name": "iPerú — aeropuerto Rodríguez Ballón",
+      "phone": "054 444564",
+      "when": "Oficina en el aeropuerto, útil al llegar o si tu vuelo se complica.",
+      "scope": "arequipa",
+      "priority": 3
+    }
+  ],
+  "contingencies": [
+    {
+      "id": "paro-bloqueo",
+      "title": "Paro o bloqueo de carreteras",
+      "summary": "En el sur del Perú los paros y bloqueos de vías son frecuentes y pueden dejar la carretera al Colca cortada de un día para otro. Ha pasado varias veces: en episodios recientes más de 100 turistas quedaron varados en el valle cuando se tomó la garita de control a la entrada de Chivay.",
+      "what_to_do": [
+        "Antes de salir hacia el Colca, pregunta a tu hotel o a iPerú cómo está la vía. Es la consulta que más viajes salva.",
+        "Si ya estás varado, la Defensoría del Pueblo suele gestionar el paso: contáctalos antes de intentar cruzar por tu cuenta.",
+        "En bloqueos largos la Policía ha dispuesto buses para llevar pasajeros de vuelta al aeropuerto. Pregunta en el punto de control.",
+        "No des por hecho que podrás caminar hasta el pueblo: en episodios pasados fueron horas de caminata con equipaje."
+      ],
+      "accessibility_note": "Esta es la contingencia que peor golpea a quien tiene movilidad reducida. Cuando la salida es caminar kilómetros con equipaje, simplemente no es una opción. Si viajas con movilidad reducida, confirma el estado de la vía el mismo día y considera el Colca en dos días en vez del full day: dormir en Chivay te deja margen si la carretera se corta.",
+      "severity": "alta"
+    },
+    {
+      "id": "mal-de-altura",
+      "title": "Mal de altura",
+      "summary": "Arequipa está a 2300 m y el Colca pasa de 3200 m; la Cruz del Cóndor está a 3270 m y los miradores del camino superan los 4000 m. El soroche no distingue edad ni condición física.",
+      "what_to_do": [
+        "Dedica el primer día en Arequipa a aclimatarte antes de subir al Colca o a un volcán.",
+        "Si aparece dolor de cabeza fuerte, vómitos o confusión, baja de altura: es lo único que resuelve de verdad.",
+        "Ante síntomas severos llama al 106 (SAMU).",
+        "El mate de coca ayuda con el malestar leve, pero no reemplaza aclimatarse."
+      ],
+      "accessibility_note": "Si tienes una condición cardíaca o respiratoria previa, consulta con tu médico antes de subir al Colca. Los tours no hacen esa evaluación por ti.",
+      "severity": "alta"
+    },
+    {
+      "id": "robo-documentos",
+      "title": "Robo de documentos o de equipaje",
+      "summary": "El centro histórico es seguro de día, pero los descuidos en terminales y en zonas concurridas son el problema más común que reportan los viajeros.",
+      "what_to_do": [
+        "Denuncia en la Policía de Turismo (054 201258): la denuncia es lo que te permite tramitar documentos.",
+        "Si perdiste el pasaporte, contacta a tu consulado; iPerú te orienta sobre cuál te corresponde.",
+        "Lleva una copia digital del pasaporte y del seguro de viaje en el teléfono."
+      ],
+      "accessibility_note": "Si te robaron una ayuda técnica (silla, muletas, bastón), Atradisur Ortopedia en Umacollo alquila y repara equipo. Está en el directorio de servicios, categoría Movilidad.",
+      "severity": "media"
+    },
+    {
+      "id": "agencia-informal",
+      "title": "Problema con una agencia o un operador",
+      "summary": "Muy pocas agencias formales ofrecen deportes de aventura en Arequipa, y los conflictos con operadores informales (tour que no se presta como se ofreció, equipo de seguridad incompleto) son un motivo frecuente de reclamo.",
+      "what_to_do": [
+        "Antes de contratar, pide el número de registro del operador y guarda el comprobante de pago.",
+        "Si el servicio no fue el ofrecido, repórtalo a la Policía de Turismo y a iPerú.",
+        "Para reclamos de consumo, Indecopi atiende al 0800 4 4040 desde teléfono fijo."
+      ],
+      "accessibility_note": "Si el operador te aseguró que el tour era accesible y no lo era, repórtalo igual. Ese tipo de reclamo es el que hace que el dato mejore para el siguiente viajero.",
+      "severity": "media"
+    }
+  ]
+}

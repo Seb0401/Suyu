@@ -1,6 +1,14 @@
 [
   {
     "site_id": "monasterio-de-santa-catalina",
+    "what_is": "Una ciudadela amurallada dentro de la ciudad: casi 20 000 m2 de calles con nombre, plazas y casas donde vivieron monjas de clausura durante casi 400 anos.",
+    "why_visit": "Es lo mas parecido a caminar por una ciudad del siglo XVII que existe en el Peru. No es un museo con vitrinas: son calles de verdad, pintadas de indigo y ocre, en las que te pierdes.",
+    "highlights": [
+      "La calle Cordova, con sus muros anaranjados y los geranios colgando",
+      "Las celdas con cocina propia, que muestran que las monjas ricas vivian con servidumbre",
+      "La plaza Zocodover y el claustro de los Naranjos",
+      "La pinacoteca con pintura de la escuela cusquena"
+    ],
     "history": "Fundado el 10 de septiembre de 1579 por dona Maria de Guzman, una viuda arequipena acaudalada que destino su fortuna a levantar un recinto de clausura. La motivacion no fue solo religiosa: muchas hijas de la nobleza colonial no podian casarse por falta de dote, y el convento era la alternativa honorable. Estuvo cerrado al publico hasta 1970.",
     "curiosity": "No es un edificio, es una ciudadela: casi 20 000 m2 de calles, plazas y celdas rodeados por un muro de cuatro metros. Adentro vivieron mujeres de origen europeo, mestizo e hijas de curacas indigenas.",
     "best_time": "Apenas abre, a las 9:00, o despues de las 16:00. Al mediodia llegan los grupos de tour y los patios se llenan.",
@@ -8,6 +16,14 @@
   },
   {
     "site_id": "mirador-de-yanahuara",
+    "what_is": "Una plaza-balcon de sillar blanco en el barrio de Yanahuara, con nueve arcos que enmarcan el volcan Misti.",
+    "why_visit": "Es la postal de Arequipa, pero tambien el sitio donde se entiende de que esta hecha la ciudad: el sillar es piedra volcanica del propio Misti que la enmarca.",
+    "highlights": [
+      "Los nueve arcos con frases talladas de arequipenos ilustres",
+      "La vista del Misti, el Chachani y el Pichu Pichu en un mismo encuadre",
+      "La iglesia de San Juan Bautista, en la misma plaza",
+      "El barrio de callecitas estrechas alrededor, del siglo XVIII"
+    ],
     "history": "El mirador se levanto en el siglo XIX sobre la plaza de Yanahuara, uno de los barrios mas antiguos de Arequipa. Sus nueve arcos de sillar fueron tallados por maestros canteros locales.",
     "curiosity": "Cada arco lleva grabada una frase de un arequipeno ilustre: estan Jose Luis Bustamante y Rivero, que llego a presidente del Peru, y el poeta Francisco Mostajo. Es un mirador que se lee, no solo se mira.",
     "best_time": "Al atardecer, entre las 17:00 y las 18:30, cuando el Misti se ve recortado contra la luz. Es tambien la hora de mas gente: si vas en silla de ruedas, ve antes de las 16:00.",
@@ -15,6 +31,14 @@
   },
   {
     "site_id": "plaza-de-armas-de-arequipa",
+    "what_is": "El corazon de la ciudad desde 1540: una plaza cerrada por portales de sillar en tres lados y por la Catedral en el cuarto.",
+    "why_visit": "Pocas plazas coloniales del Peru tienen esta simetria. Es tambien el mejor punto de partida: casi todo lo demas del centro esta a menos de diez minutos a pie.",
+    "highlights": [
+      "El Tuturutu, la figura de bronce sobre la fuente central",
+      "Los portales de sillar, con cafes en el segundo piso y vista a la plaza",
+      "La fachada de la Catedral, la unica del Peru que ocupa un lado completo de la plaza",
+      "Las palmeras y los jardines, punto de encuentro de la ciudad al atardecer"
+    ],
     "history": "Es el centro de la ciudad desde su fundacion en 1540. Los portales de sillar que la rodean por tres lados y la Catedral que la cierra al norte le dan una simetria poco comun entre las plazas coloniales del Peru.",
     "curiosity": "En lo alto de la fuente central hay una figura de bronce de un soldado tocando una trompeta, al que los arequipenos llaman el Tuturutu. Da la vuelta completa a la plaza con la mirada segun desde donde lo veas.",
     "best_time": "Nunca cierra. Entre las 7:00 y las 9:00 esta casi vacia y con buena luz para fotos; a partir de las 18:00 se llena y se pone animada.",
@@ -22,6 +46,14 @@
   },
   {
     "site_id": "basilica-catedral-de-arequipa",
+    "what_is": "La catedral de la ciudad, levantada integramente en sillar, y la unica del Peru que ocupa por completo un lado de la plaza principal.",
+    "why_visit": "Se quemo entera en 1844 y perdio una torre en el terremoto de 2001. Lo que ves es una ciudad reconstruyendo su simbolo dos veces; el museo de adentro cuenta esa historia.",
+    "highlights": [
+      "El organo belga de 12 metros y 1206 tubos, el segundo mas grande de Sudamerica",
+      "El pulpito de madera tallada traido de Francia",
+      "El museo catedralicio, con orfebreria y ornamentos de varios siglos",
+      "La subida a las boveda y las torres, con vista a la plaza (consultar disponibilidad)"
+    ],
     "history": "Se empezo a construir en 1540 y se termino en 1656, integramente en sillar. Un incendio la arraso el 1 de diciembre de 1844 y se reconstruyo en tiempo record bajo la direccion del arquitecto Lucas Poblete. El terremoto del 23 de junio de 2001 derribo la torre izquierda por completo; se reinauguro en agosto de 2002.",
     "curiosity": "Guarda un organo belga de 12 metros de alto y 1206 tubos, el segundo mas grande de Sudamerica.",
     "best_time": "Media manana, entre las 10:00 y las 11:00, cuando la luz entra por el lado este de la nave.",
@@ -29,6 +61,14 @@
   },
   {
     "site_id": "museo-santuarios-andinos",
+    "what_is": "Un museo pequeno de una sola coleccion: los hallazgos de los santuarios de altura incas de los volcanes del sur, con Juanita como pieza central.",
+    "why_visit": "No vas a ver una momia detras de un vidrio y ya. La visita es guiada y reconstruye por que una nina subio a 6300 metros hace casi 600 anos, que llevaba puesto y que significaba eso para su comunidad.",
+    "highlights": [
+      "Juanita, la Dama de Ampato, conservada a 19 grados bajo cero (de mayo a diciembre)",
+      "Los textiles y ceramicas hallados con ella, en un estado poco comun",
+      "Las otras cinco momias encontradas en el Misti en 1998",
+      "La Casa del Fundador, casona del siglo XVIII donde funciona el museo"
+    ],
     "history": "Abrio en 1997 en la Casa del Fundador, una construccion colonial del siglo XVIII. Nacio para conservar y exhibir los hallazgos del proyecto arqueologico de santuarios de altura del sur andino.",
     "curiosity": "Su pieza central es Juanita, la Dama de Ampato: una nina de 12 a 14 anos sacrificada hacia 1450 y hallada congelada en 1995 por Johan Reinhard. Se conserva a 19 grados bajo cero dentro de una urna de vidrio. Se exhibe de mayo a diciembre; de enero a abril entra en fase de conservacion y no esta a la vista.",
     "best_time": "Al abrir, a las 9:00. La visita es guiada y en grupo, asi que llegar temprano significa un grupo mas chico.",
@@ -36,6 +76,14 @@
   },
   {
     "site_id": "mirador-de-la-cruz-del-condor",
+    "what_is": "Un balcon natural sobre el tramo mas vertical del Canon del Colca, a 3270 m s. n. m., donde los condores andinos remontan con las corrientes de la manana.",
+    "why_visit": "Es de los pocos lugares del mundo donde puedes ver condores andinos volando en libertad y a poca distancia. Un adulto abre tres metros de ala y pasa sin batirlas.",
+    "highlights": [
+      "El vuelo de los condores entre las 8:00 y las 10:00",
+      "Los 1200 metros de desnivel hasta el rio Colca",
+      "Las terrazas agricolas preincas de Yanque y Maca, en el camino",
+      "Los puestos de artesania de las comunidades collagua y cabana"
+    ],
     "history": "Es un balcon natural sobre uno de los tramos mas verticales del Canon del Colca, a 3270 m s. n. m. El desnivel visible hasta el rio Colca ronda los 1200 metros.",
     "curiosity": "Es uno de los mejores lugares de Sudamerica para ver al condor andino en libertad. Un adulto puede abrir tres metros de ala y aprovecha las corrientes termicas que suben del canon para volar sin batirlas.",
     "best_time": "Entre las 8:00 y las 10:00 de la manana, cuando el aire se calienta y los condores empiezan a remontar. Mas tarde el avistamiento se vuelve cuestion de suerte.",

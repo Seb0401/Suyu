@@ -19,6 +19,11 @@ export type ServicesSource = "supabase" | "demo";
 export interface ServiceWithDistance extends TouristService {
   distance_m: number | null;
   walking_min: number | null;
+  /**
+   * Sitio desde el que se midio la distancia. Sin esto un "194 m" suelto no
+   * dice nada: la UI necesita poder escribir "194 m de la Plaza de Armas".
+   */
+  distance_from: string | null;
   /** Etiqueta lista para mostrar. Nunca omitir el caso "por verificar". */
   registry_label: string;
 }
@@ -43,6 +48,12 @@ async function fetchServicesFromDb(): Promise<TouristService[] | null> {
   });
 }
 
+/**
+ * Radio para el fallback por cercania. Un servicio dentro de este radio es
+ * util aunque este asignado a otro sitio.
+ */
+const NEARBY_FALLBACK_METERS = 900;
+
 export async function getServices(options: {
   nearSiteId?: string;
   category?: ServiceCategory;
@@ -51,10 +62,33 @@ export async function getServices(options: {
 } = {}): Promise<ServicesResult> {
   const rows = await fetchServicesFromDb();
   const source: ServicesSource = rows && rows.length > 0 ? "supabase" : "demo";
-  let services = rows && rows.length > 0 ? rows : getSeedServices();
+  const all = rows && rows.length > 0 ? rows : getSeedServices();
+  let services = all;
 
   if (options.nearSiteId) {
-    services = services.filter((s) => s.near_site_id === options.nearSiteId);
+    const assigned = all.filter((s) => s.near_site_id === options.nearSiteId);
+
+    /**
+     * near_site_id apunta a UN solo sitio, y eso deja huecos: el Museo
+     * Santuarios Andinos esta a tres cuadras de la Plaza pero no heredaba
+     * ninguno de sus servicios, asi que la pantalla decia "no hay nada aqui"
+     * cuando en realidad hay media docena a cinco minutos.
+     *
+     * Si el sitio no tiene servicios propios, se completan con los que esten
+     * a menos de 900 m en linea recta. La distancia real viaja en la respuesta,
+     * asi que la UI puede mostrarla y el usuario juzga.
+     */
+    if (assigned.length === 0) {
+      const { sites } = await getSites();
+      const site = sites.find((s) => s.id === options.nearSiteId);
+      services = site
+        ? all.filter(
+            (s) => haversineMeters(site, s) <= NEARBY_FALLBACK_METERS,
+          )
+        : assigned;
+    } else {
+      services = assigned;
+    }
   }
   if (options.category) {
     services = services.filter((s) => s.category === options.category);
@@ -70,14 +104,23 @@ export async function getServices(options: {
   const siteById = new Map(sites.map((site) => [site.id, site]));
 
   const withDistance: ServiceWithDistance[] = services.map((service) => {
-    const site = siteById.get(service.near_site_id);
-    const distance_m = site
-      ? Math.round(haversineMeters(site, service))
+    /**
+     * La distancia se mide desde el sitio que el usuario PIDIO, no desde el que
+     * el servicio tiene asignado. Con el fallback por cercania un servicio de
+     * la Plaza puede aparecer en la ficha del museo, y reportar su distancia a
+     * la Plaza seria contestar otra pregunta.
+     */
+    const reference = options.nearSiteId
+      ? siteById.get(options.nearSiteId)
+      : siteById.get(service.near_site_id);
+    const distance_m = reference
+      ? Math.round(haversineMeters(reference, service))
       : null;
     return {
       ...service,
       distance_m,
       walking_min: distance_m === null ? null : walkingMinutes(distance_m),
+      distance_from: reference?.name ?? null,
       registry_label: registryLabel(service),
     };
   });

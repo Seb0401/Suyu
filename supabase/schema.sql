@@ -85,7 +85,11 @@ create table if not exists public.services (
   registry_id           text,
   url                   text,
   price_range           text check (price_range in ('$', '$$', '$$$')),
-  notes                 text not null default ''
+  notes                 text not null default '',
+  -- Campos que solo aplican a algunas categorias (estrellas de un hotel,
+  -- dificultad de una actividad, horario de un bus). jsonb y no columnas
+  -- sueltas: serian una decena de columnas nulas en casi toda la tabla.
+  details               jsonb
 );
 
 create index if not exists services_near_site_idx
@@ -220,3 +224,7 @@ create policy "reportes escritura anonima"
 --   issued_at     timestamptz not null default now(),
 --   primary key (user_id, tier)
 -- );
+
+-- Agrega el detalle por categoria (estrellas, dificultad, horarios):
+--
+-- alter table public.services add column if not exists details jsonb;

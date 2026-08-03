@@ -47,6 +47,78 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+/** Libro abierto: el hub de la guia, que agrupa secciones distintas. */
+export function BookOpenIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 6.5C10.5 5 8.5 4.5 4 4.5v13c4.5 0 6.5.5 8 2 1.5-1.5 3.5-2 8-2v-13c-4.5 0-6.5.5-8 2Z" />
+      <path d="M12 6.5v13" />
+    </svg>
+  );
+}
+
+export function CloudIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M7 18a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17.3 11 3.5 3.5 0 0 1 17 18Z" />
+    </svg>
+  );
+}
+
+export function DropIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 3.5c3 3.6 5.5 6.4 5.5 9.3a5.5 5.5 0 1 1-11 0c0-2.9 2.5-5.7 5.5-9.3Z" />
+    </svg>
+  );
+}
+
+export function AlertIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 4.5 21 19.5H3z" />
+      <path d="M12 10v4M12 17h.01" />
+    </svg>
+  );
+}
+
+export function PhoneIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M6.5 3.5h3l1.5 4L9 9a11 11 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z" />
+    </svg>
+  );
+}
+
+export function ChevronDownIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="m6 9.5 6 6 6-6" />
+    </svg>
+  );
+}
+
+export function TicketIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 8.5V6.5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a2.5 2.5 0 0 0 0 7v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a2.5 2.5 0 0 0 0-7Z" />
+      <path d="M14 6v2M14 11v2M14 16v2" />
+    </svg>
+  );
+}
+
+/** Cuadricula: el hub de servicios, que agrupa categorias distintas. */
+export function GridIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="2" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="2" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="2" />
+    </svg>
+  );
+}
+
 export function ClockIcon({ size = 24, className }: IconProps) {
   return (
     <svg {...base(size, className)}>

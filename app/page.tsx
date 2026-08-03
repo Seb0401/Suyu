@@ -9,6 +9,7 @@ import HeroArt from "@/components/HeroArt";
 import Logo from "@/components/Logo";
 import Mascot from "@/components/Mascot";
 import SiteCard from "@/components/SiteCard";
+import TodayStrip from "@/components/TodayStrip";
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
 import {
   ArrowRightIcon,
@@ -103,6 +104,10 @@ export default function Home() {
       </section>
 
       <div className="andean-band mt-6" />
+
+      {/* Va antes del carrusel: si llueve o hay un paro, eso cambia el plan
+          del dia mas que cualquier recomendacion de sitio. */}
+      <TodayStrip />
 
       <section className="px-6 pt-6" aria-labelledby="explora-titulo">
         <div className="flex items-baseline justify-between">
