@@ -173,6 +173,44 @@ export function CrowdDensityIcon({
   );
 }
 
+export function ExternalLinkIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M14 4h6v6" />
+      <path d="m20 4-8.5 8.5" />
+      <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+    </svg>
+  );
+}
+
+/**
+ * Iconos por categoria de servicio turistico (§6.7). Las 3 categorias nuevas
+ * (movilidad, salud, actividad) reciben su icono propio en B18; hasta entonces
+ * caen al generico, que es preferible a dejarlas sin nada.
+ */
+export const SERVICE_PATHS: Record<string, string> = {
+  restaurante: "M7 3v8a2 2 0 0 0 2 2v8M7 3v5M10 3v5M17 3c-1.5 2-2 4-2 7h3v11",
+  guia: "M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11ZM12 7.5v5M9.5 10h5",
+  agencia: "M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8",
+  transporte: "M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8H4zM4 15h16v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM7.5 18v2M16.5 18v2",
+  hospedaje: "M4 19V7M4 11h11a4 4 0 0 1 4 4v4M4 19h16M7.5 8.5h.01",
+  artesania: "M6 21V9l6-5 6 5v12M10 21v-6h4v6M9 12h.01M15 12h.01",
+};
+
+const SERVICE_FALLBACK = "M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM9 8V6a3 3 0 0 1 6 0v2";
+
+export function ServiceIcon({
+  category,
+  size = 24,
+  className,
+}: IconProps & { category: string }) {
+  return (
+    <svg {...base(size, className)}>
+      <path d={SERVICE_PATHS[category] ?? SERVICE_FALLBACK} />
+    </svg>
+  );
+}
+
 /** Iconos por categoria de sitio, para las miniaturas generadas. */
 export function MuseumIcon({ size = 24, className }: IconProps) {
   return (
