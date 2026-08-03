@@ -1,0 +1,152 @@
+[
+  {
+    "site_id": "mirador-de-yanahuara",
+    "ramps": {
+      "rating": 3,
+      "note": "Rampa con pendiente utilizable de forma autónoma y con pasamanos. La entrada alternativa tiene más de 3 escalones de 20 cm."
+    },
+    "accessible_bathroom": {
+      "rating": 3,
+      "note": "Baño adaptado con acceso sin cambios de nivel, puerta de 78 cm o más, espacio de giro de 150 cm y barras de apoyo fijas."
+    },
+    "rest_areas": {
+      "rating": 1,
+      "note": "Hay mobiliario, pero la ficha indica que no facilita la aproximación de usuarios de silla de ruedas."
+    },
+    "wheelchair_circulation": {
+      "rating": 2,
+      "note": "Circulación total en el exterior y parcial en el interior. Pavimento uniforme y antideslizante."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "source_label": "TUR4all — ficha de accesibilidad",
+    "source_url": "https://www.tur4all.com/resources/mirador-de-yanahuara"
+  },
+  {
+    "site_id": "museo-santuarios-andinos",
+    "ramps": {
+      "rating": 2,
+      "note": "Rampa móvil disponible bajo solicitud. Un escalón de 13 cm en la entrada."
+    },
+    "accessible_bathroom": {
+      "rating": 1,
+      "note": "Figura como baño adaptado, pero la puerta mide menos de 78 cm, no tiene espacio de giro de 150 cm ni barras de apoyo, y el espacio para transferirse es insuficiente."
+    },
+    "rest_areas": {
+      "rating": 1,
+      "note": "El mobiliario no facilita la aproximación de usuarios de silla de ruedas."
+    },
+    "wheelchair_circulation": {
+      "rating": 2,
+      "note": "Circulación parcial. El pavimento no es uniforme ni antideslizante."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "source_label": "TUR4all — ficha de accesibilidad",
+    "source_url": "https://www.tur4all.com/resources/museo-santuarios-andinos"
+  },
+  {
+    "site_id": "mirador-de-la-cruz-del-condor",
+    "ramps": {
+      "rating": 1,
+      "note": "No se registra rampa. Un escalón de 13 a 25 cm en la entrada y más de 3 escalones de 15 a 30 cm en el recorrido, con pasamanos."
+    },
+    "accessible_bathroom": {
+      "rating": 1,
+      "note": "Existe un baño para movilidad reducida, pero sin acceso a nivel, sin espacio de giro, sin barras de apoyo y con espacio insuficiente para la transferencia."
+    },
+    "rest_areas": {
+      "rating": 2,
+      "note": "Zona de descanso con sombra, aunque el mobiliario no facilita la aproximación de usuarios de silla de ruedas."
+    },
+    "wheelchair_circulation": {
+      "rating": 2,
+      "note": "Parcial en interior y exterior. El pavimento exterior es uniforme y antideslizante, pero no hay bordillos rebajados."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "source_label": "TUR4all — ficha de accesibilidad",
+    "source_url": "https://www.tur4all.com/resources/mirador-de-la-cruz-del-condor"
+  },
+  {
+    "site_id": "basilica-catedral-de-arequipa",
+    "ramps": {
+      "rating": 2,
+      "note": "Rampa móvil disponible bajo solicitud. Un escalón de 5 cm en la entrada y puerta de 78 cm o más."
+    },
+    "accessible_bathroom": {
+      "rating": null,
+      "note": "La ficha de accesibilidad no registra baño adaptado. Sin dato."
+    },
+    "rest_areas": {
+      "rating": 2,
+      "note": "El mobiliario es accesible para usuarios de silla de ruedas, pero la ficha no describe zonas de descanso señalizadas."
+    },
+    "wheelchair_circulation": {
+      "rating": 2,
+      "note": "Circulación parcial. El pavimento exterior es de adoquines y la calle tiene pendiente."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "source_label": "TUR4all — ficha de accesibilidad",
+    "source_url": "https://www.tur4all.com/resources/basilica-menor-la-catedral-de-arequipa-de-santa-maria"
+  },
+  {
+    "site_id": "monasterio-de-santa-catalina",
+    "ramps": {
+      "rating": 1,
+      "note": "No tiene rampas ni ascensores, y el suelo empedrado es irregular en casi todo el recorrido."
+    },
+    "accessible_bathroom": {
+      "rating": null,
+      "note": "Sin dato confirmado sobre baño adaptado."
+    },
+    "rest_areas": {
+      "rating": null,
+      "note": "Sin dato confirmado sobre zonas de descanso señalizadas."
+    },
+    "wheelchair_circulation": {
+      "rating": 1,
+      "note": "Presta una silla de ruedas bajo solicitud, pero las instalaciones no están adaptadas para usarla de forma autónoma."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "Sin dato sobre cambiador para bebés.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "source_label": "Información del propio monasterio. No tiene ficha en TUR4all",
+    "source_url": null
+  },
+  {
+    "site_id": "plaza-de-armas-de-arequipa",
+    "ramps": {
+      "rating": null,
+      "note": "Es un espacio abierto sin desniveles registrados, así que la rampa no aplica del mismo modo. Su ficha de accesibilidad está pendiente de publicación."
+    },
+    "accessible_bathroom": {
+      "rating": null,
+      "note": "Sin dato sobre baño adaptado en la plaza."
+    },
+    "rest_areas": {
+      "rating": 2,
+      "note": "Tiene bancas y jardines que funcionan como zonas de descanso, pero no está confirmado que sean accesibles en silla de ruedas."
+    },
+    "wheelchair_circulation": {
+      "rating": 2,
+      "note": "Pavimento regular y áreas amplias de tránsito peatonal, sin verificación independiente."
+    },
+    "has_family_bathroom": null,
+    "family_bathroom_note": "Sin dato sobre cambiador para bebés.",
+    "pet_policy": "sin-dato",
+    "pet_note": "No encontramos una política oficial de mascotas para la plaza. Confirmar antes de ir con una.",
+    "source_label": "Ficha en TUR4all pendiente de publicación",
+    "source_url": null
+  }
+]

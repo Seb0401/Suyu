@@ -16,7 +16,7 @@ import type { SiteWithCrowd, TouristService } from "@/lib/types";
 
 /** La UI esta obligada a mostrar esto junto a cualquier respuesta de aqui. */
 export const OFFLINE_NOTICE =
-  "Modo sin conexion — respuestas basadas en reglas, sin IA.";
+  "Modo sin conexión — respuestas basadas en reglas, sin IA.";
 
 export type Intent =
   | "saludo"
@@ -171,7 +171,7 @@ function describeAccessibility(site: SiteWithCrowd): string {
   if (tiene.length > 0) partes.push(`Tiene ${tiene.join(", ")}.`);
   if (falta.length > 0) partes.push(`No confirmado: ${falta.join(", ")}.`);
   if (site.verified_by === null) {
-    partes.push("Ojo: estos datos todavia no estan verificados.");
+    partes.push("Ten en cuenta que estos datos todavía no están verificados.");
   }
 
   return partes.join(" ");
@@ -214,10 +214,10 @@ function answerCrowd(
       (s) => !s.crowd_closed && s.crowd_level === "bajo",
     );
     if (tranquilos.length === 0) {
-      return "Ahora mismo no hay ningun sitio con poca gente. Preguntame por uno en particular y te digo a que hora baja.";
+      return "Ahora mismo no hay ningún sitio con poca gente. Pregúntame por uno en particular y te digo a qué hora baja.";
     }
     return [
-      `A las ${formatHour(hour)} estos estan con poca gente:`,
+      `A las ${formatHour(hour)} estos están con poca gente:`,
       ...tranquilos.map((s) => `• ${s.name}`),
     ].join("\n");
   }
@@ -225,8 +225,8 @@ function answerCrowd(
   if (site.crowd_closed) {
     const quiet = nextQuietHour(site.crowd_profile, hour);
     return quiet
-      ? `${site.name} esta cerrado a las ${formatHour(hour)}. Abre con poca gente hacia las ${formatHour(quiet.hour)}.`
-      : `${site.name} esta cerrado a las ${formatHour(hour)}.`;
+      ? `${site.name} está cerrado a las ${formatHour(hour)}. Abre con poca gente hacia las ${formatHour(quiet.hour)}.`
+      : `${site.name} está cerrado a las ${formatHour(hour)}.`;
   }
 
   const advice = antiCrowdAdvice(site, sites, hour, {
@@ -262,7 +262,7 @@ function answerItinerary(
   });
 
   if (itinerary.stops.length === 0) {
-    return `No puedo armar un plan de ${hours} h desde las ${formatHour(hour)}: a esta hora los sitios estan cerrados o no entran en el tiempo.`;
+    return `No puedo preparar un plan de ${hours} h desde las ${formatHour(hour)}: a esa hora los sitios están cerrados o no entran en el tiempo disponible.`;
   }
 
   const lineas = itinerary.stops.map(
@@ -291,7 +291,7 @@ function answerServices(
     : services;
 
   if (cerca.length === 0) {
-    return "No tengo servicios cargados cerca de ese sitio todavia.";
+    return "Todavía no tengo servicios cargados cerca de ese sitio.";
   }
 
   const site = sites.find((s) => s.id === parsed.siteId);
@@ -328,9 +328,9 @@ export function answerOffline(
   const reply = (() => {
     switch (parsed.intent) {
       case "saludo":
-        return "Hola. Puedo decirte que tan accesible es cada sitio, cuando hay menos gente, y armarte un plan del dia. Preguntame por un lugar o dime cuantas horas tienes.";
+        return "Hola. Puedo decirte qué tan accesible es cada sitio, cuándo hay menos gente y prepararte un plan para el día. Pregúntame por un lugar o dime cuántas horas tienes.";
       case "agradecimiento":
-        return "Con gusto. Si quieres, te armo el resto del dia.";
+        return "Con gusto. Si quieres, preparo el resto del día.";
       case "accesibilidad":
         return answerAccessibility(parsed, sites);
       case "aforo":
@@ -341,7 +341,7 @@ export function answerOffline(
         return answerServices(parsed, services, sites);
       default:
         // Sin intencion clara no se adivina: se dice que se sabe hacer.
-        return "No entendi bien. Puedo ayudarte con tres cosas: accesibilidad de un sitio, a que hora hay menos gente, y armarte un itinerario. Por ejemplo: 'tengo 3 horas y necesito rampas'.";
+        return "No entendí bien. Puedo ayudarte con tres cosas: la accesibilidad de un sitio, a qué hora hay menos gente y preparar un itinerario. Por ejemplo: 'tengo 3 horas y necesito rampas'.";
     }
   })();
 

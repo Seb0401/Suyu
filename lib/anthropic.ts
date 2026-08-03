@@ -1,3 +1,4 @@
+import { getAccessibilityDetail } from "@/lib/accessibility";
 import { bestHour, formatHour, nextQuietHour } from "@/lib/crowdProfile";
 import { crowdLabel } from "@/lib/crowdUi";
 import { accessibilityScore } from "@/lib/filters";
@@ -41,12 +42,32 @@ function summarizeSite(site: SiteWithCrowd, hour: number): string {
   const quiet = nextQuietHour(site.crowd_profile, hour);
   const best = bestHour(site.crowd_profile);
 
+  /* Del estado 1-3 solo se manda el rasgo PEOR calificado. Mandar las cuatro
+     notas de los seis sitios infla el prompt sin cambiar la respuesta, y lo
+     accionable es justo el punto debil: "hay bano adaptado pero no sirve". */
+  const detail = getAccessibilityDetail(site.id);
+  const peor = detail
+    ? (
+        [
+          ["rampa", detail.ramps],
+          ["bano adaptado", detail.accessible_bathroom],
+          ["zona de descanso", detail.rest_areas],
+          ["circulacion en silla de ruedas", detail.wheelchair_circulation],
+        ] as const
+      )
+        .filter(([, g]) => g.rating !== null)
+        .sort((a, b) => (a[1].rating as number) - (b[1].rating as number))[0]
+    : undefined;
+
   const partes = [
     `- ${site.name} (${site.category}, ${accessibilityScore(site)}% accesible)`,
     `  Ahora: ${crowdLabel(site)}.`,
     rasgos.length > 0
       ? `  Tiene: ${rasgos.join(", ")}.`
       : "  Sin rasgos de accesibilidad confirmados.",
+    peor && (peor[1].rating as number) <= 2
+      ? `  Punto debil: ${peor[0]} en estado ${peor[1].rating}/3. ${peor[1].note}`
+      : null,
     quiet ? `  Baja la gente a las ${formatHour(quiet.hour)}.` : null,
     !quiet && best ? `  Mejor hora del dia: ${formatHour(best.hour)}.` : null,
     site.verified_by === null ? "  Datos SIN verificar." : null,
@@ -81,6 +102,7 @@ export function buildSystemPrompt(
     "",
     "REGLAS:",
     "1. Responde en espanol, en 3 a 5 frases. Es un chat en un celular, no un informe.",
+    "1b. ESTILO: espanol neutro y llano, con la ortografia y los acentos correctos. Sin jerga, sin modismos regionales ('chevere', 'anda a', 'de una') y sin diminutivos. Frases cortas y directas. Quien lee puede no ser hispanohablante nativo y puede estar usando un lector de pantalla.",
     "2. Usa SOLO los sitios y servicios de arriba. Si te preguntan por otro lugar, dilo con honestidad en vez de inventarlo.",
     "3. Si un sitio esta muy congestionado, ofrece la alternativa Y la hora en que baja la gente. Las dos cosas.",
     "4. Si un sitio no tiene un rasgo de accesibilidad confirmado, di 'sin confirmar'. Nunca lo des por hecho.",

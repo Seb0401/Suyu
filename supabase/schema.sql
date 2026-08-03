@@ -3,9 +3,13 @@
 -- Ejecutar en Supabase → SQL Editor. Es idempotente: se puede correr de nuevo
 -- sin romper nada.
 --
--- Que NO vive aqui y es a proposito: site_details, stories y agencies. Son
--- contenido editorial que el equipo escribe una vez, no datos operativos que
--- cambien en produccion. Viven como JSON curado en data/.
+-- Que NO vive aqui y es a proposito: site_details, stories, agencies y
+-- site-accessibility. Son contenido editorial que el equipo escribe una vez, no
+-- datos operativos que cambien en produccion. Viven como JSON curado en data/.
+--
+-- La seccion del final ("estado de accesibilidad") es la unica excepcion
+-- prevista: si algun dia el equipo quiere editar las calificaciones 1-3 desde
+-- el dashboard en vez de un JSON, esa tabla ya esta escrita.
 
 -- ---------------------------------------------------------------------------
 -- sites
@@ -147,3 +151,54 @@ create policy "reportes escritura anonima"
 --   check (category in ('restaurante', 'guia', 'agencia', 'transporte',
 --                       'hospedaje', 'artesania', 'movilidad', 'salud',
 --                       'actividad'));
+
+-- ---------------------------------------------------------------------------
+-- site_accessibility — estado de los servicios de accesibilidad (escala 1-3)
+-- ---------------------------------------------------------------------------
+--
+-- Complementa los booleanos has_* de sites, no los reemplaza: el booleano dice
+-- si el rasgo EXISTE y esta tabla dice COMO esta. La diferencia no es teorica —
+-- el Museo Santuarios Andinos declara bano adaptado, pero la puerta mide menos
+-- de 78 cm y no tiene barras de apoyo. Existe y no sirve.
+--
+-- Hoy la fuente es data/site-accessibility.json; esta tabla existe para cuando
+-- el equipo quiera editarlo desde el dashboard.
+
+create table if not exists public.site_accessibility (
+  site_id text primary key references public.sites (id) on delete cascade,
+
+  -- 1 = deficiente, 2 = utilizable con apoyo, 3 = en buen estado.
+  -- NULL = sin dato. Nunca se asume un 2 por defecto.
+  ramps_rating                   smallint check (ramps_rating between 1 and 3),
+  ramps_note                     text not null default '',
+  accessible_bathroom_rating     smallint check (accessible_bathroom_rating between 1 and 3),
+  accessible_bathroom_note       text not null default '',
+  rest_areas_rating              smallint check (rest_areas_rating between 1 and 3),
+  rest_areas_note                text not null default '',
+  wheelchair_circulation_rating  smallint check (wheelchair_circulation_rating between 1 and 3),
+  wheelchair_circulation_note    text not null default '',
+
+  -- Bano familiar / cambiador. Servicio DISTINTO del bano adaptado para
+  -- personas con discapacidad: mezclarlos haria que un padre y un usuario de
+  -- silla de ruedas lean la misma etiqueta esperando cosas distintas.
+  -- NULL = sin dato.
+  has_family_bathroom            boolean,
+  family_bathroom_note           text not null default '',
+
+  -- Politica de mascotas del sitio. NO alcanza al perro guia: la Ley 29830
+  -- garantiza su acceso aunque el lugar no admita mascotas, asi que ese caso
+  -- no se modela como un campo por sitio.
+  pet_policy                     text not null default 'sin-dato'
+    check (pet_policy in ('permitidas', 'no-permitidas', 'sin-dato')),
+  pet_note                       text not null default '',
+
+  source_label                   text not null default 'Sin fuente',
+  source_url                     text,
+  updated_at                     timestamptz not null default now()
+);
+
+alter table public.site_accessibility enable row level security;
+
+drop policy if exists "site_accessibility lectura publica" on public.site_accessibility;
+create policy "site_accessibility lectura publica"
+  on public.site_accessibility for select using (true);
