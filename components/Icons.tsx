@@ -47,6 +47,23 @@ export function RouteIcon({ size = 24, className }: IconProps) {
   );
 }
 
+export function ChevronDownIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="m6 9.5 6 6 6-6" />
+    </svg>
+  );
+}
+
+export function TicketIcon({ size = 24, className }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M4 8.5V6.5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a2.5 2.5 0 0 0 0 7v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a2.5 2.5 0 0 0 0-7Z" />
+      <path d="M14 6v2M14 11v2M14 16v2" />
+    </svg>
+  );
+}
+
 /** Cuadricula: el hub de servicios, que agrupa categorias distintas. */
 export function GridIcon({ size = 24, className }: IconProps) {
   return (
