@@ -43,6 +43,23 @@ export default function ReportDialog({
     };
   }, [open, onClose]);
 
+  /**
+   * Auto-cierre tras enviar. 2.5 s alcanza para leer la confirmacion sin
+   * obligar a buscar el boton de cerrar, y el usuario puede cerrar antes con
+   * Escape o el boton si ya lo leyo.
+   *
+   * Solo se dispara en "sent": un error se queda en pantalla hasta que la
+   * persona decida, porque ahi si hay algo que hacer.
+   */
+  useEffect(() => {
+    if (state !== "sent") return;
+    const timer = window.setTimeout(() => {
+      onClose();
+      setState("idle");
+    }, 2500);
+    return () => window.clearTimeout(timer);
+  }, [state, onClose]);
+
   useEffect(() => {
     fetch("/api/reports")
       .then((r) => (r.ok ? r.json() : { issues: [] }))
