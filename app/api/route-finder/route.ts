@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
 import { currentHourInArequipa, normalizeHour } from "@/lib/crowdProfile";
-import { haversineMeters, walkingMinutes } from "@/lib/geo";
-import { getSeedSite } from "@/lib/seed";
-import type { RouteGeometry } from "@/lib/types";
+import {
+  accessibilityMilestones,
+  routeAccessibilityScore,
+} from "@/lib/filters";
+import { isWalkable, walkingRoute } from "@/lib/geo";
+import { getSite } from "@/lib/sites";
 
 /**
- * Stub del Commit 0: linea recta + haversine, siempre approximate: true.
- * A3 agrega Mapbox Directions manteniendo esta misma forma de respuesta y
- * dejando este calculo como fallback cuando no hay token.
+ * GET /api/route-finder?origin=<id>&destination=<id>&accessible=true&hour=<0-23>
+ *
+ * Con token de Mapbox devuelve la ruta peatonal real; sin el, linea recta con
+ * approximate: true. La forma de la respuesta es la misma en ambos casos, para
+ * que la UI no tenga dos caminos (§6.5).
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const originId = searchParams.get("origin");
   const destinationId = searchParams.get("destination");
-  const accessible = searchParams.get("accessible") === "true";
+  const accessibleFilter = searchParams.get("accessible") === "true";
   const hour = normalizeHour(searchParams.get("hour")) ?? currentHourInArequipa();
 
   if (!originId || !destinationId) {
@@ -23,8 +28,10 @@ export async function GET(request: Request) {
     );
   }
 
-  const origin = getSeedSite(originId, hour);
-  const destination = getSeedSite(destinationId, hour);
+  const [origin, destination] = await Promise.all([
+    getSite(originId, hour),
+    getSite(destinationId, hour),
+  ]);
 
   if (!origin || !destination) {
     return NextResponse.json(
@@ -33,26 +40,18 @@ export async function GET(request: Request) {
     );
   }
 
-  const distance_m = Math.round(haversineMeters(origin, destination));
-  const geometry: RouteGeometry = {
-    type: "LineString",
-    coordinates: [
-      [origin.lng, origin.lat],
-      [destination.lng, destination.lat],
-    ],
-  };
+  const route = await walkingRoute(origin, destination);
 
   return NextResponse.json({
-    geometry,
-    distance_m,
-    duration_min: walkingMinutes(distance_m),
-    // Sin Mapbox no hay ruta peatonal real: la UI tiene que decirlo (§6.5).
-    approximate: true,
-    accessible_filter: accessible,
+    ...route,
+    walkable: isWalkable(route.distance_m),
+    accessibility_score: routeAccessibilityScore(origin, destination),
+    milestones: accessibilityMilestones(origin, destination),
+    accessible_filter: accessibleFilter,
     origin,
     destination,
     hour,
-    // A3/A4 los llenan; el contrato ya los declara para que B maquete contra ellos.
+    // A4 los llena; el contrato ya los declara para que B maquete contra ellos.
     alternative: null,
     quiet_hour: null,
   });
