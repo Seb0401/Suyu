@@ -30,3 +30,6 @@ Thumbs.db
 *.pem
 .vscode/
 .idea/
+
+# Supabase CLI — estado local del vinculo, no se versiona
+supabase/.temp/

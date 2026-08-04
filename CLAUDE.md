@@ -374,18 +374,29 @@ export interface PassportSummary {
 
 Completo en `supabase/schema.sql` (incluye RLS y una sección de migración
 comentada). Tablas: `sites`, `crowd_status`, `accessibility_reports`,
-`services`, `passport_stamps` (+ el bucket `passport-photos`, ver §6.11).
-`passport_stamps` es la primera tabla del proyecto que referencia
-`auth.users`: el pasaporte es la primera funcionalidad con cuentas reales.
+`services`, `passport_stamps`, `site_accessibility` (+ el bucket
+`passport-photos`, ver §6.11). `passport_stamps` es la primera tabla del
+proyecto que referencia `auth.users`: el pasaporte es la primera
+funcionalidad con cuentas reales.
 
-**Gap conocido:** el check constraint de `services.category` en
-`supabase/schema.sql` solo permite `restaurante/guia/agencia/transporte/
-hospedaje/artesania` — no incluye `movilidad/salud/actividad`, que sí existen en
-`ServiceCategory` (lib/types.ts) y en `data/seed-services.json`. Mientras no se
-corrija el `ALTER TABLE`, esas 3 categorías **solo funcionan en modo demo** (JSON
-local); si se cargan a Supabase con esas categorías, el insert falla. Si estás
-replicando desde cero, agrega las 3 al constraint desde el `CREATE TABLE`
-inicial (ver `docs/REPLICA-DESDE-CERO.md`).
+**Aplicar el esquema:** `supabase/migrations/` tiene el esquema como migración,
+así que `supabase link --project-ref <ref>` + `supabase db push` lo levanta
+entero (tablas, bucket y RLS). Luego `npm run seed:supabase` carga sitios y
+servicios. `schema.sql` sigue siendo la copia legible y es idempotente si
+prefieres pegarla en el SQL Editor.
+
+`site_accessibility` existe en el esquema pero **hoy nadie la lee desde
+Supabase**: `lib/accessibility.ts` importa `data/site-accessibility.json`
+directo. Está provisionada para cuando ese dato pase a ser editable en vivo;
+que la tabla esté vacía no rompe nada.
+
+**Gap ya cerrado (queda anotado porque costó encontrarlo):** el check
+constraint de `services.category` se quedó una vez en las 6 categorías
+originales y bloqueaba la carga de `movilidad/salud/actividad`. Hoy el
+`CREATE TABLE` de `schema.sql` las incluye las 9 desde el inicio — verificado
+cargando las 53 filas de `data/seed-services.json` contra Supabase, con las 9
+categorías presentes. Si replicas desde cero, no hace falta ningún
+`ALTER TABLE`.
 
 `site_details`, `stories` y `agencies` **no tienen tabla en Supabase todavía**:
 viven solo como JSON curado (§6.8-6.10) y no se ofrecen para edición en vivo.
