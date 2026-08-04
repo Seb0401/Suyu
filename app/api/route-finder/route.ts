@@ -28,9 +28,10 @@ function parseCoord(value: string | null, min: number, max: number): number | nu
  * El origen tambien puede ser la ubicacion del usuario:
  *   origin=__mi-ubicacion__&origin_lat=<lat>&origin_lng=<lng>
  *
- * Con token de Mapbox devuelve la ruta peatonal real; sin el, linea recta con
- * approximate: true. La forma de la respuesta es la misma en ambos casos, para
- * que la UI no tenga dos caminos (§6.5).
+ * Con ORS_API_KEY devuelve la ruta peatonal real (perfil `wheelchair` si
+ * accessible=true); sin ella, linea recta con approximate: true. La forma de
+ * la respuesta es la misma en ambos casos, para que la UI no tenga dos
+ * caminos (§6.5). `profile` dice con que motor se trazo de verdad.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -107,7 +108,9 @@ export async function GET(request: Request) {
     );
   }
 
-  const route = await walkingRoute(origin, destination);
+  const route = await walkingRoute(origin, destination, {
+    accessible: accessibleFilter,
+  });
 
   // El aviso se calcula sobre el DESTINO: de nada sirve avisar que el punto de
   // partida esta lleno cuando el turista ya se esta yendo de ahi.
