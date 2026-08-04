@@ -6,6 +6,12 @@ import ServiceCard, { type ServiceWithDistance } from "@/components/ServiceCard"
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
 import { ChevronDownIcon, ServiceIcon } from "@/components/Icons";
 import type { ServiceCategory } from "@/lib/types";
+import { readProfile } from "@/components/travelProfile";
+import {
+  fitsDifficulty,
+  getPersonality,
+  type TravelerPersonality,
+} from "@/components/travelerPersonalities";
 
 /** Orden por utilidad real en un viaje, no alfabetico. */
 const CATEGORIES: { value: ServiceCategory; label: string; hint: string }[] = [
@@ -35,6 +41,20 @@ export default function ServiciosPage() {
   const [services, setServices] = useState<ServiceWithDistance[] | null>(null);
   const [error, setError] = useState(false);
   const [accessibleOnly, setAccessibleOnly] = useState(false);
+  const [personality, setPersonality] = useState<TravelerPersonality | null>(null);
+  /**
+   * Deja ver las actividades que la personalidad descarta.
+   *
+   * El filtro NUNCA esconde en silencio: cuando oculta algo lo dice y ofrece
+   * este escape. "Sin prisa" descarta el ascenso al Misti por defecto, pero
+   * quien eligio esa personalidad hace tres dias sigue teniendo derecho a
+   * verlo sin ir a cambiar su perfil.
+   */
+  const [showAllDifficulties, setShowAllDifficulties] = useState(false);
+
+  useEffect(() => {
+    setPersonality(readProfile().personality);
+  }, []);
   /**
    * Acordeon con estado propio en vez de <details> nativo: hay que poder
    * cerrar todo cuando cambia el filtro de accesibilidad, y <details> guarda
@@ -56,16 +76,34 @@ export default function ServiciosPage() {
     };
   }, []);
 
+  /**
+   * Cuantas actividades quedan fuera por la dificultad que tolera la
+   * personalidad. Se cuenta aparte del filtrado para poder decir el numero: un
+   * "3 ocultas" es lo que convierte un filtro invisible en una decision que el
+   * usuario puede revisar.
+   */
+  const hiddenByDifficulty = useMemo(() => {
+    if (!personality || showAllDifficulties) return 0;
+    return (services ?? []).filter(
+      (s) =>
+        (!accessibleOnly || s.wheelchair_accessible) &&
+        !fitsDifficulty(personality, s.details?.difficulty),
+    ).length;
+  }, [services, personality, showAllDifficulties, accessibleOnly]);
+
   const byCategory = useMemo(() => {
     const map = new Map<ServiceCategory, ServiceWithDistance[]>();
     for (const s of services ?? []) {
       if (accessibleOnly && !s.wheelchair_accessible) continue;
+      if (!showAllDifficulties && !fitsDifficulty(personality, s.details?.difficulty)) {
+        continue;
+      }
       const list = map.get(s.category) ?? [];
       list.push(s);
       map.set(s.category, list);
     }
     return map;
-  }, [services, accessibleOnly]);
+  }, [services, accessibleOnly, personality, showAllDifficulties]);
 
   return (
     <div className="mx-auto max-w-md px-6 py-6 md:max-w-3xl">
@@ -90,6 +128,46 @@ export default function ServiciosPage() {
         <WheelchairIcon size={18} className="text-forest-700" />
         Solo con acceso confirmado
       </label>
+
+      {/* El filtro por personalidad se anuncia y se puede deshacer aqui mismo.
+          Un filtro que esconde sin decirlo se lee como catalogo incompleto. */}
+      {hiddenByDifficulty > 0 ? (
+        <p className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-forest-50 px-3 py-2 text-xs text-forest-700">
+          <span>
+            Ocultamos <strong>{hiddenByDifficulty}</strong>{" "}
+            {hiddenByDifficulty === 1 ? "actividad exigente" : "actividades exigentes"} porque
+            elegiste el perfil <strong>{getPersonality(personality)?.label}</strong>.
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              setShowAllDifficulties(true);
+              setOpen(null);
+            }}
+            className="font-bold underline"
+          >
+            Ver todas
+          </button>
+        </p>
+      ) : null}
+
+      {/* bg-sand-50 + borde, no bg-sand-100: sand-100 ES el fondo de pagina en
+          ambos temas, asi que ahi el aviso se leia como texto suelto sin caja. */}
+      {showAllDifficulties && personality ? (
+        <p className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl border border-sand-200 bg-sand-50 px-3 py-2 text-xs text-ink-soft">
+          <span>Mostrando también las actividades exigentes.</span>
+          <button
+            type="button"
+            onClick={() => {
+              setShowAllDifficulties(false);
+              setOpen(null);
+            }}
+            className="font-bold underline"
+          >
+            Volver a mi perfil
+          </button>
+        </p>
+      ) : null}
 
       <div aria-live="polite" className="mt-5">
         {error ? (

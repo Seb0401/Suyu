@@ -25,6 +25,8 @@
     "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "altitude_m": 2350,
+    "altitude_note": "Yanahuara está algo por encima del centro; la diferencia con el casco urbano es de decenas de metros.",
     "source_label": "TUR4all — ficha de accesibilidad",
     "source_url": "https://www.tur4all.com/resources/mirador-de-yanahuara"
   },
@@ -54,6 +56,8 @@
     "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "altitude_m": 2335,
+    "altitude_note": "Altitud del centro histórico de Arequipa.",
     "source_label": "TUR4all — ficha de accesibilidad",
     "source_url": "https://www.tur4all.com/resources/museo-santuarios-andinos"
   },
@@ -83,6 +87,8 @@
     "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "altitude_m": 3287,
+    "altitude_note": "Las fuentes discrepan: unas dan 3 287 m y otras hasta 3 800 m. Usamos la más baja para no exagerar, pero cuenta con estar por encima de los 3 200 m.",
     "source_label": "TUR4all — ficha de accesibilidad",
     "source_url": "https://www.tur4all.com/resources/mirador-de-la-cruz-del-condor"
   },
@@ -112,6 +118,8 @@
     "family_bathroom_note": "La ficha de accesibilidad no registra cambiador para bebés. Sin confirmar.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "altitude_m": 2335,
+    "altitude_note": "Altitud del centro histórico de Arequipa.",
     "source_label": "TUR4all — ficha de accesibilidad",
     "source_url": "https://www.tur4all.com/resources/basilica-menor-la-catedral-de-arequipa-de-santa-maria"
   },
@@ -141,6 +149,8 @@
     "family_bathroom_note": "Sin dato sobre cambiador para bebés.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos la política de mascotas de este lugar. Confirmar antes de ir con una.",
+    "altitude_m": 2335,
+    "altitude_note": "Altitud del centro histórico de Arequipa.",
     "source_label": "Información del propio monasterio. No tiene ficha en TUR4all",
     "source_url": null
   },
@@ -170,6 +180,8 @@
     "family_bathroom_note": "Sin dato sobre cambiador para bebés.",
     "pet_policy": "sin-dato",
     "pet_note": "No encontramos una política oficial de mascotas para la plaza. Confirmar antes de ir con una.",
+    "altitude_m": 2335,
+    "altitude_note": "Altitud del centro histórico de Arequipa.",
     "source_label": "Ficha en TUR4all pendiente de publicación",
     "source_url": null
   }

@@ -5,6 +5,10 @@ import { useT } from "@/components/i18n/LocaleProvider";
 import { useCallback, useEffect, useState } from "react";
 import CrowdBadge from "@/components/CrowdBadge";
 import Meter from "@/components/Meter";
+import StopProfileAlerts from "@/components/StopProfileAlerts";
+import { buildProfileAlerts, hasAnyNeed } from "@/components/profileAlerts";
+import { EMPTY_PROFILE, readProfile, type TravelProfile } from "@/components/travelProfile";
+import type { SiteAccessibilityDetail } from "@/lib/types";
 import { WheelchairIcon } from "@/components/AccessibilityIcons";
 import {
   ArrowRightIcon,
@@ -57,6 +61,26 @@ export default function ItinerarioPage() {
    * hidratacion.
    */
   const [visited, setVisited] = useState<string[]>([]);
+
+  /* Perfil y fichas de accesibilidad para los avisos personalizados. Las fichas
+     se piden UNA vez para todos los sitios en vez de una por parada: son seis
+     registros estaticos y seis peticiones por itinerario no compran nada. */
+  const [profile, setProfile] = useState<TravelProfile>(EMPTY_PROFILE);
+  const [details, setDetails] = useState<Map<string, SiteAccessibilityDetail>>(new Map());
+
+  useEffect(() => {
+    setProfile(readProfile());
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/accessibility")
+      .then((r) => (r.ok ? r.json() : { details: [] }))
+      .then((d) => {
+        const list: SiteAccessibilityDetail[] = d.details ?? [];
+        setDetails(new Map(list.map((x) => [x.site_id, x])));
+      })
+      .catch(() => setDetails(new Map()));
+  }, []);
 
   useEffect(() => {
     try {
@@ -261,6 +285,19 @@ export default function ItinerarioPage() {
                             <CrowdBadge site={stop.site} className="mt-2" />
                           </span>
                         </Link>
+
+                        {/* Fuera del <Link>: los avisos se despliegan, y un
+                            boton dentro de un enlace no se puede activar sin
+                            navegar. */}
+                        {hasAnyNeed(profile) ? (
+                          <StopProfileAlerts
+                            alerts={buildProfileAlerts(
+                              profile,
+                              stop.site,
+                              details.get(stop.site.id) ?? null,
+                            )}
+                          />
+                        ) : null}
 
                         <button
                           type="button"
