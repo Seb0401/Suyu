@@ -78,6 +78,15 @@ export interface SiteAccessibilityDetail {
   family_bathroom_note: string;
   pet_policy: PetPolicy;
   pet_note: string;
+  /**
+   * Altitud en metros. No es un dato turistico de adorno: Arequipa esta a
+   * ~2 300 m y el Colca pasa de 3 200 m, y esa diferencia es lo unico que
+   * permite avisarle a alguien con condicion cardiaca o respiratoria ANTES de
+   * que se suba a un bus de cuatro horas. null = sin dato.
+   */
+  altitude_m: number | null;
+  /** Precision del dato de altitud, incluida la discrepancia entre fuentes. */
+  altitude_note: string;
   source_label: string;
   source_url: string | null;
 }

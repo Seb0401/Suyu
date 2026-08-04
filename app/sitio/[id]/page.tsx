@@ -8,6 +8,7 @@ import AccessibilityChecklist from "@/components/AccessibilityChecklist";
 import { useAuth } from "@/components/AuthProvider";
 import CheckInDialog from "@/components/CheckInDialog";
 import AccessibilityDetailSection from "@/components/AccessibilityDetail";
+import SiteProfileAlerts from "@/components/SiteProfileAlerts";
 import CrowdBadge from "@/components/CrowdBadge";
 import CrowdChart from "@/components/CrowdChart";
 import Mascot from "@/components/Mascot";
@@ -198,6 +199,11 @@ export default function SitioPage() {
         <CrowdBadge site={site} />
         <VerificationChip site={site} />
       </div>
+
+      {/* "Para ti" va antes que el estado y la accesibilidad general: quien
+          declaro que no puede con escaleras necesita leerlo primero, no tras
+          recorrer la lista completa de rasgos. */}
+      <SiteProfileAlerts site={site} quietHour={quiet_hour} />
 
       <section className="mt-5 rounded-3xl border border-sand-200 bg-sand-50 p-4">
         <h2 className="font-extrabold text-ink">{t("sitio.estadoLugar")}</h2>
