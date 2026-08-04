@@ -165,7 +165,11 @@ const es = {
   "ruta.tiempo": "Tiempo",
   "ruta.paradas": "Paradas",
   "ruta.aproximada":
-    "Ruta aproximada: sin token de Mapbox trazamos una línea recta y estimamos el tiempo a pie. No es un recorrido peatonal real.",
+    "Ruta aproximada: sin conexión con el servicio de rutas trazamos una línea recta y estimamos el tiempo a pie. No es un recorrido peatonal real.",
+  "ruta.perfilSillaRuedas":
+    "Ruta trazada con el perfil de silla de ruedas: tiene en cuenta veredas, bordillos, superficie e inclinación.",
+  "ruta.perfilPeatonal":
+    "No hay datos suficientes de veredas para trazar una ruta de silla de ruedas aquí. Esta es la ruta peatonal general: verifica los bordillos al llegar.",
   "ruta.noCaminable": "Es demasiado lejos para ir caminando. Considera transporte.",
   "ruta.tuRecorrido": "Tu recorrido",
   "ruta.estaLleno": "está lleno a las",
@@ -509,7 +513,11 @@ const en: Record<TranslationKey, string> = {
   "ruta.tiempo": "Time",
   "ruta.paradas": "Stops",
   "ruta.aproximada":
-    "Approximate route: without a Mapbox token we draw a straight line and estimate the walking time. It is not a real pedestrian route.",
+    "Approximate route: without a connection to the routing service we draw a straight line and estimate the walking time. It is not a real pedestrian route.",
+  "ruta.perfilSillaRuedas":
+    "Route traced with the wheelchair profile: it accounts for sidewalks, kerbs, surface and incline.",
+  "ruta.perfilPeatonal":
+    "There is not enough sidewalk data to trace a wheelchair route here. This is the general pedestrian route: check the kerbs when you arrive.",
   "ruta.noCaminable": "It is too far to walk. Consider transport.",
   "ruta.tuRecorrido": "Your route",
   "ruta.estaLleno": "is crowded at",
@@ -851,7 +859,11 @@ const fr: Record<TranslationKey, string> = {
   "ruta.tiempo": "Durée",
   "ruta.paradas": "Arrêts",
   "ruta.aproximada":
-    "Itinéraire approximatif : sans jeton Mapbox nous traçons une ligne droite et estimons le temps de marche. Ce n'est pas un vrai parcours piéton.",
+    "Itinéraire approximatif : sans connexion au service d'itinéraires nous traçons une ligne droite et estimons le temps de marche. Ce n'est pas un vrai parcours piéton.",
+  "ruta.perfilSillaRuedas":
+    "Itinéraire tracé avec le profil fauteuil roulant : il tient compte des trottoirs, des bordures, du revêtement et de la pente.",
+  "ruta.perfilPeatonal":
+    "Les données de trottoirs sont insuffisantes pour tracer un itinéraire en fauteuil roulant ici. Voici l'itinéraire piéton général : vérifiez les bordures à votre arrivée.",
   "ruta.noCaminable": "C'est trop loin pour y aller à pied. Envisagez un transport.",
   "ruta.tuRecorrido": "Votre parcours",
   "ruta.estaLleno": "est saturé à",
@@ -1196,7 +1208,11 @@ const pt: Record<TranslationKey, string> = {
   "ruta.tiempo": "Tempo",
   "ruta.paradas": "Paradas",
   "ruta.aproximada":
-    "Rota aproximada: sem token do Mapbox traçamos uma linha reta e estimamos o tempo a pé. Não é um percurso de pedestres real.",
+    "Rota aproximada: sem conexão com o serviço de rotas traçamos uma linha reta e estimamos o tempo a pé. Não é um percurso de pedestres real.",
+  "ruta.perfilSillaRuedas":
+    "Rota traçada com o perfil de cadeira de rodas: leva em conta calçadas, meios-fios, superfície e inclinação.",
+  "ruta.perfilPeatonal":
+    "Não há dados suficientes de calçadas para traçar uma rota de cadeira de rodas aqui. Esta é a rota de pedestres geral: verifique os meios-fios ao chegar.",
   "ruta.noCaminable": "É longe demais para ir a pé. Considere transporte.",
   "ruta.tuRecorrido": "Seu percurso",
   "ruta.estaLleno": "está lotado às",

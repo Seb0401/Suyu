@@ -367,9 +367,10 @@ Los 6 sitios tienen ficha. `404` si pides un id que no existe.
 
 ## Lo que NO existe todavia
 
-- **Endpoint de mapa**: usa `sites[].lat/lng` directo. Sin
-  `NEXT_PUBLIC_MAPBOX_TOKEN` no hay tiles — el placeholder de "mapa no
-  disponible" es tuyo (B5).
+- **Endpoint de mapa**: usa `sites[].lat/lng` directo. Los tiles los sirve
+  OpenFreeMap sin API key, asi que el mapa ya no depende de ninguna variable
+  de entorno; el placeholder de "mapa no disponible" sigue siendo tuyo (B5),
+  pero ahora solo aparece si falla la red o no hay WebGL.
 - **Datos de aforo en vivo**: `crowd_is_live` siempre viene `false` sin
   Supabase. La tabla `crowd_status` ya existe en `supabase/schema.sql`.
 - **Categoria `transporte`**: existe en el tipo, sin entradas.

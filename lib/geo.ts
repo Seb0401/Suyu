@@ -46,12 +46,20 @@ export function straightLine(a: LatLng, b: LatLng): RouteGeometry {
   };
 }
 
+/**
+ * Con que motor se trazo la ruta. Importa para la UI: prometer un recorrido
+ * apto para silla de ruedas y haber usado el perfil peatonal generico seria
+ * exactamente el tipo de dato inventado que prohibe §2.1.
+ */
+export type RouteProfile = "wheelchair" | "foot-walking" | "straight-line";
+
 export interface WalkingRoute {
   geometry: RouteGeometry;
   distance_m: number;
   duration_min: number;
   /** true = linea recta, no una ruta peatonal real. La UI tiene que decirlo. */
   approximate: boolean;
+  profile: RouteProfile;
 }
 
 function fallbackRoute(a: LatLng, b: LatLng): WalkingRoute {
@@ -61,66 +69,109 @@ function fallbackRoute(a: LatLng, b: LatLng): WalkingRoute {
     distance_m,
     duration_min: walkingMinutes(distance_m),
     approximate: true,
+    profile: "straight-line",
   };
 }
 
-interface MapboxRoute {
-  geometry?: { type?: string; coordinates?: [number, number][] };
-  distance?: number;
-  duration?: number;
+/** GeoJSON de OpenRouteService: una Feature con summary en properties. */
+interface OrsResponse {
+  features?: {
+    geometry?: { type?: string; coordinates?: [number, number][] };
+    properties?: { summary?: { distance?: number; duration?: number } };
+  }[];
+}
+
+const ORS_TIMEOUT_MS = 3500;
+
+/**
+ * Un intento contra un perfil de OpenRouteService. Devuelve null si el perfil
+ * no pudo resolver la ruta, o "timeout" si ni siquiera contesto a tiempo — el
+ * llamador los trata distinto (ver walkingRoute).
+ */
+async function tryOrsProfile(
+  profile: Exclude<RouteProfile, "straight-line">,
+  a: LatLng,
+  b: LatLng,
+  apiKey: string,
+): Promise<WalkingRoute | null | "timeout"> {
+  const url =
+    `https://api.openrouteservice.org/v2/directions/${profile}` +
+    `?api_key=${apiKey}&start=${a.lng},${a.lat}&end=${b.lng},${b.lat}`;
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      signal: AbortSignal.timeout(ORS_TIMEOUT_MS),
+      next: { revalidate: 3600 },
+    });
+  } catch {
+    // Timeout, DNS caido, red del evento saturada.
+    return "timeout";
+  }
+
+  if (!response.ok) return null;
+
+  try {
+    const data = (await response.json()) as OrsResponse;
+    const feature = data.features?.[0];
+    const coordinates = feature?.geometry?.coordinates;
+    const distance = feature?.properties?.summary?.distance;
+
+    if (
+      feature?.geometry?.type !== "LineString" ||
+      !Array.isArray(coordinates) ||
+      coordinates.length < 2 ||
+      typeof distance !== "number"
+    ) {
+      return null;
+    }
+
+    const duration = feature.properties?.summary?.duration;
+    return {
+      geometry: { type: "LineString", coordinates },
+      distance_m: Math.round(distance),
+      duration_min:
+        typeof duration === "number"
+          ? Math.max(1, Math.round(duration / 60))
+          : walkingMinutes(distance),
+      approximate: false,
+      profile,
+    };
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Ruta peatonal real via Mapbox Directions. Sin token, sin red o ante
- * cualquier respuesta rara cae a linea recta + haversine marcada como
- * aproximada (CLAUDE.md §6.5).
+ * Ruta peatonal real via OpenRouteService (CLAUDE.md §6.5).
+ *
+ * Con accessible=true pide el perfil `wheelchair`, que rutea sobre veredas,
+ * bordillos, superficie e inclinacion de OSM — no solo "esto es peatonal".
+ * Ese perfil depende de que la zona tenga esos datos mapeados, y la cobertura
+ * de veredas en Arequipa es despareja, asi que degrada en tres escalones:
+ *
+ *   wheelchair → foot-walking → linea recta + haversine (approximate: true)
+ *
+ * Un timeout NO reintenta con el otro perfil: si la red esta lenta, insistir
+ * solo alarga la espera. Un fallo de ruteo si reintenta, porque ahi el
+ * problema son los datos del perfil, no la conexion.
  *
  * Nunca lanza: una ruta aproximada sirve, una excepcion en medio del pitch no.
  */
 export async function walkingRoute(
   a: LatLng,
   b: LatLng,
+  options: { accessible?: boolean } = {},
 ): Promise<WalkingRoute> {
-  const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-  if (!token) return fallbackRoute(a, b);
+  const apiKey = process.env.ORS_API_KEY?.trim();
+  if (!apiKey) return fallbackRoute(a, b);
 
-  const coords = `${a.lng},${a.lat};${b.lng},${b.lat}`;
-  const url =
-    `https://api.mapbox.com/directions/v5/mapbox/walking/${coords}` +
-    `?geometries=geojson&overview=full&access_token=${token}`;
-
-  try {
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(4000),
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return fallbackRoute(a, b);
-
-    const data = (await response.json()) as { routes?: MapboxRoute[] };
-    const route = data.routes?.[0];
-    const coordinates = route?.geometry?.coordinates;
-
-    if (
-      !route ||
-      route.geometry?.type !== "LineString" ||
-      !Array.isArray(coordinates) ||
-      coordinates.length < 2 ||
-      typeof route.distance !== "number"
-    ) {
-      return fallbackRoute(a, b);
-    }
-
-    return {
-      geometry: { type: "LineString", coordinates },
-      distance_m: Math.round(route.distance),
-      duration_min:
-        typeof route.duration === "number"
-          ? Math.max(1, Math.round(route.duration / 60))
-          : walkingMinutes(route.distance),
-      approximate: false,
-    };
-  } catch {
-    // Timeout, DNS, token vencido, cuota agotada: todos terminan igual.
-    return fallbackRoute(a, b);
+  if (options.accessible) {
+    const wheelchair = await tryOrsProfile("wheelchair", a, b, apiKey);
+    if (wheelchair === "timeout") return fallbackRoute(a, b);
+    if (wheelchair) return wheelchair;
   }
+
+  const walking = await tryOrsProfile("foot-walking", a, b, apiKey);
+  return walking && walking !== "timeout" ? walking : fallbackRoute(a, b);
 }

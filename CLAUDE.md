@@ -62,8 +62,8 @@ vive en JSON local. La conexión *mejora* la experiencia, nunca es requisito.
 |---|---|---|
 | Sitios y accesibilidad | `data/seed-sites.json` | Supabase (datos editables en vivo) |
 | Aforo | perfil horario local (`crowd_profile`) | + reportes manuales en `crowd_status` |
-| Ruta | línea recta + haversine, marcada como aproximada | Mapbox Directions (ruta peatonal real) |
-| Mapa | aviso de "mapa no disponible" | Mapbox GL |
+| Ruta | línea recta + haversine, marcada como aproximada | OpenRouteService (perfil `wheelchair` o peatonal real) |
+| Mapa | aviso de "mapa no disponible" | MapLibre GL + OpenFreeMap (sin API key) |
 | Copiloto | asistente por reglas, **etiquetado como tal** | Claude (`claude-sonnet-5`) |
 | Servicios turísticos | `data/seed-services.json` | + enlaces externos del proveedor |
 | Fichas técnicas, historias, agencias | `data/site-details.json`, `seed-stories.json`, `seed-agencies.json` | (sin backend propio, ver §6.8-6.10) |
@@ -108,7 +108,8 @@ revisarse en **ambos** temas antes de commitear, no solo en claro.
 |---|---|---|
 | Framework | **Next.js 15.5** (App Router, TypeScript, Turbopack) | Front + API en un proyecto, deploy trivial |
 | React | **19.1** | Viene con Next 15.5 |
-| Mapas | Mapbox GL JS (`mapbox-gl` ^3.27) + Static Images API | Free tier generoso, capas custom |
+| Mapas | MapLibre GL JS (`maplibre-gl` ^5.24) + tiles de OpenFreeMap | Sin cuenta, sin API key, sin límite de peticiones y **sin método de pago** |
+| Rutas | OpenRouteService (HeiGIT), vía `fetch` directo | Único proveedor con perfil `wheelchair` real; alta gratuita |
 | Base de datos | Supabase (`@supabase/supabase-js` ^2.111, Postgres) | Setup rápido, dashboard para cargar datos a mano |
 | IA | API de Anthropic — modelo `claude-sonnet-5`, **vía `fetch` directo** | Un solo endpoint, sin dependencia del SDK (`lib/anthropic.ts`) |
 | Estilos | Tailwind CSS **v4** (`@tailwindcss/postcss`) | Rápido de maquetar; `@custom-variant dark` habilita el toggle manual |
@@ -120,7 +121,7 @@ revisarse en **ambos** temas antes de commitear, no solo en claro.
 >
 > ```bash
 > npx create-next-app@15 suyu --typescript --tailwind --app --eslint --import-alias "@/*" --use-npm
-> npm install @supabase/supabase-js mapbox-gl
+> npm install @supabase/supabase-js maplibre-gl
 > ```
 
 No hay dependencia de `@anthropic-ai/sdk`: `lib/anthropic.ts` arma el `system
@@ -134,7 +135,10 @@ prompt` y llama `https://api.anthropic.com/v1/messages` directamente con
 Nada de esto bloquea el desarrollo (§2.1), pero hace falta para el demo completo.
 
 1. **Anthropic**: [console.anthropic.com](https://console.anthropic.com) → API Keys. Requiere crédito.
-2. **Mapbox**: [account.mapbox.com](https://account.mapbox.com) → Tokens → "Default public token".
+2. **OpenRouteService**: [openrouteservice.org](https://openrouteservice.org) → Sign up → Tokens.
+   Solo para la ruta peatonal real; el **mapa no necesita cuenta de nada**
+   (OpenFreeMap sirve los tiles sin registro). Se eligió así deliberadamente:
+   Mapbox pasó a exigir método de pago y el proyecto no lo iba a poner.
 3. **Supabase**: [supabase.com](https://supabase.com) → New Project → Settings → API.
 4. **Vercel**: [vercel.com](https://vercel.com), conectado a GitHub.
 
@@ -144,12 +148,17 @@ Nada de esto bloquea el desarrollo (§2.1), pero hace falta para el demo complet
 # Servidor — nunca exponer al cliente
 ANTHROPIC_API_KEY=sk-ant-...
 SUPABASE_SERVICE_ROLE_KEY=...
+ORS_API_KEY=...          # ruta peatonal / silla de ruedas real
 
 # Cliente — el prefijo NEXT_PUBLIC_ es obligatorio
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-NEXT_PUBLIC_MAPBOX_TOKEN=pk....
 ```
+
+> El mapa **no tiene variable de entorno**: MapLibre + OpenFreeMap no usan
+> API key. `ORS_API_KEY` va sin prefijo `NEXT_PUBLIC_` a propósito — su único
+> lector es `/api/route-finder`, que corre en servidor, así que la key nunca
+> viaja en el bundle (a diferencia del token de Mapbox que reemplazó).
 
 En Vercel, las mismas variables en **Project Settings → Environment Variables**.
 
@@ -258,8 +267,9 @@ suyu/
   motor de reglas del cliente; los reportes no se pueden inventar sin
   conexión; una estampa del pasaporte depende de verificar el GPS en vivo
   (§6.11) y no puede servirse desde caché.
-- Tiles de Mapbox: **nunca se cachean**, sus términos de uso lo limitan (ni
-  siquiera son same-origin, así que el SW los deja pasar directo a red).
+- Tiles de OpenFreeMap y llamadas a OpenRouteService: **no se interceptan**.
+  No son same-origin, y MapLibre ya mantiene su propia caché de tiles en el
+  navegador — duplicarla en el SW solo gastaría cuota de almacenamiento.
 - `/api/site-details`, `/api/stories`, `/api/agencies` no tienen estrategia
   especial: son contenido estático curado, cachean igual que cualquier otra
   ruta bajo la regla "cache-first con revalidación en segundo plano".
@@ -364,18 +374,29 @@ export interface PassportSummary {
 
 Completo en `supabase/schema.sql` (incluye RLS y una sección de migración
 comentada). Tablas: `sites`, `crowd_status`, `accessibility_reports`,
-`services`, `passport_stamps` (+ el bucket `passport-photos`, ver §6.11).
-`passport_stamps` es la primera tabla del proyecto que referencia
-`auth.users`: el pasaporte es la primera funcionalidad con cuentas reales.
+`services`, `passport_stamps`, `site_accessibility` (+ el bucket
+`passport-photos`, ver §6.11). `passport_stamps` es la primera tabla del
+proyecto que referencia `auth.users`: el pasaporte es la primera
+funcionalidad con cuentas reales.
 
-**Gap conocido:** el check constraint de `services.category` en
-`supabase/schema.sql` solo permite `restaurante/guia/agencia/transporte/
-hospedaje/artesania` — no incluye `movilidad/salud/actividad`, que sí existen en
-`ServiceCategory` (lib/types.ts) y en `data/seed-services.json`. Mientras no se
-corrija el `ALTER TABLE`, esas 3 categorías **solo funcionan en modo demo** (JSON
-local); si se cargan a Supabase con esas categorías, el insert falla. Si estás
-replicando desde cero, agrega las 3 al constraint desde el `CREATE TABLE`
-inicial (ver `docs/REPLICA-DESDE-CERO.md`).
+**Aplicar el esquema:** `supabase/migrations/` tiene el esquema como migración,
+así que `supabase link --project-ref <ref>` + `supabase db push` lo levanta
+entero (tablas, bucket y RLS). Luego `npm run seed:supabase` carga sitios y
+servicios. `schema.sql` sigue siendo la copia legible y es idempotente si
+prefieres pegarla en el SQL Editor.
+
+`site_accessibility` existe en el esquema pero **hoy nadie la lee desde
+Supabase**: `lib/accessibility.ts` importa `data/site-accessibility.json`
+directo. Está provisionada para cuando ese dato pase a ser editable en vivo;
+que la tabla esté vacía no rompe nada.
+
+**Gap ya cerrado (queda anotado porque costó encontrarlo):** el check
+constraint de `services.category` se quedó una vez en las 6 categorías
+originales y bloqueaba la carga de `movilidad/salud/actividad`. Hoy el
+`CREATE TABLE` de `schema.sql` las incluye las 9 desde el inicio — verificado
+cargando las 53 filas de `data/seed-services.json` contra Supabase, con las 9
+categorías presentes. Si replicas desde cero, no hace falta ningún
+`ALTER TABLE`.
 
 `site_details`, `stories` y `agencies` **no tienen tabla en Supabase todavía**:
 viven solo como JSON curado (§6.8-6.10) y no se ofrecen para edición en vivo.
@@ -413,12 +434,33 @@ Complemento: `nextQuietHour()` permite el mensaje *"está saturado ahora, a las
 ### 6.5 Ruta accesible (`/api/route-finder`)
 
 Entrada: `origin`, `destination`, `accessible`, `hour`.
-Salida: geometría, distancia, duración, `approximate`, origen, destino,
-`alternative`, `quiet_hour`.
+Salida: geometría, distancia, duración, `approximate`, `profile`, origen,
+destino, `alternative`, `quiet_hour`.
 
-Sin token de Mapbox devuelve **línea recta + haversine** con `approximate: true`,
-y la UI lo dice. No es una ruta óptima real: las anotaciones de accesibilidad se
-superponen como hitos, no se calculan.
+El motor es **OpenRouteService**, y `accessible=true` no solo filtra sitios:
+cambia el perfil de ruteo a `wheelchair`, que pesa veredas, bordillos,
+superficie e inclinación de OSM en vez de tratar todo lo peatonal como
+equivalente. Es la razón de haber elegido ORS sobre las alternativas.
+
+**Degrada en tres escalones**, y `profile` dice en cuál quedó:
+
+```
+wheelchair  → foot-walking → straight-line
+(ORS, accesible)  (ORS, peatonal)   (haversine, approximate: true)
+```
+
+Un **timeout no reintenta** con el siguiente perfil: si la red está lenta,
+insistir solo alarga la espera del usuario. Un fallo de *ruteo* sí reintenta,
+porque ahí el problema son los datos del perfil, no la conexión.
+
+La UI de `/ruta` distingue los tres casos por escrito (§2.1): confirma cuando
+la ruta sí se trazó en modo silla de ruedas, y **avisa explícitamente** cuando
+se pidió accesible pero solo hubo datos para la ruta peatonal general. Prometer
+una ruta accesible que no se calculó como tal sería exactamente el tipo de dato
+inventado que prohíbe §2.1.
+
+Sigue sin ser una ruta óptima verificada: las anotaciones de accesibilidad de
+los sitios se superponen como hitos, no se calculan.
 
 ### 6.6 Copiloto
 

@@ -51,8 +51,9 @@ tiene el día contado.
 ## Stack
 
 Next.js 15.5 (App Router, TypeScript) · React 19 · Tailwind CSS v4 ·
-Mapbox GL JS · Supabase (Postgres) · API de Anthropic (`claude-sonnet-5`, vía
-`fetch` directo, sin SDK) · deploy en Vercel.
+MapLibre GL JS + OpenFreeMap (mapa sin API key) · OpenRouteService (ruta
+peatonal y en silla de ruedas) · Supabase (Postgres) · API de Anthropic
+(`claude-sonnet-5`, vía `fetch` directo, sin SDK) · deploy en Vercel.
 
 ---
 
@@ -70,7 +71,7 @@ Variables de entorno (todas opcionales para desarrollo):
 
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...          # copiloto con IA real
-NEXT_PUBLIC_MAPBOX_TOKEN=pk....       # mapa y ruta peatonal real
+ORS_API_KEY=...                       # ruta peatonal / silla de ruedas real
 NEXT_PUBLIC_SUPABASE_URL=...          # datos editables en vivo
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
@@ -94,7 +95,7 @@ lo que permite trabajar en paralelo sin bloquearse.
 | **Rama** | `track/a-datos` | `track/b-ui` |
 
 **Persona A** construye la lógica: perfiles de aforo por hora, recomendador
-anti-aforo, cálculo de ruta accesible con fallback sin Mapbox, planificador de
+anti-aforo, cálculo de ruta accesible con fallback sin proveedor, planificador de
 itinerario, reportes, integración con Supabase y con la API de Claude, y la
 curaduría de los datos de accesibilidad de los sitios piloto.
 

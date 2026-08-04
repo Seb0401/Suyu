@@ -17,6 +17,8 @@ type RouteResult = {
   distance_m: number;
   duration_min: number;
   approximate: boolean;
+  profile: "wheelchair" | "foot-walking" | "straight-line";
+  accessible_filter: boolean;
   walkable: boolean;
   accessibility_score: number;
   milestones: Milestone[];
@@ -314,6 +316,21 @@ export default function RutaPage() {
             {result.approximate ? (
               <p className="rounded-2xl border border-sand-200 bg-[var(--color-amber-chip-bg)] p-3 text-xs font-semibold text-[var(--color-amber-text)]">
                 {t("ruta.aproximada")}
+              </p>
+            ) : null}
+
+            {/* Pedir ruta accesible y recibir el perfil peatonal generico no es
+                lo mismo, y callarlo seria prometer una accesibilidad que no
+                verificamos (§2.1). Se dice en los dos sentidos. */}
+            {result.accessible_filter && result.profile === "wheelchair" ? (
+              <p className="rounded-2xl border border-sand-200 bg-forest-50 p-3 text-xs font-semibold text-forest-700">
+                {t("ruta.perfilSillaRuedas")}
+              </p>
+            ) : null}
+
+            {result.accessible_filter && result.profile === "foot-walking" ? (
+              <p className="rounded-2xl border border-sand-200 bg-[var(--color-amber-chip-bg)] p-3 text-xs font-semibold text-[var(--color-amber-text)]">
+                {t("ruta.perfilPeatonal")}
               </p>
             ) : null}
 

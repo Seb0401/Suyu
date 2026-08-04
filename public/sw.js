@@ -69,8 +69,10 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  /* Los tiles de Mapbox no se cachean: sus terminos de uso lo limitan. Al no
-     ser same-origin, simplemente no los interceptamos. */
+  /* Los tiles del mapa (OpenFreeMap) y el servicio de rutas no son same-origin:
+     no los interceptamos y van directo a red. MapLibre ya maneja su propia
+     cache de tiles en el navegador, duplicarla aqui solo gastaria cuota de
+     almacenamiento. */
   if (url.origin !== self.location.origin) return;
 
   /* Chat, reportes y pasaporte son solo-red. El chat cae al motor de reglas
