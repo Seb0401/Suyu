@@ -26,6 +26,7 @@ export default function PassportStamp({
   iconTone = "light",
   tilt = 0,
   size = 84,
+  imageSrc,
 }: {
   earned: boolean;
   category: string;
@@ -34,6 +35,10 @@ export default function PassportStamp({
   iconTone?: "light" | "dark";
   tilt?: number;
   size?: number;
+  /** Arte real del sitio (hoja de medallas del equipo), cuando existe. Sin
+   *  esto, cae al escudo generado de siempre — nunca inventamos una imagen
+   *  para un sitio que la hoja de referencia no ilustra (CLAUDE.md §2.1). */
+  imageSrc?: string;
 }) {
   const gradientId = useId();
   const Icon = categoryIcon(category);
@@ -41,6 +46,38 @@ export default function PassportStamp({
   // Icons.tsx no acepta `style`, solo `className` — de ahi el color via clase
   // arbitraria en vez de pasarlo como estilo inline.
   const iconColorClass = iconTone === "dark" ? "text-[var(--color-scrim)]" : "text-cream";
+
+  if (imageSrc) {
+    return (
+      <div
+        className="relative shrink-0"
+        style={{
+          width: size,
+          height: size,
+          transform: earned && tilt ? `rotate(${tilt}deg)` : undefined,
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- recorte de arte con transparencia real, no una foto que valga optimizar */}
+        <img
+          src={imageSrc}
+          alt=""
+          className="h-full w-full object-contain"
+          style={
+            earned
+              ? { filter: "drop-shadow(0 2px 3px rgb(0 0 0 / 0.25))" }
+              : { filter: "grayscale(1) opacity(0.45)" }
+          }
+        />
+        {!earned ? (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="rounded-full bg-[var(--color-scrim)]/55 p-1.5">
+              <LockIcon size={Math.round(size * 0.22)} className="text-cream" />
+            </div>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div

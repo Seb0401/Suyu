@@ -15,6 +15,20 @@ import type { PassportSummary, SiteWithCrowd } from "@/lib/types";
 const STAMP_TILTS = [-4, 3, -3, 4, -2, 2];
 
 /**
+ * Arte real por sitio, recortado de la hoja de referencia del equipo
+ * (material_proyecto/pasaporte-medallas-ref.png). Solo 4 de los 6 sitios
+ * semilla tienen una medalla ilustrada en esa hoja — los otros dos
+ * (Museo Santuarios Andinos, Mirador de la Cruz del Condor) caen al escudo
+ * generado de siempre en vez de mostrar el arte de un sitio distinto.
+ */
+const SITE_STAMP_ART: Record<string, string> = {
+  "basilica-catedral-de-arequipa": "/passport/stamps/basilica-catedral-de-arequipa.webp",
+  "monasterio-de-santa-catalina": "/passport/stamps/monasterio-de-santa-catalina.webp",
+  "mirador-de-yanahuara": "/passport/stamps/mirador-de-yanahuara.webp",
+  "plaza-de-armas-de-arequipa": "/passport/stamps/plaza-de-armas-de-arequipa.webp",
+};
+
+/**
  * Pasaporte Arequipeño (§6.11). A diferencia del resto de la app, esta
  * pantalla SI necesita conexion y Supabase configurado — su honestidad
  * depende de verificar el GPS en vivo, asi que no tiene sentido offline
@@ -246,6 +260,7 @@ export default function PasaportePage() {
                 metalTo={presentation.metalTo}
                 iconTone={presentation.iconTone}
                 tilt={tilt}
+                imageSrc={SITE_STAMP_ART[site.id]}
               />
             );
 
