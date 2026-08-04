@@ -24,6 +24,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Material del concurso (ficha, pitch, lienzos): documentos de trabajo del
+# equipo, no forman parte del producto y no tienen por que versionarse aqui.
+/documentos_turiston/
+
 # Editores / SO
 .DS_Store
 Thumbs.db
